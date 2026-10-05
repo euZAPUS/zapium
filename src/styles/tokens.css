@@ -1,0 +1,133 @@
+/*
+ * TOKENS — única fuente de verdad del sistema visual (colores, tipografía,
+ * espaciado, forma, movimiento, capas). Ningún componente define valores
+ * sueltos: si falta un valor, se añade aquí.
+ *
+ * Los colores usan light-dark(claro, oscuro): cada token se define UNA vez y
+ * sirve para los dos temas. El tema lo decide `color-scheme`, que sigue al
+ * sistema salvo que <html data-theme="light|dark"> lo fije.
+ *
+ * Paletas A/B: SOLO mientras se decide la dirección visual (fase 1).
+ * Al elegir una, se borra la otra y estos overrides.
+ */
+
+:root {
+  color-scheme: light dark;
+
+  /* ── Marca: el naranja de la patata ─────────────────────────────── */
+  --potato: #ffae00;
+  --potato-line: #17130e; /* contorno del personaje: siempre casi negro */
+  --potato-halo: light-dark(
+    transparent,
+    rgb(246 239 226 / 0.94)
+  ); /* borde «pegatina» para que el contorno se vea sobre fondo oscuro */
+
+  /* ── Color (paleta A «Papel y patata») ──────────────────────────── */
+  --bg: light-dark(#fbf6ec, #14110d);
+  --bg-soft: light-dark(#f3ead8, #1b1712);
+  --surface: light-dark(#fffdf8, #211c15);
+  --ink: light-dark(#17130e, #f6efe2);
+  --ink-muted: light-dark(#5f564a, #b3a998);
+  --line: light-dark(#17130e, #f6efe2);
+  --line-soft: light-dark(rgb(23 19 14 / 0.16), rgb(246 239 226 / 0.16));
+  --accent: #ffae00; /* relleno (botones, marcas). Nunca como color de texto sobre --bg */
+  --accent-ink: #17130e; /* texto sobre --accent */
+  --accent-2: light-dark(#ff6b4a, #ff8a6b);
+  --focus: light-dark(#0b5fff, #ffc94d);
+  --glow: light-dark(rgb(255 174 0 / 0.35), rgb(255 174 0 / 0.28));
+
+  /* ── Forma ──────────────────────────────────────────────────────── */
+  --border-w: 3px;
+  --icon-stroke: 2.4;
+  --radius-s: 0.6rem;
+  --radius-m: 1.1rem;
+  --radius-l: 1.8rem;
+  --radius-pill: 999px;
+  --shadow-hard: 0.28rem 0.28rem 0 0 var(--line); /* sombra «sticker» */
+  --shadow-hard-lg: 0.5rem 0.5rem 0 0 var(--line);
+  --blur: 0px;
+
+  /* ── Tipografía ─────────────────────────────────────────────────── */
+  --font-display: 'Bricolage Grotesque Variable', 'Arial Black', system-ui, sans-serif;
+  --font-body: 'Inter Variable', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-mono: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+
+  --text-xs: clamp(0.75rem, 0.73rem + 0.1vw, 0.8125rem);
+  --text-s: clamp(0.875rem, 0.85rem + 0.12vw, 0.9375rem);
+  --text-m: clamp(1rem, 0.96rem + 0.2vw, 1.125rem);
+  --text-l: clamp(1.2rem, 1.1rem + 0.5vw, 1.5rem);
+  --text-xl: clamp(1.6rem, 1.3rem + 1.4vw, 2.5rem);
+  --text-2xl: clamp(2.2rem, 1.6rem + 2.8vw, 4rem);
+  --text-hero: clamp(3rem, 1.6rem + 7vw, 8.5rem);
+  --leading-tight: 0.95;
+  --leading-snug: 1.2;
+  --leading-body: 1.6;
+
+  /* ── Espaciado (escala 4/8) ─────────────────────────────────────── */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+  --space-7: 3rem;
+  --space-8: 4.5rem;
+  --space-9: 7rem;
+  --container: 74rem;
+  --gutter: clamp(1rem, 4vw, 2.5rem);
+  --header-h: 4.25rem;
+
+  /* ── Movimiento ─────────────────────────────────────────────────── */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --ease-pop: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --dur-fast: 0.18s;
+  --dur-base: 0.45s;
+  --dur-slow: 1s;
+
+  /* ── Capas ──────────────────────────────────────────────────────── */
+  --z-base: 0;
+  --z-hero-fx: 0;
+  --z-content: 1;
+  --z-header: 50;
+  --z-cursor: 100;
+}
+
+:root[data-theme='light'] {
+  color-scheme: light;
+}
+:root[data-theme='dark'] {
+  color-scheme: dark;
+}
+
+/* ── Paleta B «Neón nocturno»: cristal, brillos y bordes finos ───────
+   (comparte la marca naranja; cambia fondos, secundario y la forma) */
+:root[data-palette='b'] {
+  --bg: light-dark(#f3f3fb, #090a14);
+  --bg-soft: light-dark(#e9e9f6, #0f1121);
+  --surface: light-dark(#ffffff, #14172d);
+  --ink: light-dark(#12122a, #eef0ff);
+  --ink-muted: light-dark(#53587f, #a3a9d3);
+  --line: light-dark(rgb(18 18 42 / 0.22), rgb(190 197 255 / 0.22));
+  --line-soft: light-dark(rgb(18 18 42 / 0.1), rgb(190 197 255 / 0.1));
+  --accent-2: light-dark(#5b3df5, #8b73ff);
+  --focus: light-dark(#5b3df5, #ffc94d);
+  --glow: light-dark(rgb(91 61 245 / 0.28), rgb(139 115 255 / 0.4));
+
+  --border-w: 1px;
+  --icon-stroke: 1.7;
+  --radius-s: 0.7rem;
+  --radius-m: 1.3rem;
+  --radius-l: 2rem;
+  --shadow-hard: 0 0 1.6rem 0 var(--glow);
+  --shadow-hard-lg: 0 0.4rem 3rem 0 var(--glow);
+  --blur: 14px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --dur-fast: 0.01ms;
+    --dur-base: 0.01ms;
+    --dur-slow: 0.01ms;
+  }
+}

@@ -24,15 +24,20 @@
     "images": "node scripts/optimize-images.mjs",
     "check:exif": "node scripts/check-exif.mjs",
     "verify": "pnpm format:check && pnpm lint && pnpm check && pnpm check:exif && pnpm build",
-    "prepare": "git config core.hooksPath .githooks || true"
+    "prepare": "git config core.hooksPath .githooks || true",
+    "shots": "node scripts/shots.mjs"
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.7.4",
-    "astro": "^7.3.5"
+    "@fontsource-variable/bricolage-grotesque": "^5.3.0",
+    "@fontsource-variable/inter": "^5.3.0",
+    "astro": "^7.3.5",
+    "ogl": "^1.0.11"
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.10",
     "@eslint/js": "^10.0.1",
+    "@playwright/test": "^1.63.0",
     "eslint": "^10.12.0",
     "eslint-plugin-astro": "^3.2.1",
     "globals": "^17.13.0",
