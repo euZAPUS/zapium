@@ -6,14 +6,16 @@ Este archivo se actualiza cada vez que se añade o quita una dependencia que lle
 
 ## Que llegan al navegador (runtime)
 
-| Librería                                              | Versión | Licencia                                                                            | Estado                 | Notas                                                    |
-| ----------------------------------------------------- | ------- | ----------------------------------------------------------------------------------- | ---------------------- | -------------------------------------------------------- |
-| [GSAP](https://gsap.com) (+ ScrollTrigger, Flip)      | 3.15.0  | GreenSock «Standard "no charge" license» (propietaria, **no es de código abierto**) | Prevista (fases 3-4)   | Ver nota GSAP abajo.                                     |
-| [Lenis](https://github.com/darkroomengineering/lenis) | 1.3.26  | MIT © darkroom.engineering                                                          | Prevista (fase 3)      | Texto leído de `LICENSE` del paquete.                    |
-| [OGL](https://github.com/oframe/ogl)                  | 1.0.11  | Unlicense (dominio público)                                                         | Prevista (fases 1 y 3) | Declarado en `package.json` y README del paquete.        |
-| Fuentes tipográficas                                  | —       | OFL 1.1 (previsto)                                                                  | Se eligen en la fase 1 | Se añadirá cada una con su licencia y autor verificados. |
+| Librería / recurso                                                                       | Versión            | Licencia                                                                            | Estado                                   | Notas                                                                              |
+| ---------------------------------------------------------------------------------------- | ------------------ | ----------------------------------------------------------------------------------- | ---------------------------------------- | ---------------------------------------------------------------------------------- |
+| [OGL](https://github.com/oframe/ogl)                                                     | 1.0.11             | Unlicense (dominio público)                                                         | **En uso** (hero WebGL, import dinámico) | Declarado en `package.json` y README del paquete.                                  |
+| [Bricolage Grotesque](https://github.com/ateliertriay/bricolage) (fuente, subset latino) | 5.3.0 (Fontsource) | SIL OFL 1.1 © 2022 The Bricolage Grotesque Project Authors                          | **En uso**                               | Texto: [licenses/OFL-BricolageGrotesque.txt](licenses/OFL-BricolageGrotesque.txt). |
+| [Inter](https://github.com/rsms/inter) (fuente, subset latino)                           | 5.3.0 (Fontsource) | SIL OFL 1.1 © 2016 The Inter Project Authors                                        | **En uso**                               | Texto: [licenses/OFL-Inter.txt](licenses/OFL-Inter.txt).                           |
+| [GSAP](https://gsap.com) (+ ScrollTrigger, Flip)                                         | 3.15.0             | GreenSock «Standard "no charge" license» (propietaria, **no es de código abierto**) | Prevista (fases 3-4)                     | Ver nota GSAP abajo.                                                               |
+| [Lenis](https://github.com/darkroomengineering/lenis)                                    | 1.3.26             | MIT © darkroom.engineering                                                          | Prevista (fase 3)                        | Texto leído de `LICENSE` del paquete.                                              |
 
-Hasta la fase 1 no se envía ninguna librería de terceros al navegador.
+Las licencias de las fuentes se leyeron de los archivos `LICENSE` de cada paquete (campo `license`: OFL-1.1).
+Las fuentes se sirven desde el propio dominio (self-hosted) y el texto de la OFL se conserva en `licenses/`.
 
 ### Nota sobre GSAP
 

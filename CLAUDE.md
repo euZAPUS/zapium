@@ -8,7 +8,7 @@ siempre está a un clic. Público: reclutadores, responsables técnicos, gente d
 
 ## Estado
 
-Fase 0 completada (setup, repo, licencias). Plan por fases: 0 setup · 1 sistema de diseño + hero ·
+Fase 0 completada. **Fase 1 (sistema de diseño, esqueleto y hero) hecha, pendiente de OK y de elegir paleta A/B y hero orbe/portal.** Plan por fases: 0 setup · 1 sistema de diseño + hero ·
 2 secciones con contenido · 3 animaciones/interacciones · 4 proyectos, casos de estudio y demos ·
 5 mascota + sección IA · 6 rendimiento/a11y/SEO · 7 despliegue.
 **Al terminar cada fase: dev server, capturas (375/768/1440), resumen y esperar OK antes de seguir.**
@@ -54,9 +54,29 @@ pnpm format         # Prettier (escribe)
 pnpm images         # _originals/photos -> src/assets/photos (AVIF+WebP, sin EXIF)
 pnpm check:exif     # falla si alguna imagen trae EXIF/XMP/IPTC
 pnpm verify         # format:check + lint + check + check:exif + build
+pnpm shots [url] [filtro]  # capturas Playwright a .screenshots/ (1440/768/375, claro/oscuro, paletas y héroes)
 ```
 
 El hook `.githooks/pre-commit` (activado por `pnpm install` vía `prepare`) ejecuta exif, format y lint.
+
+## Decisiones de diseño abiertas (fase 1)
+
+- **Paleta A «Papel y patata»** (por defecto: contornos negros gruesos y sombras duras, a juego con el dibujo
+  de la patata) **vs B «Neón nocturno»** (cristal, bordes finos, brillos). Se previsualiza con `?p=b`.
+  Al elegir una, **borrar la otra** (bloque `[data-palette='b']` de `tokens.css`, el script de `Base.astro`
+  y las reglas `:global(:root[data-palette='b'])` de Header/Footer).
+- **Hero 3D: orbe vs portal** (`?hero=portal`). Al elegir, borrar el otro módulo de `src/scripts/hero/`
+  y el parámetro en `hero/index.ts`.
+
+## Cosas que ya han dado guerra
+
+- Los estilos con scope de Astro **no llegan a los hijos**: lo que apunte a un componente hijo
+  (`Icon`, `Potato`) va con `:global(...)`.
+- Colores en JS: `readColor('--token')` (`src/scripts/tokens.ts`) resuelve `light-dark()`; no leer
+  `getPropertyValue` a pelo. Los colores del WebGL se refrescan al cambiar de tema.
+- El avatar vive en `src/assets/avatar.png` (PNG ya optimizado y sin metadatos); el SVG de la mascota
+  (`Potato.astro`) está calcado de él. Los sombreritos van en el slot `hat` (fase 5).
+- Los contenidos pendientes están en `docs/content-notes.md` (info dada por el autor, redactada con honestidad).
 
 ## Convenciones
 
