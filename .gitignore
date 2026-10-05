@@ -1,0 +1,33 @@
+# dependencias y build
+node_modules/
+dist/
+.astro/
+.wrangler/
+
+# entorno y secretos (nunca commitear)
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# originales pesados y sin optimizar (fotos con EXIF, vídeos fuente…)
+# Solo se commitean los medios ya optimizados y sin metadatos.
+_originals/
+
+# informes y capturas de trabajo
+.lighthouseci/
+playwright-report/
+test-results/
+.screenshots/
+
+# sistema / editor
+.DS_Store
+Thumbs.db
+.vscode/*
+!.vscode/extensions.json
+.idea/
+
+# logs
+*.log
+pnpm-debug.log*

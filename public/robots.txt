@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+
+# TODO: ajustar la URL cuando exista el dominio definitivo
+Sitemap: https://zapium.pages.dev/sitemap-index.xml

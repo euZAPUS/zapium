@@ -1,0 +1,28 @@
+---
+import { PERSON, SITE, type Locale } from '~/config/site';
+
+interface Props {
+  title: string;
+  description: string;
+  lang?: Locale;
+}
+
+const { title, description, lang = SITE.defaultLocale } = Astro.props;
+const canonical = new URL(Astro.url.pathname, Astro.site);
+---
+
+<!doctype html>
+<html lang={lang}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="author" content={PERSON.name} />
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  </head>
+  <body>
+    <slot />
+  </body>
+</html>
