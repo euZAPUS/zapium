@@ -1,0 +1,6 @@
+#!/bin/sh
+# Bloquea el commit si hay imágenes con EXIF/GPS o si falla el formato/lint.
+set -e
+pnpm -s check:exif
+pnpm -s format:check
+pnpm -s lint
