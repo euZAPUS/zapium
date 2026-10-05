@@ -4,7 +4,7 @@ import { sfx, sound } from './audio';
 const root = document.documentElement;
 
 // ── Tema ──────────────────────────────────────────────────────────────
-const isDark = () => root.dataset.theme !== 'light';
+const isDark = () => root.dataset.mode !== 'light';
 
 const themeBtn = document.querySelector<HTMLButtonElement>('[data-theme-toggle]');
 function syncThemeLabel() {
@@ -16,7 +16,8 @@ function syncThemeLabel() {
 }
 themeBtn?.addEventListener('click', () => {
   const next = isDark() ? 'light' : 'dark';
-  root.dataset.theme = next;
+  root.dataset.mode = next;
+  root.style.colorScheme = next;
   try {
     localStorage.setItem('theme', next);
   } catch {

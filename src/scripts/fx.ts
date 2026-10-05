@@ -61,7 +61,7 @@ function ensure(): boolean {
   refreshPalette();
   new MutationObserver(refreshPalette).observe(document.documentElement, {
     attributes: true,
-    attributeFilter: ['data-theme'],
+    attributeFilter: ['data-mode'],
   });
   return !!ctx;
 }

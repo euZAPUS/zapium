@@ -10,12 +10,19 @@ interface Props {
   locale?: Locale;
   /** Muestra la carga a modo de plano (solo la home). */
   intro?: boolean;
+  title?: string;
+  description?: string;
+  /** Ruta de esta misma página en cada idioma (para hreflang). Por defecto, la home. */
+  paths?: Record<Locale, string>;
 }
 
-const { locale = SITE.defaultLocale, intro = false } = Astro.props;
+const { locale = SITE.defaultLocale, intro = false, title, description, paths } = Astro.props;
 const t = useT(locale);
 const canonical = new URL(Astro.url.pathname, Astro.site);
-const alternates = SITE.locales.map((l) => ({ l, href: new URL(homePath(l), Astro.site) }));
+const alternates = SITE.locales.map((l) => ({
+  l,
+  href: new URL(paths?.[l] ?? homePath(l), Astro.site),
+}));
 ---
 
 <!doctype html>
@@ -23,8 +30,8 @@ const alternates = SITE.locales.map((l) => ({ l, href: new URL(homePath(l), Astr
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>{t.meta.title}</title>
-    <meta name="description" content={t.meta.description} />
+    <title>{title ?? t.meta.title}</title>
+    <meta name="description" content={description ?? t.meta.description} />
     <meta name="author" content="Álvaro Sánchez" />
     <meta name="color-scheme" content="dark light" />
     <link rel="canonical" href={canonical} />
@@ -42,19 +49,19 @@ const alternates = SITE.locales.map((l) => ({ l, href: new URL(homePath(l), Astr
         d.classList.add('js');
         try {
           const saved = localStorage.getItem('theme');
-          d.dataset.theme = saved === 'light' ? 'light' : 'dark';
+          // Atributo PROPIO (data-mode): el Artifact de claude.ai pone su propio data-theme en <html> y pisaba el tema
+          d.dataset.mode = saved === 'light' ? 'light' : 'dark';
+          d.style.colorScheme = d.dataset.mode;
         } catch {
           /* sin localStorage: se usa el tema del sistema */
         }
-        // Carga a modo de plano: solo escritorio, sin reduced-motion y una vez por sesión (?intro la fuerza)
+        // Carga a modo de plano: en escritorio y móvil, sin reduced-motion y una vez por sesión (?intro la fuerza, ?nointro la quita)
         try {
-          const wide = matchMedia(
-            '(min-width: 52rem) and (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference)',
-          ).matches;
+          const calm = matchMedia('(prefers-reduced-motion: reduce)').matches;
           const forced = location.search.includes('intro') && !location.search.includes('nointro');
           if (
             d.hasAttribute('data-intro') &&
-            wide &&
+            !calm &&
             !location.search.includes('nointro') &&
             (forced || !sessionStorage.getItem('zapium-intro'))
           ) {
@@ -87,6 +94,7 @@ const alternates = SITE.locales.map((l) => ({ l, href: new URL(homePath(l), Astr
       import '~/scripts/world';
       import '~/scripts/world/gizmo';
       import '~/scripts/story';
+      import '~/scripts/shape3d';
     </script>
   </body>
 </html>

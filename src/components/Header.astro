@@ -1,20 +1,26 @@
 ---
 import type { Locale } from '~/config/site';
-import { homePath, otherLocale, useT } from '~/i18n';
+import { homePath, labPath, otherLocale, useT } from '~/i18n';
 import Icon from './Icon.astro';
 import logo from '~/assets/avatar/logo.png';
 
 interface Props {
   locale: Locale;
+  /** En la home los enlaces son anclas; en otras páginas llevan a la home. */
+  current?: 'home' | 'lab';
+  /** Ruta de esta misma página en cada idioma (selector de idioma). */
+  paths?: Record<Locale, string>;
 }
-const { locale } = Astro.props;
+const { locale, current = 'home', paths } = Astro.props;
+const prefix = current === 'home' ? '' : homePath(locale);
 const t = useT(locale);
 const other = otherLocale(locale);
 const links = [
-  { href: '#projects', label: t.nav.projects },
-  { href: '#about', label: t.nav.about },
-  { href: '#ai', label: t.nav.ai },
-  { href: '#stack', label: t.nav.stack },
+  { href: `${prefix}#projects`, label: t.nav.projects },
+  { href: `${prefix}#about`, label: t.nav.about },
+  { href: `${prefix}#ai`, label: t.nav.ai },
+  { href: `${prefix}#stack`, label: t.nav.stack },
+  { href: labPath(locale), label: t.nav.lab },
 ] as const;
 ---
 
@@ -38,7 +44,7 @@ const links = [
       <div class="nav__tools">
         <a
           class="tool"
-          href={homePath(other)}
+          href={paths?.[other] ?? homePath(other)}
           hreflang={other}
           lang={other}
           aria-label={t.ui.langSwitchTo}
@@ -84,7 +90,7 @@ const links = [
         <Icon name="download" />
         {t.nav.cv}
       </a>
-      <a class="btn btn--small btn--primary" href="#contact" data-cursor="link">
+      <a class="btn btn--small btn--primary" href={`${prefix}#contact`} data-cursor="link">
         <Icon name="mail" />
         <span class="header__contact">{t.nav.contact}</span>
       </a>
@@ -196,10 +202,10 @@ const links = [
   .menu-btn :global(.menu-btn__close) {
     display: none;
   }
-  :global(:root[data-theme='light']) .tool :global(.tool__sun) {
+  :global(:root[data-mode='light']) .tool :global(.tool__sun) {
     display: block;
   }
-  :global(:root[data-theme='light']) .tool :global(.tool__moon) {
+  :global(:root[data-mode='light']) .tool :global(.tool__moon) {
     display: none;
   }
   .tool :global(.tool__sun) {
@@ -228,7 +234,7 @@ const links = [
   }
 
   /* Móvil/tablet: el menú se pliega, CV y Contacto siempre visibles */
-  @media (max-width: 52rem) {
+  @media (max-width: 66rem) {
     .menu-btn {
       display: inline-grid;
     }

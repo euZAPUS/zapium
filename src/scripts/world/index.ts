@@ -1,14 +1,14 @@
 /**
- * Carga el mundo WebGL (import dinámico, con el navegador ocioso) solo en escritorio:
- * puntero fino, ≥ 52rem, WebGL disponible y sin prefers-reduced-motion. En el resto
- * se queda la rejilla CSS (fallback). Se pausa fuera de pantalla y con la pestaña oculta.
+ * Carga el mundo WebGL (import dinámico, con el navegador ocioso) en escritorio y móvil
+ * (en táctil, con menos resolución) si hay WebGL y no hay prefers-reduced-motion.
+ * Si no, se queda la rejilla CSS (fallback). Se pausa fuera de pantalla y con la pestaña oculta.
  * Publica la «vista» de la cámara en el evento `zapium:view` (la usa el gizmo tipo Blender).
  */
 import { prefersReducedMotion } from '../tokens';
 import type { WorldScene } from './factory';
 
 const host = document.querySelector<HTMLElement>('[data-world]');
-const wide = matchMedia('(min-width: 52rem) and (hover: hover) and (pointer: fine)').matches;
+const coarse = matchMedia('(pointer: coarse)').matches; // móvil/tablet táctil: render más barato
 
 function hasWebGL(): boolean {
   try {
@@ -22,7 +22,7 @@ function hasWebGL(): boolean {
 async function start(el: HTMLElement) {
   let scene: WorldScene;
   try {
-    scene = (await import('./factory')).createWorld();
+    scene = (await import('./factory')).createWorld(coarse);
   } catch (err) {
     console.warn('[world] WebGL no disponible, se usa la rejilla CSS', err);
     return;
@@ -61,7 +61,8 @@ async function start(el: HTMLElement) {
     { passive: true },
   );
   addEventListener('pointerdown', (e) => {
-    if (e.pointerType !== 'mouse') return;
+    mouse.x = (e.clientX / innerWidth - 0.5) * 2;
+    mouse.y = (e.clientY / innerHeight - 0.5) * 2;
     ripple = { p: scene.cast(mouse.x, -mouse.y, { ...view, dim: 1 }), born: performance.now() };
   });
   let lastY = scrollY;
@@ -83,7 +84,10 @@ async function start(el: HTMLElement) {
     view.pitch += (mouse.y * 0.1 - view.pitch) * 0.05;
     view.roll += (Math.max(-0.12, Math.min(0.12, vel * 0.0035)) - view.roll) * 0.08;
     // se oscurece al bajar del hero para que el texto de las secciones se lea bien
-    const dim = 0.86 - 0.34 * Math.min(1, Math.max(0, scrollY / (innerHeight * 0.9)));
+    const fixed = Number(el.dataset.dim ?? NaN);
+    const dim = Number.isNaN(fixed)
+      ? 0.86 - 0.34 * Math.min(1, Math.max(0, scrollY / (innerHeight * 0.9)))
+      : fixed;
     const nowMs = performance.now();
     while (trail.length && nowMs - (trail[trail.length - 1]?.born ?? 0) > 1500) trail.pop();
     if (ripple && nowMs - ripple.born > 1400) ripple = null;
@@ -114,7 +118,7 @@ async function start(el: HTMLElement) {
 
   new MutationObserver(() => scene.colors()).observe(document.documentElement, {
     attributes: true,
-    attributeFilter: ['data-theme'],
+    attributeFilter: ['data-mode'],
   });
   scene.canvas.addEventListener('webglcontextlost', () => {
     cancelAnimationFrame(raf);
@@ -124,7 +128,7 @@ async function start(el: HTMLElement) {
   });
 }
 
-if (host && wide && !prefersReducedMotion() && hasWebGL()) {
+if (host && !prefersReducedMotion() && hasWebGL()) {
   const go = () => start(host);
   if ('requestIdleCallback' in window) requestIdleCallback(go, { timeout: 1000 });
   else setTimeout(go, 250);

@@ -152,8 +152,8 @@ const fragment = /* glsl */ `
   }
 `;
 
-export function createWorld(): WorldScene {
-  const renderer = new Renderer({ alpha: false, antialias: false, dpr: 0.6 });
+export function createWorld(lowPower = false): WorldScene {
+  const renderer = new Renderer({ alpha: false, antialias: false, dpr: lowPower ? 0.42 : 0.6 });
   const gl = renderer.gl;
 
   const program = new Program(gl, {
@@ -196,7 +196,7 @@ export function createWorld(): WorldScene {
     program.uniforms.uBg!.value = bg;
     program.uniforms.uPanel!.value = readColor('--bg-soft');
     // En claro, líneas más marcadas y menos resplandor para que la rejilla no se lave
-    const light = document.documentElement.dataset.theme === 'light';
+    const light = document.documentElement.dataset.mode === 'light';
     program.uniforms.uLine!.value = mix3(bg, ink, light ? 0.55 : 0.32);
     program.uniforms.uGlow!.value = light ? 0.03 : 0.12;
     program.uniforms.uA!.value = readColor('--accent');
