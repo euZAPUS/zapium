@@ -1,10 +1,10 @@
 export {};
+import { sfx, sound } from './audio';
 /** Tema claro/oscuro, menú móvil y enlace de CV deshabilitado. */
 const root = document.documentElement;
 
 // ── Tema ──────────────────────────────────────────────────────────────
-const dark = matchMedia('(prefers-color-scheme: dark)');
-const isDark = () => (root.dataset.theme ? root.dataset.theme === 'dark' : dark.matches);
+const isDark = () => root.dataset.theme !== 'light';
 
 const themeBtn = document.querySelector<HTMLButtonElement>('[data-theme-toggle]');
 function syncThemeLabel() {
@@ -24,7 +24,6 @@ themeBtn?.addEventListener('click', () => {
   }
   syncThemeLabel();
 });
-dark.addEventListener('change', syncThemeLabel);
 syncThemeLabel();
 
 // ── Menú móvil ────────────────────────────────────────────────────────
@@ -54,3 +53,20 @@ addEventListener('keydown', (e) => {
 document.querySelectorAll<HTMLAnchorElement>('a[data-cv][aria-disabled="true"]').forEach((a) => {
   a.addEventListener('click', (e) => e.preventDefault());
 });
+
+// ── Sonido (opt-in): botón de la cabecera ─────────────────────────────
+const soundBtn = document.querySelector<HTMLButtonElement>('[data-sound-toggle]');
+function syncSound(on = sound.on || sound.saved === 'on') {
+  if (!soundBtn) return;
+  soundBtn.setAttribute('aria-pressed', String(on));
+  soundBtn.setAttribute(
+    'aria-label',
+    (on ? soundBtn.dataset.labelOff : soundBtn.dataset.labelOn) ?? '',
+  );
+}
+soundBtn?.addEventListener('click', () => {
+  sound.set(!sound.on);
+  if (sound.on) sfx.click();
+});
+sound.onChange((on) => syncSound(on));
+syncSound();

@@ -16,7 +16,7 @@ html {
 body {
   margin: 0;
   min-height: 100dvh;
-  background: var(--bg);
+  /* Sin fondo propio: el de <html> se ve detrás del «mundo» (z-index: -1); un fondo en body lo taparía */
   color: var(--ink);
   font-family: var(--font-body);
   font-size: var(--text-m);
@@ -157,6 +157,29 @@ button {
   stroke-width: var(--icon-stroke);
   stroke-linecap: round;
   stroke-linejoin: round;
+}
+
+/* Tarjeta «pegatina»: borde grueso, relleno de superficie y sombra dura */
+.card {
+  padding: var(--space-5);
+  background: var(--surface);
+  border: var(--border-w) solid var(--line);
+  border-radius: var(--radius-m);
+  box-shadow: var(--shadow-hard);
+}
+.tag {
+  margin: 0;
+  width: fit-content;
+  padding: 0.15rem 0.6rem;
+  background: var(--accent);
+  color: #14110d;
+  border: 2px solid var(--potato-line);
+  border-radius: var(--radius-pill);
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
 }
 
 /* Marca visible para contenido pendiente */

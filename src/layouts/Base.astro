@@ -26,7 +26,7 @@ const alternates = SITE.locales.map((l) => ({ l, href: new URL(homePath(l), Astr
     <title>{t.meta.title}</title>
     <meta name="description" content={t.meta.description} />
     <meta name="author" content="Álvaro Sánchez" />
-    <meta name="color-scheme" content="light dark" />
+    <meta name="color-scheme" content="dark light" />
     <link rel="canonical" href={canonical} />
     {alternates.map((a) => (
       <link rel="alternate" hreflang={a.l} href={a.href} />
@@ -42,7 +42,7 @@ const alternates = SITE.locales.map((l) => ({ l, href: new URL(homePath(l), Astr
         d.classList.add('js');
         try {
           const saved = localStorage.getItem('theme');
-          if (saved === 'light' || saved === 'dark') d.dataset.theme = saved;
+          d.dataset.theme = saved === 'light' ? 'light' : 'dark';
         } catch {
           /* sin localStorage: se usa el tema del sistema */
         }
@@ -84,6 +84,9 @@ const alternates = SITE.locales.map((l) => ({ l, href: new URL(homePath(l), Astr
       import '~/scripts/preloader';
       import '~/scripts/hud';
       import '~/scripts/hero';
+      import '~/scripts/world';
+      import '~/scripts/world/gizmo';
+      import '~/scripts/story';
     </script>
   </body>
 </html>

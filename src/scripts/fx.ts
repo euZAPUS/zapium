@@ -63,7 +63,6 @@ function ensure(): boolean {
     attributes: true,
     attributeFilter: ['data-theme'],
   });
-  matchMedia('(prefers-color-scheme: dark)').addEventListener('change', refreshPalette);
   return !!ctx;
 }
 

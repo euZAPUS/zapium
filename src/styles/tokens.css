@@ -4,15 +4,15 @@
  * sueltos: si falta un valor, se añade aquí.
  *
  * Los colores usan light-dark(claro, oscuro): cada token se define UNA vez y
- * sirve para los dos temas. El tema lo decide `color-scheme`, que sigue al
- * sistema salvo que <html data-theme="light|dark"> lo fije.
+ * sirve para los dos temas. El tema lo decide `color-scheme`: OSCURO por defecto
+ * (decisión del autor) y claro solo si <html data-theme="light"> lo fija.
  *
  * Dirección visual: «Papel y patata» — contornos negros gruesos, sombras duras,
  * colores de pegatina; sale del dibujo de la patata del autor.
  */
 
 :root {
-  color-scheme: light dark;
+  color-scheme: dark; /* el oscuro es el tema por defecto; el claro se elige con el selector */
 
   /* ── Marca: el naranja de la patata ─────────────────────────────── */
   --potato: #ffae00;

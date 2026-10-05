@@ -49,6 +49,18 @@ const links = [
         <button
           class="tool"
           type="button"
+          data-sound-toggle
+          data-label-on={t.ui.soundOn}
+          data-label-off={t.ui.soundOff}
+          aria-pressed="false"
+          aria-label={t.ui.soundOn}
+        >
+          <Icon name="sound-off" class="tool__soff" />
+          <Icon name="sound-on" class="tool__son" />
+        </button>
+        <button
+          class="tool"
+          type="button"
           data-theme-toggle
           data-label-to-light={t.ui.themeToLight}
           data-label-to-dark={t.ui.themeToDark}
@@ -184,19 +196,26 @@ const links = [
   .menu-btn :global(.menu-btn__close) {
     display: none;
   }
-  :global(:root[data-theme='dark']) .tool :global(.tool__sun) {
-    display: none;
-  }
-  :global(:root[data-theme='dark']) .tool :global(.tool__moon) {
+  :global(:root[data-theme='light']) .tool :global(.tool__sun) {
     display: block;
   }
-  @media (prefers-color-scheme: dark) {
-    :global(:root:not([data-theme])) .tool :global(.tool__sun) {
-      display: none;
-    }
-    :global(:root:not([data-theme])) .tool :global(.tool__moon) {
-      display: block;
-    }
+  :global(:root[data-theme='light']) .tool :global(.tool__moon) {
+    display: none;
+  }
+  .tool :global(.tool__sun) {
+    display: none;
+  }
+  .tool :global(.tool__son) {
+    display: none;
+  }
+  .tool[aria-pressed='true'] :global(.tool__son) {
+    display: block;
+  }
+  .tool[aria-pressed='true'] :global(.tool__soff) {
+    display: none;
+  }
+  .tool :global(.tool__moon) {
+    display: block;
   }
   .menu-btn {
     display: none;
