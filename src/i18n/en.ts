@@ -46,6 +46,23 @@ export const en: Dict = {
       '100% natural, no preservatives.',
     ],
   },
+  preloader: {
+    line1: 'ZAPIUM / ÁLVARO SÁNCHEZ',
+    line2: 'Apps and websites made with AI and a potato.',
+    skip: 'Click to skip',
+    loading: 'Loading',
+    fig: 'FIG. 01 — THE POTATO',
+    scale: 'SCALE 1:1',
+  },
+  hud: {
+    top: 'TOP',
+    projects: 'PROJECTS',
+    about: 'ABOUT',
+    ai: 'AI',
+    stack: 'STACK',
+    contact: 'CONTACT',
+    label: 'Position on the page',
+  },
   sections: {
     todo: '[TODO] Content in phase 2',
   },

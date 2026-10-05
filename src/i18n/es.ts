@@ -43,6 +43,23 @@ export const es = {
       'Soy 100 % natural, sin conservantes.',
     ],
   },
+  preloader: {
+    line1: 'ZAPIUM / ÁLVARO SÁNCHEZ',
+    line2: 'Apps y webs hechas con IA y una patata.',
+    skip: 'Clic para saltar',
+    loading: 'Cargando',
+    fig: 'FIG. 01 — LA PATATA',
+    scale: 'ESC. 1:1',
+  },
+  hud: {
+    top: 'INICIO',
+    projects: 'PROYECTOS',
+    about: 'SOBRE MÍ',
+    ai: 'IA',
+    stack: 'STACK',
+    contact: 'CONTACTO',
+    label: 'Posición en la página',
+  },
   sections: {
     todo: '[TODO] Contenido en la fase 2',
   },

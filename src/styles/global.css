@@ -251,6 +251,14 @@ html.has-cursor .cursor {
   pointer-events: none;
 }
 
+/* Mientras la carga está activa, la intro del hero espera (sus animaciones arrancan al terminar) */
+html.is-loading :is(.hero, .hero *) {
+  animation-play-state: paused !important;
+}
+html.is-exiting .pre {
+  display: block;
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
