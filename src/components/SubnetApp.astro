@@ -1,0 +1,227 @@
+---
+import type { Locale } from '~/config/site';
+import { useT } from '~/i18n';
+import LabApp from './LabApp.astro';
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const s = useT(locale).lab.subnet;
+const rows = [
+  'network',
+  'mask',
+  'wildcard',
+  'broadcast',
+  'first',
+  'last',
+  'hosts',
+  'kind',
+] as const;
+---
+
+<LabApp id="subnet" tag={s.tag} title={s.title} desc={s.desc}>
+  <div
+    data-app="subnet"
+    data-i18n={JSON.stringify({
+      kinds: s.kinds,
+      errors: s.errors,
+      copiedLabel: useT(locale).lab.copied,
+      splitHint: s.splitHint,
+      splitMore: s.splitMore,
+      range: s.range,
+      hostsHeader: s.out.hosts,
+      netBits: s.netBits,
+      hostBits: s.hostBits,
+    })}
+    class="app__body"
+  >
+    <div class="field">
+      <label for="subnet-input">{s.label}</label>
+      <input
+        id="subnet-input"
+        class="input"
+        data-in
+        type="text"
+        inputmode="text"
+        autocomplete="off"
+        spellcheck="false"
+        value="192.168.1.130/26"
+        aria-describedby="subnet-err"
+      />
+      <div class="chips-row">
+        {s.examples.map((e) => (
+          <button type="button" class="chipbtn" data-example={e}>
+            {e}
+          </button>
+        ))}
+      </div>
+    </div>
+    <p id="subnet-err" class="app__error" data-err hidden role="alert"></p>
+    <div data-result hidden class="app__body">
+      <dl class="kv">
+        {rows.map((r) => (
+          <div>
+            <dt>{s.out[r]}</dt>
+            <dd>
+              <button type="button" class="val" data-copy data-key={r}></button>
+            </dd>
+          </div>
+        ))}
+      </dl>
+      <div class="field">
+        <span class="field__label">{s.out.bits}</span>
+        <div class="bitrow" data-bits aria-label={s.out.bits}></div>
+        <div class="legend">
+          <span>
+            <i data-net></i>
+            <span data-legend-net></span>
+          </span>
+          <span>
+            <i></i>
+            <span data-legend-host></span>
+          </span>
+        </div>
+      </div>
+      <div class="field">
+        <label for="subnet-split">{s.split}</label>
+        <select id="subnet-split" data-split></select>
+        <p class="app__note" data-split-note></p>
+        <div class="tablewrap" data-split-wrap hidden>
+          <table class="table">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>{s.out.network}</th>
+                <th>{s.range}</th>
+                <th>{s.out.broadcast}</th>
+              </tr>
+            </thead>
+            <tbody data-split-body></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</LabApp>
+
+<script>
+  import { splitSubnet, subnetInfo } from '~/apps/lib/subnet';
+
+  const root = document.querySelector<HTMLElement>('[data-app="subnet"]');
+  if (root) {
+    const t = JSON.parse(root.dataset.i18n ?? '{}');
+    const input = root.querySelector<HTMLInputElement>('[data-in]')!;
+    const err = root.querySelector<HTMLElement>('[data-err]')!;
+    const result = root.querySelector<HTMLElement>('[data-result]')!;
+    const bits = root.querySelector<HTMLElement>('[data-bits]')!;
+    const select = root.querySelector<HTMLSelectElement>('[data-split]')!;
+    const note = root.querySelector<HTMLElement>('[data-split-note]')!;
+    const wrap = root.querySelector<HTMLElement>('[data-split-wrap]')!;
+    const body = root.querySelector<HTMLElement>('[data-split-body]')!;
+    const legendNet = root.querySelector<HTMLElement>('[data-legend-net]')!;
+    const legendHost = root.querySelector<HTMLElement>('[data-legend-host]')!;
+    let lastCidr = -1;
+
+    const td = (text: string) => Object.assign(document.createElement('td'), { textContent: text });
+
+    function render() {
+      const r = subnetInfo(input.value);
+      input.setAttribute('aria-invalid', String(!r.ok));
+      if (!r.ok) {
+        err.textContent = t.errors[r.error];
+        err.hidden = false;
+        result.hidden = true;
+        return;
+      }
+      err.hidden = true;
+      result.hidden = false;
+      const i = r.info;
+      const set = (key: string, text: string) => {
+        const el = root!.querySelector<HTMLElement>(`[data-key="${key}"]`);
+        if (el) el.textContent = text;
+      };
+      set('network', `${i.network}/${i.cidr}`);
+      set('mask', i.mask);
+      set('wildcard', i.wildcard);
+      set('broadcast', i.broadcast);
+      set('first', i.firstHost);
+      set('last', i.lastHost);
+      set('hosts', i.hosts.toLocaleString());
+      set('kind', t.kinds[i.kind] ?? i.kind);
+
+      bits.replaceChildren();
+      let n = 0;
+      for (const oct of i.maskBits.split('.')) {
+        const g = document.createElement('span');
+        g.className = 'bitrow__oct';
+        for (const b of oct) {
+          const s = document.createElement('span');
+          s.className = 'bitrow__bit';
+          s.textContent = b;
+          if (n < i.cidr) s.dataset.net = '';
+          g.append(s);
+          n++;
+        }
+        bits.append(g);
+      }
+      legendNet.textContent = `${i.cidr} ${t.netBits}`;
+      legendHost.textContent = `${32 - i.cidr} ${t.hostBits}`;
+
+      if (i.cidr !== lastCidr) {
+        lastCidr = i.cidr;
+        select.replaceChildren(new Option('—', ''));
+        for (let c = i.cidr + 1; c <= 30; c++) select.append(new Option(`/${c}`, String(c)));
+      }
+      renderSplit(i.network, i.cidr);
+    }
+
+    function renderSplit(network: string, cidr: number) {
+      const to = Number(select.value);
+      body.replaceChildren();
+      if (!to) {
+        wrap.hidden = true;
+        note.textContent = cidr >= 30 ? '' : t.splitHint;
+        return;
+      }
+      const subs = splitSubnet(network, cidr, to);
+      wrap.hidden = false;
+      subs.forEach((s, idx) => {
+        const tr = document.createElement('tr');
+        tr.append(
+          td(String(idx + 1)),
+          td(`${s.network}/${s.cidr}`),
+          td(`${s.firstHost} – ${s.lastHost}`),
+          td(s.broadcast),
+        );
+        body.append(tr);
+      });
+      note.textContent = 2 ** (to - cidr) > subs.length ? t.splitMore : '';
+    }
+
+    input.addEventListener('input', () => {
+      lastCidr = -1;
+      render();
+    });
+    select.addEventListener('change', render);
+    root.querySelectorAll<HTMLButtonElement>('[data-example]').forEach((b) =>
+      b.addEventListener('click', () => {
+        input.value = b.dataset.example ?? '';
+        lastCidr = -1;
+        render();
+      }),
+    );
+    root.addEventListener('click', async (e) => {
+      const btn = (e.target as Element).closest<HTMLButtonElement>('[data-copy]');
+      if (!btn) return;
+      try {
+        await navigator.clipboard.writeText(btn.textContent ?? '');
+        btn.dataset.copied = '';
+        setTimeout(() => delete btn.dataset.copied, 1200);
+      } catch {
+        /* sin permiso de portapapeles */
+      }
+    });
+    render();
+  }
+</script>

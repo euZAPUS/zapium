@@ -5,7 +5,7 @@ const hud = document.querySelector<HTMLElement>('[data-hud]');
 if (hud) {
   const labels: Record<string, string> = JSON.parse(hud.dataset.labels ?? '{}');
   const label = hud.querySelector<HTMLElement>('[data-hud-label]');
-  const ids = ['top', 'projects', 'about', 'ai', 'stack', 'contact'];
+  const ids = ['top', 'projects', 'about', 'ai', 'stack', 'lab', 'contact'];
   const sections = ids
     .map((id) => document.getElementById(id))
     .filter((el): el is HTMLElement => !!el);

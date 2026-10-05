@@ -1,0 +1,20 @@
+---
+import '~/styles/lab.css';
+
+interface Props {
+  id: string;
+  tag: string;
+  title: string;
+  desc: string;
+}
+const { id, tag, title, desc } = Astro.props;
+---
+
+<article class="app" id={id} aria-labelledby={`${id}-title`}>
+  <header class="app__head">
+    <p class="tag">{tag}</p>
+    <h2 id={`${id}-title`}>{title}</h2>
+    <p class="app__desc">{desc}</p>
+  </header>
+  <slot />
+</article>

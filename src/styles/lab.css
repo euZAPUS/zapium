@@ -1,0 +1,286 @@
+/* Estilos compartidos de las mini-apps del laboratorio (usan solo tokens). */
+.app {
+  display: grid;
+  gap: var(--space-5);
+  padding: var(--space-6);
+  background: var(--surface);
+  border: var(--border-w) solid var(--line);
+  border-radius: var(--radius-l);
+  box-shadow: var(--shadow-hard-lg);
+  scroll-margin-top: calc(var(--header-h) + var(--space-5));
+}
+.app__body {
+  display: grid;
+  gap: var(--space-5);
+  min-width: 0;
+}
+.app__head {
+  display: grid;
+  gap: var(--space-2);
+}
+.app__head h2 {
+  font-size: var(--text-xl);
+}
+.app__desc {
+  color: var(--ink-muted);
+  max-width: 62ch;
+}
+.field {
+  display: grid;
+  gap: var(--space-2);
+}
+.field > label,
+.field__label {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-muted);
+}
+.input,
+.app select {
+  width: 100%;
+  min-height: 3rem;
+  padding: 0.55rem var(--space-4);
+  background: var(--bg);
+  color: var(--ink);
+  border: var(--border-w) solid var(--line);
+  border-radius: var(--radius-s);
+  font-family: var(--font-mono);
+  font-size: var(--text-m);
+}
+.input:focus-visible,
+.app select:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 2px;
+}
+.input[aria-invalid='true'] {
+  border-color: var(--accent-2);
+}
+.chips-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+.chipbtn {
+  padding: 0.3rem 0.8rem;
+  background: var(--bg-soft);
+  color: var(--ink);
+  border: 2px solid var(--line);
+  border-radius: var(--radius-pill);
+  font-family: var(--font-mono);
+  font-size: var(--text-s);
+  cursor: pointer;
+  transition: transform var(--dur-fast) var(--ease-pop);
+}
+.chipbtn:hover {
+  transform: translateY(-2px);
+  background: var(--accent);
+  color: var(--accent-ink);
+}
+.app__error {
+  margin: 0;
+  padding: var(--space-3) var(--space-4);
+  border: 2px dashed var(--accent-2);
+  border-radius: var(--radius-s);
+  font-size: var(--text-s);
+}
+.app__warn {
+  margin: 0;
+  padding: var(--space-2) var(--space-3);
+  background: color-mix(in srgb, var(--sun) 25%, transparent);
+  border: 2px solid var(--sun);
+  border-radius: var(--radius-s);
+  font-size: var(--text-s);
+}
+.kv {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+  gap: var(--space-3);
+  margin: 0;
+}
+.kv > div {
+  display: grid;
+  gap: 0.2rem;
+  padding: var(--space-3) var(--space-4);
+  background: var(--bg-soft);
+  border: 2px solid var(--line-soft);
+  border-radius: var(--radius-s);
+  min-width: 0;
+}
+.kv dt {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-muted);
+}
+.kv dd {
+  margin: 0;
+  min-width: 0;
+}
+.val {
+  max-width: 100%;
+  padding: 0;
+  background: none;
+  border: 0;
+  color: var(--ink);
+  font-family: var(--font-mono);
+  font-size: var(--text-m);
+  font-weight: 700;
+  text-align: left;
+  overflow-wrap: anywhere;
+  cursor: copy;
+}
+.val[data-copied]::after {
+  content: ' ✓';
+  color: var(--mint);
+}
+.val:hover {
+  text-decoration: underline dotted;
+}
+.app__note {
+  margin: 0;
+  font-size: var(--text-xs);
+  color: var(--ink-muted);
+}
+
+/* Subredes: bits de red / host */
+.bitrow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 0.9rem;
+}
+.bitrow__oct {
+  display: flex;
+  gap: 2px;
+}
+.bitrow__bit {
+  display: grid;
+  place-items: center;
+  width: 1.25rem;
+  height: 1.7rem;
+  border-radius: 4px;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 700;
+  background: var(--bg-soft);
+  color: var(--ink-muted);
+}
+.bitrow__bit[data-net] {
+  background: var(--accent);
+  color: var(--accent-ink);
+}
+.legend {
+  display: flex;
+  gap: var(--space-4);
+  font-size: var(--text-xs);
+  color: var(--ink-muted);
+}
+.legend i {
+  display: inline-block;
+  width: 0.8rem;
+  height: 0.8rem;
+  margin-right: 0.35rem;
+  border-radius: 3px;
+  vertical-align: -1px;
+  background: var(--bg-soft);
+  border: 1px solid var(--line-soft);
+}
+.legend i[data-net] {
+  background: var(--accent);
+}
+.tablewrap {
+  overflow-x: auto;
+  border: 2px solid var(--line-soft);
+  border-radius: var(--radius-s);
+}
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: var(--font-mono);
+  font-size: var(--text-s);
+}
+.table th,
+.table td {
+  padding: 0.5rem 0.8rem;
+  text-align: left;
+  white-space: nowrap;
+  border-bottom: 1px solid var(--line-soft);
+}
+.table th {
+  font-size: var(--text-xs);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-muted);
+  background: var(--bg-soft);
+}
+
+/* Visor de bits */
+.bitgrid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3) var(--space-4);
+}
+.bitgroup {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  gap: 4px;
+}
+.bitbtn {
+  display: grid;
+  place-items: center;
+  gap: 0;
+  width: 2.2rem;
+  min-height: 3.1rem;
+  padding: 0.15rem 0;
+  background: var(--bg-soft);
+  color: var(--ink-muted);
+  border: 2px solid var(--line);
+  border-radius: 8px;
+  font-family: var(--font-mono);
+  font-size: var(--text-m);
+  font-weight: 700;
+  cursor: pointer;
+  transition:
+    transform var(--dur-fast) var(--ease-pop),
+    background var(--dur-fast) var(--ease-out);
+}
+.bitbtn small {
+  font-size: 0.6rem;
+  font-weight: 400;
+  opacity: 0.7;
+}
+.bitbtn[aria-pressed='true'] {
+  background: var(--accent);
+  color: var(--accent-ink);
+  transform: translateY(-2px);
+}
+.btnrow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+.btn--mono {
+  font-family: var(--font-mono);
+  min-height: 2.5rem;
+  padding: 0.3rem var(--space-4);
+}
+.grid2 {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
+  gap: var(--space-4);
+}
+@media (max-width: 40rem) {
+  .app {
+    padding: var(--space-4);
+  }
+  .bitbtn {
+    width: 1.75rem;
+    min-height: 2.6rem;
+    font-size: var(--text-s);
+  }
+  .bitgroup {
+    gap: 3px;
+  }
+}

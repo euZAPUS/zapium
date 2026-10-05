@@ -23,10 +23,11 @@
     "format:check": "prettier --check .",
     "images": "node scripts/optimize-images.mjs",
     "check:exif": "node scripts/check-exif.mjs",
-    "verify": "pnpm format:check && pnpm lint && pnpm check && pnpm check:exif && pnpm build",
+    "verify": "pnpm format:check && pnpm lint && pnpm check && pnpm test && pnpm check:exif && pnpm build",
     "prepare": "git config core.hooksPath .githooks || true",
     "shots": "node scripts/shots.mjs",
-    "videos": "node scripts/optimize-videos.mjs"
+    "videos": "node scripts/optimize-videos.mjs",
+    "test": "node --test \"src/apps/lib/*.test.mjs\""
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.7.4",

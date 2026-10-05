@@ -1,0 +1,87 @@
+---
+import type { Locale } from '~/config/site';
+import { labPath, useT } from '~/i18n';
+import Doodle from './Doodle.astro';
+import Icon from './Icon.astro';
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const l = useT(locale).lab;
+const apps = [
+  { id: 'subnet', doodle: 'network', color: 'var(--sky)', app: l.subnet },
+  { id: 'bits', doodle: 'chip', color: 'var(--accent)', app: l.bits },
+  { id: 'risk', doodle: 'candles', color: 'var(--mint)', app: l.risk },
+] as const;
+---
+
+<section class="teaser container" id="lab" aria-labelledby="lab-title">
+  <header class="teaser__head">
+    <p class="tag">{l.eyebrow}</p>
+    <h2 id="lab-title" class="teaser__title">
+      {l.title}
+    </h2>
+    <p class="teaser__intro">{l.teaserIntro}</p>
+  </header>
+  <ul class="teaser__grid">
+    {apps.map((a) => (
+      <li class="card teaser__card">
+        <Doodle name={a.doodle} style="--size:3.4rem" color={a.color} />
+        <p class="tag">{a.app.tag}</p>
+        <h3>{a.app.title}</h3>
+        <p class="teaser__desc">{a.app.desc}</p>
+        <a class="btn btn--small" href={`${labPath(locale)}#${a.id}`} data-cursor="link">
+          {l.open}
+          <Icon name="arrow" />
+        </a>
+      </li>
+    ))}
+  </ul>
+</section>
+
+<style>
+  .teaser {
+    display: grid;
+    gap: var(--space-6);
+    padding-block: var(--space-8);
+  }
+  .teaser__head {
+    display: grid;
+    gap: var(--space-3);
+    max-width: 44rem;
+  }
+  .teaser__title {
+    font-size: var(--text-2xl);
+    line-height: 0.98;
+  }
+  .teaser__intro {
+    color: var(--ink-muted);
+  }
+  .teaser__grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--space-5);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .teaser__card {
+    display: grid;
+    gap: var(--space-3);
+    align-content: start;
+    justify-items: start;
+  }
+  .teaser__card h3 {
+    font-size: var(--text-xl);
+  }
+  .teaser__desc {
+    color: var(--ink-muted);
+    font-size: var(--text-s);
+  }
+  @media (max-width: 52rem) {
+    .teaser__grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

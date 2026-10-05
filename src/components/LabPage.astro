@@ -1,0 +1,101 @@
+---
+import type { Locale } from '~/config/site';
+import { homePath, useT } from '~/i18n';
+import Base from '~/layouts/Base.astro';
+import Header from './Header.astro';
+import Footer from './Footer.astro';
+import World from './World.astro';
+import Icon from './Icon.astro';
+import SubnetApp from './SubnetApp.astro';
+import BitsApp from './BitsApp.astro';
+import RiskApp from './RiskApp.astro';
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const t = useT(locale);
+const paths = { es: '/lab/', en: '/en/lab/' } as const;
+---
+
+<Base locale={locale} title={t.lab.pageTitle} description={t.lab.pageDescription} paths={paths}>
+  <World dim={0.5} />
+  <Header locale={locale} current="lab" paths={paths} />
+  <main id="main" class="lab">
+    <header class="container lab__head">
+      <a class="lab__back" href={homePath(locale)} data-cursor="link">
+        <Icon name="arrow" class="lab__back-icon" />
+        {t.lab.back}
+      </a>
+      <p class="tag">{t.lab.eyebrow}</p>
+      <h1 class="lab__title">{t.lab.title}</h1>
+      <p class="lab__intro">{t.lab.intro}</p>
+      <nav class="chips-row" aria-label={t.lab.title}>
+        <a class="chipbtn" href="#subnet">
+          {t.lab.subnet.title}
+        </a>
+        <a class="chipbtn" href="#bits">
+          {t.lab.bits.title}
+        </a>
+        <a class="chipbtn" href="#risk">
+          {t.lab.risk.title}
+        </a>
+      </nav>
+    </header>
+    <div class="container lab__apps">
+      <SubnetApp locale={locale} />
+      <BitsApp locale={locale} />
+      <RiskApp locale={locale} />
+    </div>
+  </main>
+  <Footer locale={locale} />
+</Base>
+
+<style>
+  .lab {
+    padding-top: calc(var(--header-h) + var(--space-7));
+    padding-bottom: var(--space-9);
+  }
+  .lab__head {
+    display: grid;
+    gap: var(--space-4);
+    justify-items: start;
+    margin-bottom: var(--space-7);
+    max-width: 52rem;
+    margin-inline-start: max(var(--gutter), calc((100% - var(--container)) / 2));
+  }
+  .lab__back {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: var(--ink-muted);
+  }
+  .lab__back :global(.lab__back-icon) {
+    rotate: 180deg;
+  }
+  .lab__back:hover {
+    color: var(--ink);
+  }
+  .lab__title {
+    font-size: var(--text-hero);
+    line-height: 0.92;
+    letter-spacing: -0.045em;
+    text-shadow: 0.045em 0.055em 0 var(--accent);
+  }
+  .lab__intro {
+    max-width: 56ch;
+    font-size: var(--text-l);
+    line-height: var(--leading-snug);
+    color: var(--ink-muted);
+  }
+  .lab__apps {
+    display: grid;
+    gap: var(--space-8);
+    max-width: 62rem;
+  }
+</style>

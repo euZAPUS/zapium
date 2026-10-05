@@ -3,9 +3,15 @@
  * Fondo fijo de la home: el «mundo» de rejilla de fábrica (WebGL, solo escritorio; ver
  * scripts/world). Sin WebGL, en táctil o con reduced-motion queda esta rejilla CSS de plano.
  */
+
+interface Props {
+  /** Fija el nivel de oscurecimiento (0-1) en vez de depender del scroll; útil en páginas con formularios. */
+  dim?: number;
+}
+const { dim } = Astro.props;
 ---
 
-<div class="world" data-world aria-hidden="true"></div>
+<div class="world" data-world data-dim={dim} aria-hidden="true"></div>
 
 <style>
   .world {

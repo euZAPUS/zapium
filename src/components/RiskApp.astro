@@ -1,0 +1,193 @@
+---
+import type { Locale } from '~/config/site';
+import { useT } from '~/i18n';
+import LabApp from './LabApp.astro';
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const s = useT(locale).lab.risk;
+const rows = ['direction', 'risk', 'stopDistance', 'units', 'value', 'fees', 'rr', 'gain'] as const;
+---
+
+<LabApp id="risk" tag={s.tag} title={s.title} desc={s.desc}>
+  <div
+    data-app="risk"
+    data-lang={locale}
+    data-i18n={JSON.stringify({
+      errors: s.errors,
+      warnings: s.warnings,
+      long: s.long,
+      short: s.short,
+    })}
+    class="app__body"
+  >
+    <div class="grid2">
+      <div class="field">
+        <label for="risk-balance">{s.fields.balance}</label>
+        <input
+          id="risk-balance"
+          class="input"
+          data-f="balance"
+          type="number"
+          inputmode="decimal"
+          step="any"
+          min="0"
+          value="10000"
+        />
+      </div>
+      <div class="field">
+        <label for="risk-pct">{s.fields.riskPct}</label>
+        <input
+          id="risk-pct"
+          class="input"
+          data-f="riskPct"
+          type="number"
+          inputmode="decimal"
+          step="any"
+          min="0"
+          value="1"
+        />
+      </div>
+      <div class="field">
+        <label for="risk-entry">{s.fields.entry}</label>
+        <input
+          id="risk-entry"
+          class="input"
+          data-f="entry"
+          type="number"
+          inputmode="decimal"
+          step="any"
+          min="0"
+          value="100"
+        />
+      </div>
+      <div class="field">
+        <label for="risk-stop">{s.fields.stop}</label>
+        <input
+          id="risk-stop"
+          class="input"
+          data-f="stop"
+          type="number"
+          inputmode="decimal"
+          step="any"
+          min="0"
+          value="95"
+        />
+      </div>
+      <div class="field">
+        <label for="risk-target">{s.fields.target}</label>
+        <input
+          id="risk-target"
+          class="input"
+          data-f="target"
+          type="number"
+          inputmode="decimal"
+          step="any"
+          min="0"
+          value="115"
+        />
+      </div>
+      <div class="field">
+        <label for="risk-fee">{s.fields.fee}</label>
+        <input
+          id="risk-fee"
+          class="input"
+          data-f="fee"
+          type="number"
+          inputmode="decimal"
+          step="any"
+          min="0"
+          value="0"
+        />
+      </div>
+    </div>
+    <p class="app__error" data-err hidden role="alert"></p>
+    <div data-result class="app__body">
+      <div data-warns class="app__body"></div>
+      <dl class="kv">
+        {rows.map((r) => (
+          <div>
+            <dt>{s.out[r]}</dt>
+            <dd>
+              <button type="button" class="val" data-copy data-key={r}></button>
+            </dd>
+          </div>
+        ))}
+      </dl>
+    </div>
+    <p class="app__note">{s.disclaimer}</p>
+  </div>
+</LabApp>
+
+<script>
+  import { positionSize } from '~/apps/lib/risk';
+
+  const root = document.querySelector<HTMLElement>('[data-app="risk"]');
+  if (root) {
+    const t = JSON.parse(root.dataset.i18n ?? '{}');
+    const nf = new Intl.NumberFormat(root.dataset.lang === 'en' ? 'en-US' : 'es-ES', {
+      maximumFractionDigits: 4,
+    });
+    const f = (k: string) => root.querySelector<HTMLInputElement>(`[data-f="${k}"]`)!;
+    const err = root.querySelector<HTMLElement>('[data-err]')!;
+    const result = root.querySelector<HTMLElement>('[data-result]')!;
+    const warns = root.querySelector<HTMLElement>('[data-warns]')!;
+    const num = (k: string) => (f(k).value.trim() === '' ? NaN : Number(f(k).value));
+
+    function render() {
+      const targetRaw = f('target').value.trim();
+      const r = positionSize({
+        balance: num('balance'),
+        riskPct: num('riskPct'),
+        entry: num('entry'),
+        stop: num('stop'),
+        target: targetRaw === '' ? undefined : Number(targetRaw),
+        feePct: f('fee').value.trim() === '' ? 0 : Number(f('fee').value),
+      });
+      if (!r.ok) {
+        err.textContent = t.errors[r.error];
+        err.hidden = false;
+        result.hidden = true;
+        return;
+      }
+      err.hidden = true;
+      result.hidden = false;
+      const x = r.result;
+      const set = (k: string, v: string) => {
+        const el = root!.querySelector<HTMLElement>(`[data-key="${k}"]`);
+        if (el) el.textContent = v;
+      };
+      set('direction', x.direction === 'long' ? t.long : t.short);
+      set('risk', nf.format(x.riskAmount));
+      set('stopDistance', `${nf.format(x.stopDistance)} (${nf.format(x.stopPct)} %)`);
+      set('units', nf.format(x.units));
+      set('value', nf.format(x.positionValue));
+      set('fees', nf.format(x.fees));
+      set('rr', x.rr === null ? '—' : `1 : ${nf.format(x.rr)}`);
+      set('gain', x.gain === null ? '—' : nf.format(x.gain));
+      warns.replaceChildren(
+        ...x.warnings.map((w) =>
+          Object.assign(document.createElement('p'), {
+            className: 'app__warn',
+            textContent: t.warnings[w],
+          }),
+        ),
+      );
+    }
+    root.querySelectorAll('input').forEach((i) => i.addEventListener('input', render));
+    root.addEventListener('click', async (e) => {
+      const btn = (e.target as Element).closest<HTMLButtonElement>('[data-copy]');
+      if (!btn) return;
+      try {
+        await navigator.clipboard.writeText(btn.textContent ?? '');
+        btn.dataset.copied = '';
+        setTimeout(() => delete btn.dataset.copied, 1200);
+      } catch {
+        /* sin permiso de portapapeles */
+      }
+    });
+    render();
+  }
+</script>

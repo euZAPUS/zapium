@@ -12,6 +12,7 @@ import ProjectScene from './ProjectScene.astro';
 import AboutTrack from './AboutTrack.astro';
 import AiSection from './AiSection.astro';
 import StackSection from './StackSection.astro';
+import LabTeaser from './LabTeaser.astro';
 import ContactSection from './ContactSection.astro';
 
 interface Props {
@@ -32,6 +33,7 @@ const { locale } = Astro.props;
     <AboutTrack locale={locale} />
     <AiSection locale={locale} />
     <StackSection locale={locale} />
+    <LabTeaser locale={locale} />
     <ContactSection locale={locale} />
   </main>
   <Footer locale={locale} />

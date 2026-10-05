@@ -1,0 +1,209 @@
+---
+import type { Locale } from '~/config/site';
+import { useT } from '~/i18n';
+import LabApp from './LabApp.astro';
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const s = useT(locale).lab.bits;
+const outs = ['unsigned', 'signed', 'hex', 'octal', 'binary', 'ones'] as const;
+const unary = ['not', 'shl', 'shr', 'sar', 'swap', 'clear'] as const;
+const binary = ['and', 'or', 'xor'] as const;
+---
+
+<LabApp id="bits" tag={s.tag} title={s.title} desc={s.desc}>
+  <div data-app="bits" data-i18n={JSON.stringify({ error: s.error })} class="app__body">
+    <div class="grid2">
+      <div class="field">
+        <label for="bits-num">{s.label}</label>
+        <input
+          id="bits-num"
+          class="input"
+          data-num
+          type="text"
+          autocomplete="off"
+          spellcheck="false"
+          value="0xDEADBEEF"
+          aria-describedby="bits-err"
+        />
+      </div>
+      <div class="field">
+        <label for="bits-b">{s.operand}</label>
+        <input
+          id="bits-b"
+          class="input"
+          data-b
+          type="text"
+          autocomplete="off"
+          spellcheck="false"
+          value="0xFF00FF00"
+        />
+      </div>
+    </div>
+    <div class="chips-row">
+      {s.presets.map((p) => (
+        <button type="button" class="chipbtn" data-preset={p}>
+          {p}
+        </button>
+      ))}
+    </div>
+    <p id="bits-err" class="app__error" data-err hidden role="alert"></p>
+
+    <div class="bitgrid" data-grid role="group" aria-label={s.title}></div>
+
+    <div class="btnrow">
+      {unary.map((o) => (
+        <button type="button" class="btn btn--small btn--mono" data-op={o}>
+          {s.ops[o]}
+        </button>
+      ))}
+      {binary.map((o) => (
+        <button type="button" class="btn btn--small btn--mono" data-op={o}>
+          {s.ops[o]}
+        </button>
+      ))}
+    </div>
+
+    <dl class="kv">
+      {outs.map((o) => (
+        <div>
+          <dt>{s.out[o]}</dt>
+          <dd>
+            <button type="button" class="val" data-copy data-key={o}></button>
+          </dd>
+        </div>
+      ))}
+    </dl>
+  </div>
+</LabApp>
+
+<script>
+  import {
+    and,
+    formats,
+    not,
+    or,
+    parseInt32,
+    popcount,
+    shl,
+    shrArithmetic,
+    shrLogical,
+    swapBytes,
+    toggleBit,
+    xor,
+  } from '~/apps/lib/bits';
+
+  const root = document.querySelector<HTMLElement>('[data-app="bits"]');
+  if (root) {
+    const t = JSON.parse(root.dataset.i18n ?? '{}');
+    const num = root.querySelector<HTMLInputElement>('[data-num]')!;
+    const inputB = root.querySelector<HTMLInputElement>('[data-b]')!;
+    const err = root.querySelector<HTMLElement>('[data-err]')!;
+    const grid = root.querySelector<HTMLElement>('[data-grid]')!;
+    let value = parseInt32(num.value) ?? 0;
+
+    // 32 botones de bit en 4 bytes (31 … 0)
+    const buttons: HTMLButtonElement[] = [];
+    for (let byte = 3; byte >= 0; byte--) {
+      const g = document.createElement('div');
+      g.className = 'bitgroup';
+      for (let k = 7; k >= 0; k--) {
+        const i = byte * 8 + k;
+        const b = document.createElement('button');
+        b.type = 'button';
+        b.className = 'bitbtn';
+        b.dataset.bit = String(i);
+        b.setAttribute('aria-label', `bit ${i}`);
+        b.append(
+          document.createTextNode('0'),
+          Object.assign(document.createElement('small'), { textContent: String(i) }),
+        );
+        g.append(b);
+        buttons[i] = b;
+      }
+      grid.append(g);
+    }
+
+    function draw(fromInput = false) {
+      const f = formats(value);
+      for (let i = 0; i < 32; i++) {
+        const on = ((value >>> i) & 1) === 1;
+        const b = buttons[i]!;
+        b.setAttribute('aria-pressed', String(on));
+        b.firstChild!.textContent = on ? '1' : '0';
+      }
+      const set = (k: string, v: string) => {
+        const el = root!.querySelector<HTMLElement>(`[data-key="${k}"]`);
+        if (el) el.textContent = v;
+      };
+      set('unsigned', f.unsigned);
+      set('signed', f.signed);
+      set('hex', f.hex);
+      set('octal', f.octal);
+      set('binary', f.binary);
+      set('ones', `${popcount(value)} / 32`);
+      if (!fromInput) num.value = f.unsigned;
+      err.hidden = true;
+      num.setAttribute('aria-invalid', 'false');
+    }
+
+    num.addEventListener('input', () => {
+      const v = parseInt32(num.value);
+      if (v === null) {
+        err.textContent = t.error;
+        err.hidden = false;
+        num.setAttribute('aria-invalid', 'true');
+        return;
+      }
+      value = v;
+      draw(true);
+    });
+    grid.addEventListener('click', (e) => {
+      const b = (e.target as Element).closest<HTMLButtonElement>('[data-bit]');
+      if (!b) return;
+      value = toggleBit(value, Number(b.dataset.bit));
+      draw();
+    });
+    root.querySelectorAll<HTMLButtonElement>('[data-preset]').forEach((b) =>
+      b.addEventListener('click', () => {
+        const v = parseInt32(b.dataset.preset ?? '');
+        if (v !== null) {
+          value = v;
+          draw();
+        }
+      }),
+    );
+    root.querySelectorAll<HTMLButtonElement>('[data-op]').forEach((b) =>
+      b.addEventListener('click', () => {
+        const operand = parseInt32(inputB.value) ?? 0;
+        const ops: Record<string, () => number> = {
+          not: () => not(value),
+          shl: () => shl(value),
+          shr: () => shrLogical(value),
+          sar: () => shrArithmetic(value),
+          swap: () => swapBytes(value),
+          clear: () => 0,
+          and: () => and(value, operand),
+          or: () => or(value, operand),
+          xor: () => xor(value, operand),
+        };
+        value = ops[b.dataset.op ?? '']?.() ?? value;
+        draw();
+      }),
+    );
+    root.addEventListener('click', async (e) => {
+      const btn = (e.target as Element).closest<HTMLButtonElement>('[data-copy]');
+      if (!btn) return;
+      try {
+        await navigator.clipboard.writeText(btn.textContent ?? '');
+        btn.dataset.copied = '';
+        setTimeout(() => delete btn.dataset.copied, 1200);
+      } catch {
+        /* sin permiso de portapapeles */
+      }
+    });
+    draw();
+  }
+</script>
