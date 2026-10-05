@@ -8,7 +8,7 @@ siempre está a un clic. Público: reclutadores, responsables técnicos, gente d
 
 ## Estado
 
-Fase 0 completada. **Fase 1 (sistema de diseño, esqueleto y hero) hecha, pendiente de OK y de elegir paleta A/B y hero orbe/portal.** Plan por fases: 0 setup · 1 sistema de diseño + hero ·
+Fase 0 completada. **Fase 1 (sistema de diseño, esqueleto y hero espectacular) hecha, pendiente de OK del autor.** Plan por fases: 0 setup · 1 sistema de diseño + hero ·
 2 secciones con contenido · 3 animaciones/interacciones · 4 proyectos, casos de estudio y demos ·
 5 mascota + sección IA · 6 rendimiento/a11y/SEO · 7 despliegue.
 **Al terminar cada fase: dev server, capturas (375/768/1440), resumen y esperar OK antes de seguir.**
@@ -16,21 +16,26 @@ Fase 0 completada. **Fase 1 (sistema de diseño, esqueleto y hero) hecha, pendie
 ## Dirección visual
 
 - **Un único sistema visual**: paleta, tipografía, espaciados y easings viven como tokens CSS en un
-  solo archivo (`src/styles/tokens.css`, fase 1). Varía el tipo de interacción entre secciones, nunca
-  la identidad visual.
-- **Dos temas: claro y oscuro**, con selector y respeto a `prefers-color-scheme`. Todo color sale de
-  tokens; ningún componente lleva colores sueltos.
-- **Iconos SVG a medida**, dibujados para este proyecto, que usan `currentColor`/tokens y cambian con
-  el tema. Nada de librerías de iconos genéricas.
-- **Referencia de espíritu:** webs hiperanimadas con detalles de cursor (mano que sigue al puntero con
-  resplandor), scroll que entra en "portales", mucho detalle creativo. Craft tipo bruno-simon.com pero
-  legible y profesional.
-- **Mascota = la patata** (el avatar del autor, `avatar.png`), versión SVG propia con **sombreritos que
-  cambian su mood según la sección/proyecto** (vendedor para dropshipping, el logo de Zapper AIO,
-  etc.) y que **guía** por el portfolio. Sencilla, con personalidad. Sin logos ni personajes de marcas
-  existentes (tampoco de 42, DigiTech, YouTube…): los accesorios son diseños genéricos propios.
-- **Easter eggs y animaciones escondidas: sí**, con criterio y siempre opcionales (nunca bloquean
-  contenido ni cuentan como contenido imprescindible).
+  solo archivo (`src/styles/tokens.css`). Varía el tipo de interacción entre secciones, nunca la identidad visual.
+- **Estilo «Papel y patata»** (elegido): contornos negros gruesos, sombras duras tipo pegatina, colores de
+  confeti (`--accent` naranja patata, `--pink`, `--mint`, `--sky`, `--sun`). Sale del dibujo de la patata del autor.
+- **Dos temas: claro y oscuro**, con selector y respeto a `prefers-color-scheme`. Colores con `light-dark()`;
+  ningún componente lleva colores sueltos.
+- **Quiere impacto desde el primer segundo**: «que nada más abrir se cree algo abusivamente creativo, animado,
+  especial, lleno de brillos». El hero se monta solo (intro coreografiada), con doodles, chispas, mano de cursor
+  y fondo vivo. Más es mejor, **sin romper legibilidad ni rendimiento**.
+- **Iconos y doodles SVG a medida** (`Icon.astro`, `Doodle.astro`): contorno negro grueso, `currentColor`/tokens.
+  Nada de librerías de iconos genéricas. Temas del autor: rayo (zap), código, velas (trading), bolsa (dropshipping),
+  play (vídeo/YouTube IA), terminal (shell de 42), cubo (huerto de Zapper), moneda, red (ASIR), «C».
+- **Cursor = mano naranja** con resplandor y estela de chispas (`cursor.ts` + `fx.ts`), solo con puntero fino.
+- **Referencias del autor:** reels de Instagram de webs hiperanimadas (mano que sigue al cursor con
+  resplandores, scroll que entra en portales). No se han podido ver (Instagram bloqueado); ver `docs/content-notes.md`.
+- **Mascota = la patata del autor, SU dibujo ORIGINAL** (`src/assets/avatar-original.png`). Se corta en capas
+  (`scripts/split-avatar.mjs`: cuerpo + 2 brazos + logo + favicon, mismos píxeles, verificado 0 de diferencia) para
+  animar brazos, saltos e inclinación. Sombreritos/accesorios por el slot `hat` (fase 5), cambian de mood según
+  sección/proyecto y la patata **guía** por la web. Sin logos ni personajes de marcas existentes.
+- **Easter eggs: sí**, siempre opcionales (clic en la patata = chiste + salto; 5 clics seguidos = se marea;
+  clic en doodles = explotan en chispas). Chistes en español **y** en inglés.
 
 ## Stack
 
@@ -52,6 +57,7 @@ pnpm check          # astro check (tipos)
 pnpm lint           # ESLint
 pnpm format         # Prettier (escribe)
 pnpm images         # _originals/photos -> src/assets/photos (AVIF+WebP, sin EXIF)
+node scripts/split-avatar.mjs  # capas del avatar original (verifica 0 de diferencia)
 pnpm check:exif     # falla si alguna imagen trae EXIF/XMP/IPTC
 pnpm verify         # format:check + lint + check + check:exif + build
 pnpm shots [url] [filtro]  # capturas Playwright a .screenshots/ (1440/768/375, claro/oscuro, paletas y héroes)
@@ -59,24 +65,18 @@ pnpm shots [url] [filtro]  # capturas Playwright a .screenshots/ (1440/768/375, 
 
 El hook `.githooks/pre-commit` (activado por `pnpm install` vía `prepare`) ejecuta exif, format y lint.
 
-## Decisiones de diseño abiertas (fase 1)
-
-- **Paleta A «Papel y patata»** (por defecto: contornos negros gruesos y sombras duras, a juego con el dibujo
-  de la patata) **vs B «Neón nocturno»** (cristal, bordes finos, brillos). Se previsualiza con `?p=b`.
-  Al elegir una, **borrar la otra** (bloque `[data-palette='b']` de `tokens.css`, el script de `Base.astro`
-  y las reglas `:global(:root[data-palette='b'])` de Header/Footer).
-- **Hero 3D: orbe vs portal** (`?hero=portal`). Al elegir, borrar el otro módulo de `src/scripts/hero/`
-  y el parámetro en `hero/index.ts`.
-
 ## Cosas que ya han dado guerra
 
 - Los estilos con scope de Astro **no llegan a los hijos**: lo que apunte a un componente hijo
-  (`Icon`, `Potato`) va con `:global(...)`.
+  (`Icon`, `Mascot`) va con `:global(...)`.
 - Colores en JS: `readColor('--token')` (`src/scripts/tokens.ts`) resuelve `light-dark()`; no leer
   `getPropertyValue` a pelo. Los colores del WebGL se refrescan al cambiar de tema.
-- El avatar vive en `src/assets/avatar.png` (PNG ya optimizado y sin metadatos); el SVG de la mascota
-  (`Potato.astro`) está calcado de él. Los sombreritos van en el slot `hat` (fase 5).
 - Los contenidos pendientes están en `docs/content-notes.md` (info dada por el autor, redactada con honestidad).
+
+- **Propiedades de transformación individuales** (`translate`, `rotate`, `scale`) se aplican ANTES que `transform`:
+  si posicionas con `transform` y animas con `rotate/scale`, el elemento se desplaza. Posiciona con `translate`.
+- `svg { max-width: 100% }` (global) aplasta svgs dentro de contenedores de ancho 0: poner `max-width: none`.
+- Cuando Prettier reformatea, los `replace` por texto fallan en silencio: comprobar con `grep` tras editar.
 
 ## Convenciones
 
@@ -115,6 +115,9 @@ El hook `.githooks/pre-commit` (activado por `pnpm install` vía `prepare`) ejec
 
 ## NO hacer
 
+- **No tocar el avatar**: ni redibujarlo, ni recortarlo con halos/bordes tipo pegatina, ni añadirle manchas.
+  Sale siempre de `src/assets/avatar-original.png` (a través de las capas generadas).
+- **No poner círculos/discos de fondo** detrás de la patata (el autor lo rechazó). El fondo es una malla orgánica a pantalla completa.
 - No usar logos, personajes ni marcas de terceros (ni imitarlos).
 - No colores, tipografías ni easings fuera de los tokens.
 - No añadir librerías pesadas sin justificarlo aquí; no cargar WebGL en el camino crítico.

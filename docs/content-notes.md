@@ -46,3 +46,9 @@ Datos extraídos del README/docs públicos del repo (no inventados):
 - **Mascota = su patata** con **sombreritos** que cambian de mood (vendedor para dropshipping, logo de Zapper AIO, etc.)
   y que **guía** por el portfolio. Easter eggs y animaciones escondidas, tema claro/oscuro, iconos SVG a medida.
 - Traducir al inglés también las frases hechas y los chistes.
+
+## Referencias visuales (reels de Instagram del autor)
+
+- <https://www.instagram.com/reel/DdhcSJ7IHlZ/> y <https://www.instagram.com/reel/DaqsZgFxUcP/>
+- **No se han podido ver** (Instagram bloqueado en el entorno de desarrollo). Pendiente: que el autor describa o capture
+  los efectos concretos que le gustan.
