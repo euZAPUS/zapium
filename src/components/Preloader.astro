@@ -31,7 +31,14 @@ const crosses = [] as { x: number; y: number }[];
 for (let x = 120; x <= 1320; x += 240) for (const y of [90, 300, 600, 810]) crosses.push({ x, y });
 ---
 
-<div class="pre" data-preloader aria-hidden="true">
+<div
+  class="pre"
+  data-preloader
+  role="dialog"
+  aria-modal="true"
+  aria-label={t.preloader.loading}
+  data-state="prompt"
+>
   <svg
     class="pre__svg"
     viewBox="0 0 1440 900"
@@ -135,7 +142,31 @@ for (let x = 120; x <= 1320; x += 240) for (const y of [90, 300, 600, 810]) cros
     <p class="pre__line pre__line--1" data-pre-line1 data-text={t.preloader.line1}></p>
     <p class="pre__line pre__line--2" data-pre-line2 data-text={t.preloader.line2}></p>
   </div>
-  <p class="pre__skip">{t.preloader.skip}</p>
+
+  <!-- 1.º: aviso de sonido (la elección se recuerda) -->
+  <div class="pre__prompt" data-pre-prompt>
+    <p class="pre__prompt-title">{t.preloader.soundTitle}</p>
+    <p class="pre__prompt-text">{t.preloader.soundText}</p>
+    <div class="pre__prompt-actions">
+      <button class="pre__btn pre__btn--primary" type="button" data-pre-sound="on">
+        {t.preloader.soundOn}
+      </button>
+      <button class="pre__btn" type="button" data-pre-sound="off">
+        {t.preloader.soundOff}
+      </button>
+    </div>
+  </div>
+
+  <!-- 2.º: la carga avanza con el scroll -->
+  <p class="pre__hint" data-pre-hint>
+    <span class="pre__mouse" aria-hidden="true">
+      <i></i>
+    </span>
+    {t.preloader.hint}
+  </p>
+  <button class="pre__skip" type="button" data-pre-skip aria-label={t.preloader.skipLabel}>
+    {t.preloader.skip}
+  </button>
 
   <div class="pre__panels">
     {Array.from({ length: 6 }, (_, i) => (
@@ -153,7 +184,6 @@ for (let x = 120; x <= 1320; x += 240) for (const y of [90, 300, 600, 810]) cros
     color: #f6efe2;
     font-family: var(--font-mono);
     background: transparent;
-    cursor: pointer;
   }
   :global(html.is-loading) .pre {
     display: block;
@@ -181,6 +211,7 @@ for (let x = 120; x <= 1320; x += 240) for (const y of [90, 300, 600, 810]) cros
   }
   .pre.is-done .pre__svg,
   .pre.is-done .pre__text,
+  .pre.is-done .pre__hint,
   .pre.is-done .pre__skip {
     opacity: 0;
     transition: opacity 0.4s var(--ease-out);
@@ -218,11 +249,10 @@ for (let x = 120; x <= 1320; x += 240) for (const y of [90, 300, 600, 810]) cros
     letter-spacing: 0.08em;
   }
 
+  /* El dibujo lo gobierna el progreso del scroll (preloader.ts): estado inicial = sin dibujar */
   .draw {
     stroke-dasharray: 1;
     stroke-dashoffset: 1;
-    animation: draw var(--t, 1.2s) var(--ease-out) forwards;
-    animation-delay: var(--d, 0s);
   }
   .faint {
     opacity: 0.35;
@@ -232,18 +262,6 @@ for (let x = 120; x <= 1320; x += 240) for (const y of [90, 300, 600, 810]) cros
   }
   .fade {
     opacity: 0;
-    animation: fade-in 0.6s var(--ease-out) forwards;
-    animation-delay: var(--d, 0s);
-  }
-  @keyframes draw {
-    to {
-      stroke-dashoffset: 0;
-    }
-  }
-  @keyframes fade-in {
-    to {
-      opacity: 1;
-    }
   }
 
   .pre__text {
@@ -285,14 +303,154 @@ for (let x = 120; x <= 1320; x += 240) for (const y of [90, 300, 600, 810]) cros
     text-transform: none;
     font-size: var(--text-s);
   }
+  .pre__prompt {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    align-content: center;
+    justify-items: center;
+    gap: var(--space-4);
+    padding: var(--gutter);
+    text-align: center;
+    background: rgb(20 17 13 / 0.78);
+    backdrop-filter: blur(6px);
+    transition: opacity 0.5s var(--ease-out);
+  }
+  .pre[data-state='scroll'] .pre__prompt,
+  .pre.is-done .pre__prompt {
+    opacity: 0;
+    pointer-events: none;
+    visibility: hidden;
+  }
+  .pre__prompt-title {
+    margin: 0;
+    font-size: var(--text-xs);
+    letter-spacing: 0.3em;
+    color: var(--potato);
+  }
+  .pre__prompt-text {
+    margin: 0;
+    max-width: 30rem;
+    font-family: var(--font-body);
+    font-size: var(--text-m);
+    line-height: var(--leading-snug);
+    color: #f6efe2;
+  }
+  .pre__prompt-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    justify-content: center;
+    margin-top: var(--space-2);
+  }
+  .pre__btn {
+    min-height: 2.75rem;
+    padding: 0.5rem var(--space-5);
+    border: 2px solid #f6efe2;
+    border-radius: var(--radius-pill);
+    background: transparent;
+    color: #f6efe2;
+    font-family: var(--font-mono);
+    font-size: var(--text-s);
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition:
+      background var(--dur-fast) var(--ease-out),
+      color var(--dur-fast) var(--ease-out),
+      transform var(--dur-fast) var(--ease-out);
+  }
+  .pre__btn:hover {
+    background: #f6efe2;
+    color: #14110d;
+    transform: translateY(-2px);
+  }
+  .pre__btn--primary {
+    background: var(--potato);
+    border-color: var(--potato);
+    color: #14110d;
+  }
+  .pre__btn--primary:hover {
+    background: #ffc94d;
+    border-color: #ffc94d;
+  }
+  .pre__btn:focus-visible,
+  .pre__skip:focus-visible {
+    outline: 3px solid #ffc94d;
+    outline-offset: 3px;
+  }
+
+  /* Pista: scroll para cargar */
+  .pre__hint {
+    position: absolute;
+    left: 50%;
+    bottom: 1.4rem;
+    translate: -50% 0;
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    margin: 0;
+    font-size: var(--text-xs);
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: #f6efe2;
+    opacity: 0;
+    transition: opacity 0.6s var(--ease-out);
+  }
+  .pre[data-state='scroll'] .pre__hint {
+    opacity: 1;
+  }
+  .pre[data-state='scroll'][data-engaged] .pre__hint {
+    opacity: 0.45;
+  }
+  .pre__mouse {
+    position: relative;
+    width: 1.1rem;
+    height: 1.7rem;
+    border: 2px solid #f6efe2;
+    border-radius: 0.6rem;
+  }
+  .pre__mouse i {
+    position: absolute;
+    top: 0.3rem;
+    left: 50%;
+    width: 2px;
+    height: 0.4rem;
+    margin-left: -1px;
+    background: var(--potato);
+    animation: wheel 1.4s var(--ease-in-out) infinite;
+  }
+  @keyframes wheel {
+    0% {
+      opacity: 0;
+      translate: 0 -2px;
+    }
+    40% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
+      translate: 0 0.55rem;
+    }
+  }
   .pre__skip {
     position: absolute;
     right: var(--gutter);
     bottom: var(--space-4);
-    margin: 0;
+    padding: 0.35rem 0.7rem;
+    border: 1px solid #5d5547;
+    border-radius: var(--radius-pill);
+    background: transparent;
+    color: #b3a998;
+    font-family: var(--font-mono);
     font-size: var(--text-xs);
     letter-spacing: 0.1em;
     text-transform: uppercase;
-    color: #8c8374;
+    cursor: pointer;
+  }
+  .pre__skip:hover {
+    color: #f6efe2;
+    border-color: #f6efe2;
   }
 </style>
