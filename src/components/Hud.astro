@@ -1,0 +1,78 @@
+---
+import type { Locale } from '~/config/site';
+import { useT } from '~/i18n';
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const t = useT(locale);
+const labels = {
+  top: t.hud.top,
+  projects: t.hud.projects,
+  about: t.hud.about,
+  ai: t.hud.ai,
+  stack: t.hud.stack,
+  contact: t.hud.contact,
+};
+---
+
+<!-- Regla de posición, decorativa: la navegación real está en la cabecera -->
+<div class="hud" data-hud data-labels={JSON.stringify(labels)} aria-hidden="true">
+  <div class="hud__ruler">
+    <span class="hud__mark"></span>
+  </div>
+  <p class="hud__label" data-hud-label>
+    {t.hud.top}
+  </p>
+</div>
+
+<style>
+  .hud {
+    display: none;
+    --p: 0;
+  }
+  @media (min-width: 64rem) {
+    .hud {
+      position: fixed;
+      z-index: var(--z-hud);
+      left: var(--space-4);
+      top: 50%;
+      translate: 0 -50%;
+      display: flex;
+      gap: var(--space-3);
+      align-items: stretch;
+      height: min(42vh, 22rem);
+      pointer-events: none;
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      letter-spacing: 0.12em;
+      color: var(--ink-muted);
+    }
+  }
+  .hud__ruler {
+    position: relative;
+    width: 0.9rem;
+    border-left: 2px solid var(--ink);
+    background: repeating-linear-gradient(to bottom, var(--ink) 0 1px, transparent 1px 0.95rem) 0
+      0 / 0.5rem 100% no-repeat;
+    opacity: 0.8;
+  }
+  .hud__mark {
+    position: absolute;
+    left: -0.42rem;
+    top: calc(var(--p) * (100% - 0.8rem));
+    width: 0.8rem;
+    height: 0.8rem;
+    background: var(--accent);
+    border: 2px solid var(--potato-line);
+    rotate: 45deg;
+  }
+  .hud__label {
+    margin: 0;
+    writing-mode: vertical-rl;
+    rotate: 180deg;
+    white-space: nowrap;
+    text-transform: uppercase;
+  }
+</style>

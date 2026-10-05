@@ -1,3 +1,4 @@
+export {};
 /** Tema claro/oscuro, menú móvil y enlace de CV deshabilitado. */
 const root = document.documentElement;
 

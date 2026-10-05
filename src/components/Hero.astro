@@ -454,6 +454,33 @@ let n = 0;
     }
   }
 
+  .hero__callout {
+    position: absolute;
+    margin: 0;
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    letter-spacing: 0.12em;
+    color: var(--ink-muted);
+    white-space: nowrap;
+  }
+  .hero__callout::before {
+    content: '';
+    display: inline-block;
+    width: 2.4rem;
+    height: 0;
+    margin-inline-end: 0.6rem;
+    border-top: 2px solid var(--ink);
+    vertical-align: middle;
+  }
+  .hero__callout--fig {
+    left: 30%;
+    bottom: -7%;
+  }
+  .hero__callout--scale {
+    right: 4%;
+    top: 4%;
+  }
+
   /* ── Pista de scroll ─────────────────────────────────────────── */
   .hero__scroll {
     position: absolute;
@@ -503,6 +530,9 @@ let n = 0;
       top: -34%;
       left: 4%;
       max-width: 12rem;
+    }
+    .hero__callout {
+      display: none;
     }
     .hero__doodles :global(.doodle--desktop) {
       display: none;

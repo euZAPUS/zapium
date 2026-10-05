@@ -43,7 +43,7 @@ for (const [name, scheme, widths] of shots) {
     const errors = [];
     page.on('pageerror', (e) => errors.push(String(e)));
     page.on('console', (m) => ['error', 'warning'].includes(m.type()) && errors.push(m.text()));
-    await page.goto(`${base}/`, { waitUntil: 'networkidle' });
+    await page.goto(`${base}/?nointro`, { waitUntil: 'networkidle' });
     await page.waitForTimeout(3600); // deja terminar la intro
     const ready = await page.evaluate(() => !!document.querySelector('[data-hero-bg][data-ready]'));
     const overflow = await page.evaluate(

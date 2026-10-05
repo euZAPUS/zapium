@@ -4,6 +4,7 @@
  * marea), clic en doodles y chispas al aterrizar la patata en la intro.
  */
 import { burst } from '../fx';
+import { whenReady } from '../ready';
 import { hasFinePointer, prefersReducedMotion } from '../tokens';
 
 const hero = document.querySelector<HTMLElement>('[data-hero]');
@@ -39,23 +40,25 @@ if (hero && hasFinePointer() && !calm) {
 // ── Intro: al aterrizar la patata, ráfaga de chispas y saludo ─────────
 if (mascot && !calm) {
   const fallMs = 150 + 0.4 * 1250; // el aterrizaje ocurre al ~38 % de la animación
-  setTimeout(() => {
-    const r = mascot.getBoundingClientRect();
-    burst(r.left + r.width / 2, r.bottom - r.height * 0.12, 34, 1.15);
-    mascot.classList.add('is-greeting');
-    setTimeout(() => mascot.classList.remove('is-greeting'), 2200);
-    document
-      .querySelector('.hero__inner')
-      ?.animate(
-        [
-          { translate: '0 0' },
-          { translate: '0 7px' },
-          { translate: '0 -3px' },
-          { translate: '0 0' },
-        ],
-        { duration: 380, easing: 'ease-out' },
-      );
-  }, fallMs);
+  void whenReady().then(() =>
+    setTimeout(() => {
+      const r = mascot.getBoundingClientRect();
+      burst(r.left + r.width / 2, r.bottom - r.height * 0.12, 34, 1.15);
+      mascot.classList.add('is-greeting');
+      setTimeout(() => mascot.classList.remove('is-greeting'), 2200);
+      document
+        .querySelector('.hero__inner')
+        ?.animate(
+          [
+            { translate: '0 0' },
+            { translate: '0 7px' },
+            { translate: '0 -3px' },
+            { translate: '0 0' },
+          ],
+          { duration: 380, easing: 'ease-out' },
+        );
+    }, fallMs),
+  );
 }
 
 // ── Clic en la patata ─────────────────────────────────────────────────
