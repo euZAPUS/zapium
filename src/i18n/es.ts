@@ -32,7 +32,16 @@ export const es = {
     ctaCv: 'Descargar CV',
     ctaContact: 'Contacto',
     bubble: '¡Hola! Soy la patata. Te enseño la web.',
-    stageLabel: 'Ilustración: la patata, mascota de la web, saludando.',
+    mascotAlt: 'Dibujo de una patata naranja con contorno negro, ojos de punto y brazos de línea.',
+    mascotButton: 'Hacer saltar a la patata',
+    scroll: 'Sigue bajando',
+    jokes: [
+      '¡Ay! Cuidado, que soy una patata, no una pelota.',
+      'Sin pelo y sin complejos.',
+      'Hoy estoy frito... digo, motivado.',
+      '¿Me has tocado? Ahora somos amigos.',
+      'Soy 100 % natural, sin conservantes.',
+    ],
   },
   sections: {
     todo: '[TODO] Contenido en la fase 2',

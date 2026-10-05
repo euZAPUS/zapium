@@ -35,7 +35,16 @@ export const en: Dict = {
     ctaCv: 'Download CV',
     ctaContact: 'Contact',
     bubble: "Hi! I'm the potato. Let me show you around.",
-    stageLabel: "Illustration: the potato, the site's mascot, waving.",
+    mascotAlt: 'Drawing of an orange potato with a black outline, dot eyes and line arms.',
+    mascotButton: 'Make the potato jump',
+    scroll: 'Keep scrolling',
+    jokes: [
+      "Ouch! Careful, I'm a potato, not a ball.",
+      'Hairless and proud.',
+      "I'm fried today... I mean, motivated.",
+      "You touched me? We're friends now.",
+      '100% natural, no preservatives.',
+    ],
   },
   sections: {
     todo: '[TODO] Content in phase 2',

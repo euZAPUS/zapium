@@ -7,8 +7,8 @@
  * sirve para los dos temas. El tema lo decide `color-scheme`, que sigue al
  * sistema salvo que <html data-theme="light|dark"> lo fije.
  *
- * Paletas A/B: SOLO mientras se decide la dirección visual (fase 1).
- * Al elegir una, se borra la otra y estos overrides.
+ * Dirección visual: «Papel y patata» — contornos negros gruesos, sombras duras,
+ * colores de pegatina; sale del dibujo de la patata del autor.
  */
 
 :root {
@@ -35,6 +35,11 @@
   --accent-2: light-dark(#ff6b4a, #ff8a6b);
   --focus: light-dark(#0b5fff, #ffc94d);
   --glow: light-dark(rgb(255 174 0 / 0.35), rgb(255 174 0 / 0.28));
+  /* Colores de «confeti»: doodles, chispas, malla del hero. Siempre con contorno oscuro. */
+  --pink: light-dark(#ff8fb8, #ff9cc3);
+  --mint: light-dark(#38d39f, #5be3b4);
+  --sky: light-dark(#4db3ff, #7cc8ff);
+  --sun: #ffd23f;
 
   /* ── Forma ──────────────────────────────────────────────────────── */
   --border-w: 3px;
@@ -81,6 +86,53 @@
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
   --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
   --ease-pop: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ease-spring: linear(
+    0,
+    0.083,
+    0.292,
+    0.563,
+    0.838,
+    1.073,
+    1.24,
+    1.329,
+    1.344,
+    1.301,
+    1.22,
+    1.124,
+    1.031,
+    0.956,
+    0.906,
+    0.882,
+    0.884,
+    0.903,
+    0.933,
+    0.966,
+    0.997,
+    1.021,
+    1.036,
+    1.041,
+    1.039,
+    1.031,
+    1.02,
+    1.008,
+    0.998,
+    0.991,
+    0.987,
+    0.986,
+    0.987,
+    0.99,
+    0.994,
+    0.998,
+    1.001,
+    1.004,
+    1.005,
+    1.005,
+    1.004,
+    1.003,
+    1.002,
+    1,
+    1
+  ); /* muelle: sobrepasa y rebota */
   --dur-fast: 0.18s;
   --dur-base: 0.45s;
   --dur-slow: 1s;
@@ -88,6 +140,7 @@
   /* ── Capas ──────────────────────────────────────────────────────── */
   --z-base: 0;
   --z-hero-fx: 0;
+  --z-fx: 90; /* chispas y estela del cursor */
   --z-content: 1;
   --z-header: 50;
   --z-cursor: 100;
@@ -98,30 +151,6 @@
 }
 :root[data-theme='dark'] {
   color-scheme: dark;
-}
-
-/* ── Paleta B «Neón nocturno»: cristal, brillos y bordes finos ───────
-   (comparte la marca naranja; cambia fondos, secundario y la forma) */
-:root[data-palette='b'] {
-  --bg: light-dark(#f3f3fb, #090a14);
-  --bg-soft: light-dark(#e9e9f6, #0f1121);
-  --surface: light-dark(#ffffff, #14172d);
-  --ink: light-dark(#12122a, #eef0ff);
-  --ink-muted: light-dark(#53587f, #a3a9d3);
-  --line: light-dark(rgb(18 18 42 / 0.22), rgb(190 197 255 / 0.22));
-  --line-soft: light-dark(rgb(18 18 42 / 0.1), rgb(190 197 255 / 0.1));
-  --accent-2: light-dark(#5b3df5, #8b73ff);
-  --focus: light-dark(#5b3df5, #ffc94d);
-  --glow: light-dark(rgb(91 61 245 / 0.28), rgb(139 115 255 / 0.4));
-
-  --border-w: 1px;
-  --icon-stroke: 1.7;
-  --radius-s: 0.7rem;
-  --radius-m: 1.3rem;
-  --radius-l: 2rem;
-  --shadow-hard: 0 0 1.6rem 0 var(--glow);
-  --shadow-hard-lg: 0 0.4rem 3rem 0 var(--glow);
-  --blur: 14px;
 }
 
 @media (prefers-reduced-motion: reduce) {

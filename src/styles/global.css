@@ -170,7 +170,8 @@ button {
   color: var(--ink-muted);
 }
 
-/* Cursor personalizado: solo con puntero fino y sin reduced-motion */
+/* Cursor personalizado: una mano naranja (como la patata) con resplandor y estela de chispas.
+   Solo con puntero fino y sin reduced-motion; si no, se conserva el cursor nativo. */
 html.has-cursor,
 html.has-cursor a,
 html.has-cursor button,
@@ -180,7 +181,7 @@ html.has-cursor [data-cursor] {
 .cursor {
   position: fixed;
   inset: 0 auto auto 0;
-  z-index: var(--z-cursor);
+  z-index: calc(var(--z-fx) + 1);
   pointer-events: none;
   opacity: 0;
   transition: opacity var(--dur-base) var(--ease-out);
@@ -188,36 +189,66 @@ html.has-cursor [data-cursor] {
 html.has-cursor .cursor {
   opacity: 1;
 }
-.cursor__dot,
-.cursor__ring {
+.cursor__glow,
+.cursor__hand {
   position: absolute;
   top: 0;
   left: 0;
+  will-change: translate;
+}
+.cursor__glow {
+  width: 5.5rem;
+  height: 5.5rem;
+  margin: -2.75rem 0 0 -2.75rem;
   border-radius: 50%;
-  will-change: transform;
+  background: radial-gradient(circle, var(--glow), transparent 68%);
+  mix-blend-mode: normal;
+  transition: scale var(--dur-base) var(--ease-pop);
 }
-.cursor__dot {
-  width: 0.5rem;
-  height: 0.5rem;
-  margin: -0.25rem 0 0 -0.25rem;
-  background: var(--ink);
-}
-.cursor__ring {
-  width: 2.5rem;
-  height: 2.5rem;
-  margin: -1.25rem 0 0 -1.25rem;
-  border: 2px solid var(--ink);
-  background: radial-gradient(circle, var(--glow), transparent 70%);
+.cursor__hand {
+  width: 2.9rem;
+  height: 2.9rem;
+  max-width: none; /* el contenedor mide 0: sin esto el svg se aplasta */
+  /* la punta del dedo índice (32, 8 de 64) queda sobre el puntero real */
+  margin: -0.5rem 0 0 -1.45rem;
+  overflow: visible;
+  transform-origin: 50% 12%;
+  fill: var(--accent);
+  stroke: var(--potato-line);
+  stroke-width: 3.6;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+  filter: drop-shadow(0 0 0.35rem var(--glow)) drop-shadow(0.12rem 0.16rem 0 rgb(23 19 14 / 0.55));
   transition:
     scale var(--dur-base) var(--ease-pop),
-    background-color var(--dur-base) var(--ease-out);
+    fill var(--dur-fast) var(--ease-out);
 }
-.cursor[data-state='link'] .cursor__ring {
-  scale: 1.7;
-  background-color: var(--glow);
+.cursor__knuckles {
+  fill: none;
+  stroke-width: 3;
 }
-.cursor[data-state='down'] .cursor__ring {
-  scale: 0.7;
+.cursor[data-state='link'] .cursor__hand {
+  scale: 1.22;
+  fill: var(--sun);
+}
+.cursor[data-state='link'] .cursor__glow {
+  scale: 1.8;
+}
+.cursor[data-state='down'] .cursor__hand {
+  scale: 0.82;
+}
+.cursor[data-state='down'] .cursor__glow {
+  scale: 0.8;
+}
+
+/* Capa de chispas (estela del cursor y ráfagas), la gestiona scripts/fx.ts */
+.fx-canvas {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-fx);
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
 }
 
 @media (prefers-reduced-motion: reduce) {
