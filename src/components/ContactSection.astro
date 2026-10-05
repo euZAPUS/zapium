@@ -2,6 +2,7 @@
 import { PERSON, type Locale } from '~/config/site';
 import { useT } from '~/i18n';
 import Icon from './Icon.astro';
+import Shape3D from './Shape3D.astro';
 
 interface Props {
   locale: Locale;
@@ -14,6 +15,7 @@ const [user = '', domain = ''] = PERSON.email.split('@');
 ---
 
 <section class="contact container" id="contact" aria-labelledby="contact-title">
+  <Shape3D class="contact__shape" />
   <p class="tag">{s.eyebrow}</p>
   <h2 id="contact-title" class="contact__title">
     {s.title}
@@ -54,10 +56,28 @@ const [user = '', domain = ''] = PERSON.email.split('@');
 
 <style>
   .contact {
+    position: relative;
+    isolation: isolate;
     display: grid;
     gap: var(--space-4);
     justify-items: start;
     padding-block: var(--space-9) var(--space-8);
+  }
+  .contact :global(.contact__shape) {
+    position: absolute;
+    z-index: -1;
+    top: 50%;
+    right: -2%;
+    width: min(34rem, 60%);
+    aspect-ratio: 1;
+    translate: 0 -50%;
+  }
+  @media (max-width: 52rem) {
+    .contact :global(.contact__shape) {
+      width: 80%;
+      right: -20%;
+      opacity: 0.55;
+    }
   }
   .contact__title {
     font-size: var(--text-hero);

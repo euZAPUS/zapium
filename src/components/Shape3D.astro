@@ -1,0 +1,45 @@
+---
+/**
+ * Contenedor de la escena 3D propia (nudo iridiscente, scripts/shape3d). Decorativo.
+ * Sin WebGL o con reduced-motion se ve una forma de reserva hecha con CSS.
+ */
+interface Props {
+  class?: string;
+}
+const { class: className } = Astro.props;
+---
+
+<div class:list={['shape3d', className]} data-shape3d aria-hidden="true"></div>
+
+<style>
+  .shape3d {
+    position: relative;
+    pointer-events: none;
+    /* Reserva: un anillo de colores suave (sin WebGL / reduced-motion) */
+    background: radial-gradient(
+      closest-side,
+      transparent 58%,
+      color-mix(in srgb, var(--accent) 55%, transparent) 60% 72%,
+      transparent 74%
+    );
+    rotate: -18deg;
+  }
+  .shape3d :global(canvas) {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    max-width: none;
+    rotate: 18deg;
+    opacity: 0;
+    transition: opacity 1s var(--ease-out);
+  }
+  .shape3d[data-ready] {
+    background: none;
+    rotate: 0deg;
+  }
+  .shape3d[data-ready] :global(canvas) {
+    opacity: 1;
+    rotate: 0deg;
+  }
+</style>
