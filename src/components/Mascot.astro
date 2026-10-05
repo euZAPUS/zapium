@@ -11,20 +11,20 @@ import armL from '~/assets/avatar/arm-l.png';
 import armR from '~/assets/avatar/arm-r.png';
 
 interface Props {
-  alt: string;
-  buttonLabel: string;
+  alt?: string;
+  buttonLabel?: string;
   class?: string;
+  /** Versión «guía» de las escenas: decorativa, sin clic y sin caída de entrada. */
+  guide?: boolean;
 }
-const { alt, buttonLabel, class: className } = Astro.props;
+const { alt = '', buttonLabel = '', class: className, guide = false } = Astro.props;
+const Tag = (guide ? 'span' : 'button') as 'button';
+const attrs: astroHTML.JSX.ButtonHTMLAttributes = guide
+  ? { 'aria-hidden': 'true' }
+  : { type: 'button', 'aria-label': buttonLabel, 'data-mascot': '', 'data-cursor': 'link' };
 ---
 
-<button
-  class:list={['mascot', className]}
-  type="button"
-  aria-label={buttonLabel}
-  data-mascot
-  data-cursor="link"
->
+<Tag class:list={['mascot', { 'mascot--guide': guide }, className]} {...attrs}>
   <span class="mascot__fall">
     <span class="mascot__tilt">
       <span class="mascot__bob">
@@ -47,8 +47,8 @@ const { alt, buttonLabel, class: className } = Astro.props;
           src={body.src}
           width={body.width}
           height={body.height}
-          {alt}
-          fetchpriority="high"
+          alt={guide ? '' : alt}
+          fetchpriority={guide ? undefined : 'high'}
         />
         <span class="mascot__hat">
           <slot name="hat" />
@@ -57,8 +57,8 @@ const { alt, buttonLabel, class: className } = Astro.props;
     </span>
   </span>
   <!-- Zona de clic: solo el cuerpo, para no tapar los doodles que hay detrás de los brazos -->
-  <span class="mascot__hit" aria-hidden="true"></span>
-</button>
+  {!guide && <span class="mascot__hit" aria-hidden="true" />}
+</Tag>
 
 <style>
   .mascot {
@@ -108,6 +108,14 @@ const { alt, buttonLabel, class: className } = Astro.props;
     transition:
       rotate 0.3s var(--ease-out),
       translate 0.3s var(--ease-out);
+  }
+
+  /* Versión guía: sin caída de entrada (la coreografía la lleva la escena) */
+  .mascot--guide .mascot__fall {
+    animation: none;
+  }
+  .mascot--guide {
+    display: block;
   }
 
   /* Caída de entrada con rebote y aplastamiento */

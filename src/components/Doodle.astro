@@ -113,3 +113,18 @@ const art: Record<DoodleName, string> = {
     <svg viewBox="0 0 64 64" focusable="false" set:html={art[name]} />
   </span>
 </span>
+
+<style is:global>
+  .doodle {
+    display: inline-block;
+    width: var(--size, 4rem);
+    aspect-ratio: 1;
+  }
+  .doodle__in,
+  .doodle__in svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+  }
+</style>

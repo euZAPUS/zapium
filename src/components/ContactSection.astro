@@ -1,0 +1,83 @@
+---
+import { PERSON, type Locale } from '~/config/site';
+import { useT } from '~/i18n';
+import Icon from './Icon.astro';
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const t = useT(locale);
+const s = t.story.contact;
+// El correo no aparece en claro en el HTML: se monta en el navegador (contra el spam)
+const [user = '', domain = ''] = PERSON.email.split('@');
+---
+
+<section class="contact container" id="contact" aria-labelledby="contact-title">
+  <p class="tag">{s.eyebrow}</p>
+  <h2 id="contact-title" class="contact__title">
+    {s.title}
+  </h2>
+  <p class="contact__intro">{s.intro}</p>
+
+  <div class="contact__actions">
+    <a
+      class="btn btn--primary contact__mail"
+      data-email
+      data-user={user}
+      data-domain={domain}
+      data-cursor="link"
+      href="#contact"
+    >
+      <Icon name="mail" />
+      <span data-email-text>{s.write}</span>
+    </a>
+    <button
+      class="btn"
+      type="button"
+      data-copy-email
+      data-copied={s.copied}
+      data-cursor="link"
+      hidden
+    >
+      {s.copy}
+    </button>
+    <a class="btn" href={PERSON.github} data-cursor="link">
+      <Icon name="branch" />
+      {s.github}
+    </a>
+  </div>
+  <noscript>
+    <p class="contact__noscript">{s.noscript}</p>
+  </noscript>
+</section>
+
+<style>
+  .contact {
+    display: grid;
+    gap: var(--space-4);
+    justify-items: start;
+    padding-block: var(--space-9) var(--space-8);
+  }
+  .contact__title {
+    font-size: var(--text-hero);
+    line-height: 0.9;
+    letter-spacing: -0.045em;
+    text-shadow: 0.045em 0.055em 0 var(--accent);
+  }
+  .contact__intro {
+    color: var(--ink-muted);
+    font-size: var(--text-l);
+  }
+  .contact__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    margin-top: var(--space-3);
+  }
+  .contact__noscript {
+    font-family: var(--font-mono);
+    font-size: var(--text-s);
+    color: var(--ink-muted);
+  }
+</style>

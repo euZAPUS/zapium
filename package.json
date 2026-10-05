@@ -25,7 +25,8 @@
     "check:exif": "node scripts/check-exif.mjs",
     "verify": "pnpm format:check && pnpm lint && pnpm check && pnpm check:exif && pnpm build",
     "prepare": "git config core.hooksPath .githooks || true",
-    "shots": "node scripts/shots.mjs"
+    "shots": "node scripts/shots.mjs",
+    "videos": "node scripts/optimize-videos.mjs"
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.7.4",

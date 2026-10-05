@@ -1,0 +1,94 @@
+---
+import type { Locale } from '~/config/site';
+import { useT } from '~/i18n';
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const s = useT(locale).story.stack;
+const tints = ['var(--accent)', 'var(--pink)', 'var(--sky)', 'var(--mint)'];
+---
+
+<section class="stack container" id="stack" aria-labelledby="stack-title">
+  <header class="stack__head">
+    <p class="tag">{s.eyebrow}</p>
+    <h2 id="stack-title" class="stack__title">
+      {s.title}
+    </h2>
+    <p class="stack__intro">{s.intro}</p>
+  </header>
+  <div class="stack__groups">
+    {s.groups.map((g, i) => (
+      <section class="card stack__group" style={`--tint:${tints[i % tints.length]}`}>
+        <h3>{g.k}</h3>
+        <ul class="chips">
+          {g.items.map((it) => (
+            <li class="chip">{it}</li>
+          ))}
+        </ul>
+      </section>
+    ))}
+  </div>
+</section>
+
+<style>
+  .stack {
+    display: grid;
+    gap: var(--space-6);
+    padding-block: var(--space-8);
+  }
+  .stack__head {
+    display: grid;
+    gap: var(--space-3);
+    max-width: 44rem;
+  }
+  .stack__title {
+    font-size: var(--text-2xl);
+    line-height: 0.98;
+  }
+  .stack__intro {
+    color: var(--ink-muted);
+  }
+  .stack__groups {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-5);
+  }
+  .stack__group {
+    display: grid;
+    gap: var(--space-4);
+    align-content: start;
+  }
+  .stack__group h3 {
+    font-size: var(--text-l);
+  }
+  .chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .chip {
+    padding: 0.3rem 0.8rem;
+    background: var(--tint);
+    color: #14110d;
+    border: 2px solid var(--potato-line);
+    border-radius: var(--radius-pill);
+    box-shadow: 0.14rem 0.16rem 0 var(--potato-line);
+    font-family: var(--font-mono);
+    font-size: var(--text-s);
+    font-weight: 700;
+    transition: transform var(--dur-fast) var(--ease-pop);
+  }
+  .chip:hover {
+    transform: translateY(-3px) rotate(-2deg);
+  }
+  @media (max-width: 40rem) {
+    .stack__groups {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

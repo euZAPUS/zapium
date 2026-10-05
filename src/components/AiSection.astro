@@ -1,0 +1,74 @@
+---
+import type { Locale } from '~/config/site';
+import { useT } from '~/i18n';
+import Guide from './Guide.astro';
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const s = useT(locale).story.ai;
+---
+
+<section class="ai container" id="ai" aria-labelledby="ai-title">
+  <header class="ai__head">
+    <p class="tag">{s.eyebrow}</p>
+    <h2 id="ai-title" class="ai__title">
+      {s.title}
+    </h2>
+    <p class="ai__intro">{s.intro}</p>
+  </header>
+  <div class="ai__grid">
+    {s.cols.map((c) => (
+      <article class="card">
+        <h3>{c.k}</h3>
+        <p>{c.v}</p>
+      </article>
+    ))}
+  </div>
+  <Guide class="ai__guide" text={s.bubble} />
+</section>
+
+<style>
+  .ai {
+    position: relative;
+    display: grid;
+    gap: var(--space-6);
+    padding-block: var(--space-9);
+  }
+  .ai__head {
+    display: grid;
+    gap: var(--space-3);
+    max-width: 44rem;
+  }
+  .ai__title {
+    font-size: var(--text-2xl);
+    line-height: 0.98;
+  }
+  .ai__intro {
+    color: var(--ink-muted);
+  }
+  .ai__grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--space-5);
+  }
+  .ai__grid .card {
+    display: grid;
+    gap: var(--space-3);
+    align-content: start;
+  }
+  .ai__grid h3 {
+    font-size: var(--text-xl);
+  }
+  .ai :global(.ai__guide) {
+    justify-self: end;
+    width: min(15rem, 55vw);
+    margin-top: var(--space-4);
+  }
+  @media (max-width: 52rem) {
+    .ai__grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

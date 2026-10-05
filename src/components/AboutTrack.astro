@@ -1,0 +1,199 @@
+---
+import type { Locale } from '~/config/site';
+import { useT } from '~/i18n';
+import Doodle, { type DoodleName } from './Doodle.astro';
+import Guide from './Guide.astro';
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const s = useT(locale).story.about;
+---
+
+<section class="track" id="about" aria-labelledby="about-title" data-track>
+  <div class="track__stick">
+    <header class="container track__head">
+      <p class="tag">{s.eyebrow}</p>
+      <h2 id="about-title" class="track__title">
+        {s.title}
+      </h2>
+      <p class="track__intro">{s.intro}</p>
+    </header>
+
+    <div class="track__viewport" data-track-viewport>
+      <ul class="track__rail" data-track-rail>
+        {s.cards.map((c, i) => (
+          <li class="card tcard">
+            <Doodle
+              name={c.doodle as DoodleName}
+              style="--size:3.6rem"
+              color={
+                [
+                  'var(--pink)',
+                  'var(--accent)',
+                  'var(--sky)',
+                  'var(--mint)',
+                  'var(--sun)',
+                  'var(--accent-2)',
+                ][i % 6]
+              }
+            />
+            <p class="tag">{c.tag}</p>
+            <h3>{c.title}</h3>
+            <p class="tcard__body">{c.body}</p>
+            {c.note && <p class="tcard__note">{c.note}</p>}
+            <span class="tcard__n" aria-hidden="true">
+              {String(i + 1).padStart(2, '0')}
+            </span>
+          </li>
+        ))}
+      </ul>
+    </div>
+
+    <Guide class="guide--track" text={s.bubble} />
+    <div class="track__progress" aria-hidden="true">
+      <i></i>
+    </div>
+  </div>
+</section>
+
+<style>
+  .track {
+    position: relative;
+    --hp: 0; /* progreso horizontal 0 → 1 (scripts/story.ts) */
+    --travel: 0px; /* cuánto hay que desplazar el carril, en px (scripts/story.ts) */
+    padding-block: var(--space-8);
+  }
+  .track__head {
+    display: grid;
+    gap: var(--space-3);
+    max-width: 48rem;
+    margin-bottom: var(--space-6);
+  }
+  .track__title {
+    font-size: var(--text-2xl);
+    line-height: 0.98;
+  }
+  .track__intro {
+    color: var(--ink-muted);
+  }
+  .track__rail {
+    display: flex;
+    gap: var(--space-5);
+    margin: 0;
+    padding: var(--space-3) var(--gutter) var(--space-6);
+    list-style: none;
+  }
+  .tcard {
+    position: relative;
+    flex: 0 0 min(25rem, 82vw);
+    display: grid;
+    align-content: start;
+    gap: var(--space-3);
+    padding: var(--space-5);
+  }
+  .tcard h3 {
+    font-size: var(--text-xl);
+  }
+  .tcard__body {
+    font-size: var(--text-m);
+  }
+  .tcard__note {
+    font-family: var(--font-mono);
+    font-size: var(--text-s);
+    color: var(--ink-muted);
+    padding-top: var(--space-3);
+    border-top: 2px dashed var(--line-soft);
+  }
+  .tcard__n {
+    position: absolute;
+    top: var(--space-4);
+    right: var(--space-4);
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    color: var(--ink-muted);
+  }
+  .track :global(.guide--track),
+  .track__progress {
+    display: none;
+  }
+
+  /* Escritorio con JS: la sección se fija y el carril avanza en horizontal con el scroll */
+  @media (min-width: 52rem) and (prefers-reduced-motion: no-preference) {
+    :global(html.js) .track {
+      height: calc(100svh + var(--travel));
+      padding-block: 0;
+    }
+    :global(html.js) .track__stick {
+      position: sticky;
+      top: 0;
+      height: 100svh;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr);
+      align-content: center;
+      overflow: clip;
+      padding-top: var(--header-h);
+    }
+    :global(html.js) .track__head {
+      margin-bottom: var(--space-4);
+    }
+    :global(html.js) .track__viewport {
+      overflow: clip;
+    }
+    :global(html.js) .track__rail {
+      width: max-content;
+      padding-inline-start: max(var(--gutter), 5.5rem); /* deja libre la regla lateral */
+      translate: calc(var(--hp) * var(--travel) * -1) 0;
+      will-change: translate;
+    }
+    :global(html.js) .track :global(.guide--track) {
+      display: block;
+      position: absolute;
+      left: 0;
+      bottom: 1.2rem;
+      width: 9.5rem;
+      translate: calc(var(--hp) * (100vw - 100%) - 0%) 0;
+      pointer-events: none;
+    }
+    :global(html.js) .track :global(.guide--track .guide__spin) {
+      transform: perspective(700px) rotateY(calc(var(--hp) * 1080deg));
+    }
+    :global(html.js) .track :global(.guide--track .guide__bubble) {
+      bottom: 88%;
+      opacity: clamp(0, calc((var(--hp) - 0.04) * 12), 1);
+    }
+    :global(html.js) .track__progress {
+      display: block;
+      position: absolute;
+      left: var(--gutter);
+      right: var(--gutter);
+      bottom: 0.7rem;
+      height: 4px;
+      background: var(--line-soft);
+      border-radius: 4px;
+    }
+    :global(html.js) .track__progress i {
+      display: block;
+      height: 100%;
+      width: 100%;
+      background: var(--accent);
+      border-radius: 4px;
+      transform-origin: 0 50%;
+      scale: var(--hp) 1;
+    }
+  }
+  /* Móvil / reduced-motion: tarjetas apiladas */
+  @media (max-width: 52rem), (prefers-reduced-motion: reduce) {
+    .track__rail {
+      flex-direction: column;
+      padding-inline: 0;
+    }
+    .tcard {
+      flex-basis: auto;
+    }
+    .track__head {
+      margin-bottom: var(--space-5);
+    }
+  }
+</style>
