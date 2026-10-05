@@ -1,0 +1,191 @@
+---
+import { PERSON, type Locale } from '~/config/site';
+import { useT } from '~/i18n';
+import Icon from './Icon.astro';
+import Potato from './Potato.astro';
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const t = useT(locale);
+---
+
+<section class="hero" id="top" aria-labelledby="hero-title">
+  <div class="container hero__inner">
+    <div class="hero__copy">
+      <p class="eyebrow">{t.hero.eyebrow}</p>
+      <h1 id="hero-title" class="hero__title">
+        {PERSON.name}
+      </h1>
+      <p class="hero__tagline">{t.hero.tagline}</p>
+      <div class="hero__cta">
+        <a class="btn btn--primary" href="#projects" data-cursor="link">
+          {t.hero.ctaProjects}
+          <Icon name="arrow" />
+        </a>
+        <a
+          class="btn"
+          href="/assets/cv.pdf"
+          aria-disabled="true"
+          title={t.ui.cvSoon}
+          data-cursor="link"
+          data-cv
+        >
+          <Icon name="download" />
+          {t.hero.ctaCv}
+        </a>
+        <a class="btn" href="#contact" data-cursor="link">
+          <Icon name="mail" />
+          {t.hero.ctaContact}
+        </a>
+      </div>
+    </div>
+
+    <div class="hero__stage" role="img" aria-label={t.hero.stageLabel} data-hero-stage>
+      <!-- Capa decorativa: degradado estático (fallback) + canvas WebGL cargado con import dinámico -->
+      <div class="hero__fx" aria-hidden="true" data-hero-fx></div>
+      <Potato class="hero__potato" />
+      <p class="hero__bubble" aria-hidden="true">
+        {t.hero.bubble}
+      </p>
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero {
+    position: relative;
+    min-height: 100svh;
+    padding-top: calc(var(--header-h) + var(--space-6));
+    padding-bottom: var(--space-8);
+    display: grid;
+    align-items: center;
+  }
+  .hero__inner {
+    display: grid;
+    grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
+    align-items: center;
+    gap: var(--space-7);
+  }
+  .hero__copy {
+    display: grid;
+    gap: var(--space-5);
+    justify-items: start;
+    position: relative;
+    z-index: var(--z-content);
+  }
+  .hero__title {
+    font-size: var(--text-hero);
+    line-height: var(--leading-tight);
+    letter-spacing: -0.045em;
+  }
+  .hero__tagline {
+    max-width: 34ch;
+    font-size: var(--text-l);
+    line-height: var(--leading-snug);
+    color: var(--ink-muted);
+  }
+  .hero__cta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    margin-top: var(--space-2);
+  }
+
+  .hero__stage {
+    position: relative;
+    aspect-ratio: 1;
+    width: min(100%, 36rem);
+    justify-self: center;
+    display: grid;
+    place-items: center;
+  }
+  .hero__fx {
+    position: absolute;
+    inset: 4%;
+    border-radius: 50%;
+    z-index: var(--z-hero-fx);
+    /* Fallback estático: se ve siempre bajo el canvas y es lo único que queda sin WebGL o con reduced-motion */
+    background:
+      radial-gradient(
+        circle at 32% 28%,
+        color-mix(in srgb, white 55%, var(--accent)) 0 8%,
+        transparent 9%
+      ),
+      radial-gradient(circle at 50% 50%, var(--accent) 0 46%, var(--accent-2) 100%);
+    box-shadow: 0 0 6rem 0 var(--glow);
+    transition: opacity var(--dur-slow) var(--ease-out);
+  }
+  .hero__fx :global(canvas) {
+    position: absolute;
+    inset: -8%;
+    width: 116%;
+    height: 116%;
+    max-width: none;
+    opacity: 0;
+    transition: opacity var(--dur-slow) var(--ease-out);
+  }
+  .hero__fx[data-ready] {
+    background: none;
+    box-shadow: none;
+  }
+  .hero__fx[data-ready] :global(canvas) {
+    opacity: 1;
+  }
+  .hero__stage :global(.hero__potato) {
+    position: relative;
+    z-index: var(--z-content);
+    width: 118%;
+    max-width: none;
+    height: auto;
+    filter: drop-shadow(0 1.2rem 1.4rem rgb(0 0 0 / 0.22));
+  }
+  .hero__bubble {
+    position: absolute;
+    z-index: calc(var(--z-content) + 1);
+    top: 2%;
+    right: -2%;
+    max-width: 14rem;
+    padding: var(--space-3) var(--space-4);
+    background: var(--surface);
+    border: var(--border-w) solid var(--line);
+    border-radius: var(--radius-m) var(--radius-m) var(--radius-m) 0.25rem;
+    box-shadow: var(--shadow-hard);
+    font-size: var(--text-s);
+    font-weight: 600;
+    line-height: 1.3;
+    backdrop-filter: blur(var(--blur));
+    animation: pop var(--dur-slow) var(--ease-pop) 0.6s both;
+  }
+  @keyframes pop {
+    from {
+      opacity: 0;
+      scale: 0.6;
+      translate: -1rem 1rem;
+    }
+  }
+
+  @media (max-width: 52rem) {
+    .hero {
+      min-height: auto;
+      padding-top: calc(var(--header-h) + var(--space-5));
+    }
+    .hero__inner {
+      grid-template-columns: 1fr;
+      gap: var(--space-6);
+    }
+    .hero__stage {
+      order: -1;
+      width: min(100%, 26rem);
+    }
+    .hero__stage :global(.hero__potato) {
+      width: 100%;
+    }
+    .hero__bubble {
+      top: -4%;
+      right: 0;
+      max-width: 11.5rem;
+    }
+  }
+</style>

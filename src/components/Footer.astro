@@ -1,0 +1,38 @@
+---
+import { PERSON, type Locale } from '~/config/site';
+import { useT } from '~/i18n';
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const t = useT(locale);
+const year = new Date().getFullYear();
+---
+
+<footer class="footer">
+  <div class="container footer__inner">
+    <p>
+      © {year} {PERSON.name} · {t.footer.madeWith}
+    </p>
+    <p class="footer__legal">{t.footer.rights}</p>
+  </div>
+</footer>
+
+<style>
+  .footer {
+    padding-block: var(--space-6);
+    border-top: var(--border-w) solid var(--line);
+    font-size: var(--text-s);
+    color: var(--ink-muted);
+  }
+  :global(:root[data-palette='b']) .footer {
+    border-top-color: var(--line-soft);
+  }
+  .footer__inner {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: var(--space-2) var(--space-5);
+  }
+</style>

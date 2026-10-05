@@ -1,0 +1,269 @@
+---
+import type { Locale } from '~/config/site';
+import { homePath, otherLocale, useT } from '~/i18n';
+import Icon from './Icon.astro';
+import Potato from './Potato.astro';
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const t = useT(locale);
+const other = otherLocale(locale);
+const links = [
+  { href: '#projects', label: t.nav.projects },
+  { href: '#about', label: t.nav.about },
+  { href: '#ai', label: t.nav.ai },
+  { href: '#stack', label: t.nav.stack },
+] as const;
+---
+
+<header class="header" data-header>
+  <div class="container header__bar">
+    <a class="brand" href={homePath(locale)} aria-label={`zapium — ${t.nav.home}`}>
+      <Potato arms={false} class="brand__logo" />
+      <span class="brand__name">zapium</span>
+    </a>
+
+    <nav class="nav" id="site-nav" aria-label={t.nav.label} data-nav>
+      <ul class="nav__links">
+        {links.map((l) => (
+          <li>
+            <a href={l.href} class="nav__link">
+              {l.label}
+            </a>
+          </li>
+        ))}
+      </ul>
+      <div class="nav__tools">
+        <a
+          class="tool"
+          href={homePath(other)}
+          hreflang={other}
+          lang={other}
+          aria-label={t.ui.langSwitchTo}
+          data-lang-switch
+        >
+          {t.ui.langCode}
+        </a>
+        <button
+          class="tool"
+          type="button"
+          data-theme-toggle
+          data-label-to-light={t.ui.themeToLight}
+          data-label-to-dark={t.ui.themeToDark}
+          aria-label={t.ui.themeToDark}
+        >
+          <Icon name="sun" class="tool__sun" />
+          <Icon name="moon" class="tool__moon" />
+        </button>
+      </div>
+    </nav>
+
+    <div class="header__cta">
+      <a
+        class="btn btn--small"
+        href="/assets/cv.pdf"
+        data-cursor="link"
+        aria-disabled="true"
+        title={t.ui.cvSoon}
+        data-cv
+      >
+        <Icon name="download" />
+        {t.nav.cv}
+      </a>
+      <a class="btn btn--small btn--primary" href="#contact" data-cursor="link">
+        <Icon name="mail" />
+        <span class="header__contact">{t.nav.contact}</span>
+      </a>
+      <button
+        class="tool menu-btn"
+        type="button"
+        aria-expanded="false"
+        aria-controls="site-nav"
+        data-menu-btn
+        data-label-open={t.nav.menuOpen}
+        data-label-close={t.nav.menuClose}
+        aria-label={t.nav.menuOpen}
+      >
+        <Icon name="menu" class="menu-btn__open" />
+        <Icon name="close" class="menu-btn__close" />
+      </button>
+    </div>
+  </div>
+</header>
+
+<style>
+  .header {
+    position: fixed;
+    inset: 0 0 auto 0;
+    z-index: var(--z-header);
+    height: var(--header-h);
+    background: color-mix(in srgb, var(--bg) 82%, transparent);
+    backdrop-filter: blur(12px);
+    border-bottom: var(--border-w) solid var(--line);
+    transition: box-shadow var(--dur-base) var(--ease-out);
+  }
+  :global(:root[data-palette='b']) .header {
+    border-bottom-color: var(--line-soft);
+  }
+  .header__bar {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+  }
+  .brand {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    text-decoration: none;
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: var(--text-l);
+    letter-spacing: -0.03em;
+  }
+  .brand :global(.brand__logo) {
+    width: 2.6rem;
+    height: 2.1rem;
+  }
+  .nav {
+    display: flex;
+    align-items: center;
+    gap: var(--space-5);
+    margin-inline-start: auto;
+  }
+  .nav__links {
+    display: flex;
+    gap: var(--space-5);
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .nav__link {
+    text-decoration: none;
+    font-weight: 600;
+    font-size: var(--text-s);
+    padding-block: var(--space-2);
+    background: linear-gradient(var(--accent), var(--accent)) 0 100% / 0 0.18em no-repeat;
+    transition: background-size var(--dur-base) var(--ease-out);
+  }
+  .nav__link:hover {
+    background-size: 100% 0.18em;
+  }
+  .nav__tools {
+    display: flex;
+    gap: var(--space-2);
+  }
+  .header__cta {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+  }
+  .tool {
+    display: inline-grid;
+    place-items: center;
+    min-width: 2.5rem;
+    height: 2.5rem;
+    padding: 0 var(--space-2);
+    background: var(--surface);
+    color: var(--ink);
+    border: var(--border-w) solid var(--line);
+    border-radius: var(--radius-pill);
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    font-weight: 700;
+    text-decoration: none;
+    cursor: pointer;
+  }
+  .tool:hover {
+    background: var(--accent);
+    color: var(--accent-ink);
+  }
+  .tool :global(.tool__moon),
+  .menu-btn :global(.menu-btn__close) {
+    display: none;
+  }
+  :global(:root[data-theme='dark']) .tool :global(.tool__sun) {
+    display: none;
+  }
+  :global(:root[data-theme='dark']) .tool :global(.tool__moon) {
+    display: block;
+  }
+  @media (prefers-color-scheme: dark) {
+    :global(:root:not([data-theme])) .tool :global(.tool__sun) {
+      display: none;
+    }
+    :global(:root:not([data-theme])) .tool :global(.tool__moon) {
+      display: block;
+    }
+  }
+  .menu-btn {
+    display: none;
+  }
+  .menu-btn[aria-expanded='true'] :global(.menu-btn__open) {
+    display: none;
+  }
+  .menu-btn[aria-expanded='true'] :global(.menu-btn__close) {
+    display: block;
+  }
+
+  /* Móvil/tablet: el menú se pliega, CV y Contacto siempre visibles */
+  @media (max-width: 52rem) {
+    .menu-btn {
+      display: inline-grid;
+    }
+    .header__cta {
+      margin-inline-start: auto;
+    }
+    :global(html.js) .nav {
+      position: fixed;
+      inset: var(--header-h) 0 auto 0;
+      flex-direction: column;
+      align-items: stretch;
+      gap: var(--space-5);
+      margin: 0;
+      padding: var(--space-5) var(--gutter) var(--space-6);
+      background: var(--bg);
+      border-bottom: var(--border-w) solid var(--line);
+      translate: 0 -120%;
+      visibility: hidden;
+      transition:
+        translate var(--dur-base) var(--ease-out),
+        visibility 0s var(--dur-base);
+    }
+    :global(html.js) .nav[data-open] {
+      translate: 0 0;
+      visibility: visible;
+      transition: translate var(--dur-base) var(--ease-out);
+    }
+    .nav__links {
+      flex-direction: column;
+      gap: var(--space-2);
+    }
+    .nav__link {
+      display: block;
+      padding-block: var(--space-3);
+      font-family: var(--font-display);
+      font-size: var(--text-xl);
+      font-weight: 800;
+    }
+    .nav__tools {
+      justify-content: flex-start;
+    }
+    :global(html:not(.js)) .nav {
+      display: none;
+    }
+    :global(html:not(.js)) .menu-btn {
+      display: none;
+    }
+  }
+  @media (max-width: 26rem) {
+    .header__contact {
+      display: none;
+    }
+    .header__cta .btn {
+      padding-inline: var(--space-3);
+    }
+  }
+</style>

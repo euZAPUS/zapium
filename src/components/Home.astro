@@ -1,0 +1,49 @@
+---
+import type { Locale } from '~/config/site';
+import { useT } from '~/i18n';
+import Base from '~/layouts/Base.astro';
+import Header from './Header.astro';
+import Hero from './Hero.astro';
+import Footer from './Footer.astro';
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const t = useT(locale);
+// Secciones aún sin contenido: se rellenan en la fase 2
+const sections = [
+  { id: 'projects', title: t.nav.projects },
+  { id: 'about', title: t.nav.about },
+  { id: 'ai', title: t.nav.ai },
+  { id: 'stack', title: t.nav.stack },
+  { id: 'contact', title: t.nav.contact },
+] as const;
+---
+
+<Base locale={locale}>
+  <Header locale={locale} />
+  <main id="main">
+    <Hero locale={locale} />
+    {sections.map((s) => (
+      <section class="stub container" id={s.id} aria-labelledby={`${s.id}-title`}>
+        <h2 id={`${s.id}-title`}>{s.title}</h2>
+        <p class="todo">{t.sections.todo}</p>
+      </section>
+    ))}
+  </main>
+  <Footer locale={locale} />
+</Base>
+
+<style>
+  .stub {
+    display: grid;
+    gap: var(--space-4);
+    justify-items: start;
+    padding-block: var(--space-8);
+    border-top: var(--border-w) solid var(--line-soft);
+  }
+  .stub h2 {
+    font-size: var(--text-2xl);
+  }
+</style>

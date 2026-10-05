@@ -1,0 +1,158 @@
+---
+/**
+ * La patata: mascota de la web, redibujada en SVG a partir del avatar del autor
+ * (naranja, contorno grueso, ojos de punto, boca de raya, brazos de línea).
+ * Obra propia: ver LICENSE-CONTENT.md. Sin elementos de marcas existentes.
+ *
+ * - `arms`: con brazos (hero) o solo cuerpo (logo de la cabecera).
+ * - slot `hat`: sombrero/accesorio en coordenadas del dibujo (fase 5).
+ * Los gestos (saludo, parpadeo, mirada) se animan por CSS y por las variables
+ * --look-x / --look-y que escribe src/scripts/potato.ts.
+ */
+interface Props {
+  arms?: boolean;
+  class?: string;
+  label?: string;
+}
+const { arms = true, class: className, label } = Astro.props;
+const ARM_L =
+  'M598 612C587.5 608.7 553 599.7 535 592C517 584.3 505 567 490 566C475 565 460 583 445 586C430 589 415.8 579 400 584C384.2 589 366.7 608 350 616C333.3 624 318.3 629 300 632C281.7 635 258.3 634.3 240 634C221.7 633.7 210.3 625.3 190 630C169.7 634.7 130 656.7 118 662';
+const ARM_R =
+  'M1312 674C1321.3 676.7 1350 690.3 1368 690C1386 689.7 1403 671.7 1420 672C1437 672.3 1454.2 688.3 1470 692C1485.8 695.7 1500.8 692.7 1515 694C1529.2 695.3 1543.3 695.3 1555 700C1566.7 704.7 1580 718.3 1585 722';
+const BODY =
+  'M745 412C770 401.5 814.2 395.3 850 392C885.8 388.7 925 389.3 960 392C995 394.7 1025.8 400 1060 408C1094.2 416 1137.5 428.8 1165 440C1192.5 451.2 1208.8 458.3 1225 475C1241.2 491.7 1252 514.2 1262 540C1272 565.8 1281.7 600 1285 630C1288.3 660 1287.5 693.3 1282 720C1276.5 746.7 1267.3 770.3 1252 790C1236.7 809.7 1222 823.7 1190 838C1158 852.3 1103.3 870.3 1060 876C1016.7 881.7 973.3 878.3 930 872C886.7 865.7 838.3 851.7 800 838C761.7 824.3 725.3 801.3 700 790C674.7 778.7 661 786.7 648 770C635 753.3 626.3 716.7 622 690C617.7 663.3 617.7 635.8 622 610C626.3 584.2 635 560.8 648 535C661 509.2 683.8 475.5 700 455C716.2 434.5 720 422.5 745 412Z';
+const viewBox = arms ? '95 345 1535 590' : '580 345 750 590';
+---
+
+<svg
+  class:list={['potato', className]}
+  viewBox={viewBox}
+  role={label ? 'img' : undefined}
+  aria-label={label}
+  aria-hidden={label ? undefined : 'true'}
+  focusable="false"
+  data-potato
+>
+  {arms && (
+    <>
+      <path class="potato__halo potato__halo--arm" d={ARM_L} />
+      <path class="potato__arm potato__arm--l" d={ARM_L} />
+      <path class="potato__halo potato__halo--arm" d={ARM_R} />
+      <path class="potato__arm potato__arm--r" d={ARM_R} />
+    </>
+  )}
+  <g class="potato__body">
+    <path class="potato__halo potato__halo--body" d={BODY}></path>
+    <path class="potato__shape" d={BODY}></path>
+    <path
+      class="potato__spot"
+      d="M965 432C1010 452 1090 472 1140 476C1172 472 1178 450 1150 436C1100 421 1010 416 965 432Z"
+    ></path>
+    <path
+      class="potato__spot"
+      d="M645 782C680 802 730 802 755 792C760 772 735 756 700 759C670 761 650 766 645 782Z"
+    ></path>
+    <g class="potato__face">
+      <ellipse class="potato__eye" cx="799" cy="579" rx="20" ry="20.5"></ellipse>
+      <ellipse class="potato__eye" cx="1126" cy="637" rx="21" ry="22.5"></ellipse>
+      <path class="potato__mouth" d="M865 586C920 598 975 611 1030 627"></path>
+    </g>
+    <slot name="hat" />
+  </g>
+</svg>
+
+<style>
+  .potato {
+    overflow: visible;
+    --look-x: 0;
+    --look-y: 0;
+  }
+  .potato__halo {
+    fill: none;
+    stroke: var(--potato-halo);
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  .potato__halo--arm {
+    stroke-width: 62;
+  }
+  .potato__halo--body {
+    stroke-width: 100;
+  }
+  .potato__arm,
+  .potato__mouth {
+    fill: none;
+    stroke: var(--potato-line);
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  .potato__arm {
+    stroke-width: 38;
+  }
+  .potato__mouth {
+    stroke-width: 40;
+  }
+  .potato__shape {
+    fill: var(--potato);
+    stroke: var(--potato-line);
+    stroke-width: 76;
+    stroke-linejoin: round;
+    paint-order: stroke;
+  }
+  .potato__spot,
+  .potato__eye {
+    fill: var(--potato-line);
+  }
+  .potato__face {
+    transform: translate(calc(var(--look-x) * 16px), calc(var(--look-y) * 12px));
+    transition: transform 0.25s var(--ease-out);
+  }
+  .potato__eye {
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: blink 5.5s infinite;
+  }
+  .potato__body {
+    transform-box: fill-box;
+    transform-origin: 50% 100%;
+    animation: bob 3.6s var(--ease-in-out) infinite;
+  }
+  .potato__arm {
+    transform-box: view-box;
+    animation: wave 2.8s var(--ease-in-out) infinite;
+  }
+  .potato__arm--l {
+    transform-origin: 598px 612px;
+  }
+  .potato__arm--r {
+    transform-origin: 1312px 674px;
+    animation-delay: -1.4s;
+  }
+  @keyframes blink {
+    0%,
+    94%,
+    100% {
+      scale: 1 1;
+    }
+    97% {
+      scale: 1 0.1;
+    }
+  }
+  @keyframes bob {
+    50% {
+      transform: translateY(-14px) scale(1.01, 0.99);
+    }
+  }
+  @keyframes wave {
+    50% {
+      rotate: -7deg;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .potato__eye,
+    .potato__body,
+    .potato__arm {
+      animation: none;
+    }
+  }
+</style>
