@@ -1,0 +1,41 @@
+---
+/**
+ * Fondo fijo de la home: el «mundo» de rejilla de fábrica (WebGL, solo escritorio; ver
+ * scripts/world). Sin WebGL, en táctil o con reduced-motion queda esta rejilla CSS de plano.
+ */
+---
+
+<div class="world" data-world aria-hidden="true"></div>
+
+<style>
+  .world {
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background-color: var(--bg);
+    background-image:
+      linear-gradient(var(--line-soft) 1px, transparent 1px),
+      linear-gradient(90deg, var(--line-soft) 1px, transparent 1px);
+    background-size: 4.5rem 4.5rem;
+  }
+  .world::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(120% 90% at 50% 40%, transparent 40%, var(--bg) 100%);
+  }
+  .world :global(canvas) {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    width: 100%;
+    height: 100%;
+    max-width: none;
+    opacity: 0;
+    transition: opacity 1.4s var(--ease-out);
+  }
+  .world[data-ready] :global(canvas) {
+    opacity: 1;
+  }
+</style>

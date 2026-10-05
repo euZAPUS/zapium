@@ -1,0 +1,105 @@
+---
+/**
+ * HUD «de editor 3D»: gizmo de ejes X/Y/Z que gira con la cámara del mundo y texto de
+ * viewport, como el visor de Blender. Decorativo (aria-hidden); solo con el mundo WebGL activo.
+ */
+const axes = [
+  { id: 'x', color: '#ff3653', label: 'X' },
+  { id: 'y', color: '#8bdc00', label: 'Y' },
+  { id: 'z', color: '#2c8fff', label: 'Z' },
+] as const;
+---
+
+<div class="gizmo" data-gizmo aria-hidden="true">
+  <svg viewBox="-56 -56 112 112" focusable="false">
+    <circle class="gizmo__bg" r="52"></circle>
+    {axes.map((a) => (
+      <g data-axis={a.id} style={`--c:${a.color}`}>
+        <line class="gizmo__neg-line"></line>
+        <circle class="gizmo__neg" r="6"></circle>
+        <line class="gizmo__line"></line>
+        <circle class="gizmo__pos" r="9"></circle>
+        <text class="gizmo__txt">{a.label}</text>
+      </g>
+    ))}
+  </svg>
+</div>
+<p class="viewport" data-viewport aria-hidden="true">
+  User Perspective
+  <br />
+  (1) Collection | patata.001
+  <br />
+  <span data-view-z>Z 0.00</span>
+</p>
+
+<style>
+  .gizmo,
+  .viewport {
+    display: none;
+  }
+  :global(html.has-world) .gizmo,
+  :global(html.has-world) .viewport {
+    display: none;
+  }
+  @media (min-width: 64rem) {
+    :global(html.has-world) .gizmo {
+      display: block;
+      position: fixed;
+      z-index: var(--z-hud);
+      top: calc(var(--header-h) + 1rem);
+      right: 1.2rem;
+      width: 6.4rem;
+      pointer-events: none;
+    }
+    :global(html.has-world) .viewport {
+      display: block;
+      position: fixed;
+      z-index: var(--z-hud);
+      left: var(--space-4);
+      bottom: var(--space-4);
+      margin: 0;
+      pointer-events: none;
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      letter-spacing: 0.06em;
+      line-height: 1.5;
+      color: var(--ink-muted);
+    }
+  }
+  .gizmo svg {
+    width: 100%;
+    height: auto;
+    overflow: visible;
+  }
+  .gizmo__bg {
+    fill: var(--ink);
+    opacity: 0.07;
+  }
+  .gizmo__line {
+    stroke: var(--c);
+    stroke-width: 2.4;
+    stroke-linecap: round;
+  }
+  .gizmo__neg-line {
+    display: none;
+  }
+  .gizmo__pos {
+    fill: var(--c);
+    stroke: var(--potato-line);
+    stroke-width: 1.2;
+  }
+  .gizmo__neg {
+    fill: none;
+    stroke: var(--c);
+    stroke-width: 1.4;
+    opacity: 0.55;
+  }
+  .gizmo__txt {
+    fill: #14110d;
+    font-family: var(--font-mono);
+    font-size: 9px;
+    font-weight: 700;
+    text-anchor: middle;
+    dominant-baseline: central;
+  }
+</style>
