@@ -20,6 +20,7 @@ _originals/
 playwright-report/
 test-results/
 .screenshots/
+.preview/
 
 # sistema / editor
 .DS_Store

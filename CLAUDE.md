@@ -37,16 +37,37 @@ Fase 0 completada. **Fase 1 (sistema de diseño, esqueleto y hero espectacular) 
 - **Easter eggs: sí**, siempre opcionales (clic en la patata = chiste + salto; 5 clics seguidos = se marea;
   clic en doodles = explotan en chispas). Chistes en español **y** en inglés.
 
-## Carga y hero (fase A del plan «mundo»)
+## Carga, mundo y escenas (decisiones del autor)
 
-- **Carga a modo de plano** (`Preloader.astro` + `preloader.ts`): líneas que se dibujan (patata a trazo fino, cotas, guías),
-  contador real (espera a fuentes y `load`), texto que se descifra, persiana de 6 paneles. Ideas de `docs/reference-alche.md`.
-- Solo **escritorio** (puntero fino, ≥ 52rem), sin reduced-motion y **una vez por sesión** (`sessionStorage: zapium-intro`).
-  En móvil NO sale: no retrasa el LCP. `?intro` la fuerza, `?nointro` la desactiva (capturas). Se salta con clic/Enter/Espacio/Esc.
-- Mientras carga: `html.is-loading` pausa las animaciones del hero (arrancan al terminar) y `header/main/footer` van `inert`.
-- Regla lateral `Hud.astro` (+ `hud.ts`), navegación y llamadas en monoespaciada: chrome técnico estilo plano.
-- **Plan por fases del «mundo» (aprobado por el autor):** A) carga + hero ✅ · B) mundo WebGL fijo con cámara por scroll y
-  estancias (solo escritorio) · C) proyectos como pantallas curvas 3D · sonido opcional (sintetizado) **pendiente de decidir**.
+- **Tema oscuro por defecto** (el autor lo prefiere). El claro se elige con el selector y se recuerda (`localStorage: theme`).
+  No se sigue `prefers-color-scheme`. Ojo: **`body` no lleva fondo** (el de `<html>` se ve detrás del mundo).
+- **Estética de la home = «factory grid» + plano** (referencia `docs/reference-alche.md`) con el toque amigable de la patata:
+  - `World.astro` + `scripts/world/`: pasillo de paneles en perspectiva en un shader (OGL, ~0,6 de resolución) que avanza con el
+    scroll y se inclina con el ratón. **Solo escritorio** (puntero fino, ≥ 52rem, WebGL, sin reduced-motion); si no, rejilla CSS.
+  - `Gizmo.astro` + `world/gizmo.ts`: gizmo de ejes X/Y/Z y texto «User Perspective» estilo Blender (decorativo). **No** habrá
+    patata 3D modelada: el autor la descartó; la patata es siempre su dibujo 2D moviéndose.
+  - `Hud.astro`: regla de posición con la sección actual. Navegación y etiquetas en monoespaciada.
+- **Carga a modo de plano GOBERNADA POR EL SCROLL** (`Preloader.astro` + `preloader.ts`): el dibujo avanza con rueda / flechas /
+  gesto táctil y solo llega al 100 % si la página ya cargó de verdad. Primero, aviso de sonido (se recuerda). Escritorio,
+  una vez por sesión (`sessionStorage: zapium-intro`). `?intro` la fuerza, `?nointro` la desactiva (capturas). Esc o «Saltar».
+  Mientras carga: `html.is-loading` pausa las animaciones del hero y `header/main/footer` van `inert`. En móvil NO sale (LCP).
+- **Sonido minimalista, OPT-IN** (`scripts/audio.ts`, sintetizado con Web Audio, sin archivos): rueda de clics rápidos y suaves
+  ligada al scroll, «tock» sutil en pulsaciones, campanilla al acabar la carga, «boing» de la patata. Aviso en la carga + botón en la
+  cabecera; elección en `localStorage: zapium-sound`. Arranca apagado hasta que el visitante lo activa.
+- **Escenas de contenido** (textos reales en `src/i18n/*.ts → story`, con `[TODO]` donde falta información):
+  - `ProjectScene`: escena fijada con vídeo «real» en una ventana que gira en 3D delante y **el mismo vídeo desenfocado de fondo**
+    (`ProofVideo`), y la patata guía (`Guide`) que cruza girando con el scroll.
+  - `AboutTrack`: «Sobre mí» como **scroll horizontal** fijado (tarjetas: dropshipping, trading simulado, YouTube IA, 42, ASIR, fotos).
+  - `AiSection`, `StackSection`, `ContactSection` (correo montado por JS, no en claro en el HTML; botón de copiar).
+  - Móvil y reduced-motion: todo apilado, sin fijados.
+- **Vídeos**: dejar los originales en `_originals/videos/NOMBRE.mp4`, ejecutar `pnpm videos` (WebM + MP4 + póster, sin audio,
+  ≤ 1280 px, avisa si > 3 MB) y pasar `src="NOMBRE"` a `<ProofVideo>`. Sin `src` se ve un marcador `[TODO]`.
+- **Vista previa clicable para el autor** (Artifact de claude.ai, privado): `pnpm build && node scripts/preview-bundle.mjs` y publicar
+  `.preview/index.html` con `root: .preview` y la lista de archivos que imprime el script. El Artifact envuelve la página (se publica
+  como **fragmento**, sin `<html>/<head>/<body>`), exige rutas **relativas** y prohíbe nombres que empiecen por `_`
+  (`_astro` → `assets`). Hacerlo al terminar cada entrega y **republicar a la misma URL**.
+- Plan por fases del «mundo»: A) carga + hero ✅ · B) mundo + escenas ✅ (primera versión) · C) pantallas 3D curvas de proyectos
+  y más escenas · pulido de rendimiento/a11y/SEO (fase 6) · despliegue (fase 7).
 
 ## Stack
 

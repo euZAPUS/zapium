@@ -5,3 +5,5 @@ _originals/
 pnpm-lock.yaml
 public/
 *.min.*
+.preview/
+.screenshots/

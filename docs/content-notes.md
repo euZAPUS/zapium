@@ -53,3 +53,12 @@ Datos extraídos del README/docs públicos del repo (no inventados):
 - <https://alche.studio/> — «bro, esto» (el autor la señala como referencia clave).
 - **No se han podido ver** (Instagram y alche.studio bloqueados en el entorno de desarrollo). Pendiente: que el autor describa o capture
   los efectos concretos que le gustan.
+
+## Decisiones del autor (ronda 3)
+
+- **Oscuro por defecto.** «Factory grid» de la referencia para la home, con el toque amigable de la carga.
+- **Sonido sí, minimalista:** rueda antiestrés de clics rápidos e inmolestos al hacer scroll + clic sutil pero notorio y placentero.
+- **Animación 3D de la patata «como un tutorial»:** se mueve y gira por la pantalla resumiendo lo que ha hecho.
+- **Vídeos de fondo desenfocados** de lo que ha hecho (p. ej. usando Zapper AIO) con el «real» delante. **Pendiente: que el autor aporte los vídeos.**
+- **La carga se controla con scroll.** «Vista de Blender» sí (gizmo/HUD); patata 3D modelada **descartada**.
+- Quiere recibir **una tarjeta clicable** tras cada entrega para probar la web (Artifact).
