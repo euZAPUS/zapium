@@ -37,6 +37,17 @@ Fase 0 completada. **Fase 1 (sistema de diseño, esqueleto y hero espectacular) 
 - **Easter eggs: sí**, siempre opcionales (clic en la patata = chiste + salto; 5 clics seguidos = se marea;
   clic en doodles = explotan en chispas). Chistes en español **y** en inglés.
 
+## Carga y hero (fase A del plan «mundo»)
+
+- **Carga a modo de plano** (`Preloader.astro` + `preloader.ts`): líneas que se dibujan (patata a trazo fino, cotas, guías),
+  contador real (espera a fuentes y `load`), texto que se descifra, persiana de 6 paneles. Ideas de `docs/reference-alche.md`.
+- Solo **escritorio** (puntero fino, ≥ 52rem), sin reduced-motion y **una vez por sesión** (`sessionStorage: zapium-intro`).
+  En móvil NO sale: no retrasa el LCP. `?intro` la fuerza, `?nointro` la desactiva (capturas). Se salta con clic/Enter/Espacio/Esc.
+- Mientras carga: `html.is-loading` pausa las animaciones del hero (arrancan al terminar) y `header/main/footer` van `inert`.
+- Regla lateral `Hud.astro` (+ `hud.ts`), navegación y llamadas en monoespaciada: chrome técnico estilo plano.
+- **Plan por fases del «mundo» (aprobado por el autor):** A) carga + hero ✅ · B) mundo WebGL fijo con cámara por scroll y
+  estancias (solo escritorio) · C) proyectos como pantallas curvas 3D · sonido opcional (sintetizado) **pendiente de decidir**.
+
 ## Stack
 
 Astro 7 (estático) + TypeScript 6 · CSS con variables (sin Tailwind) · GSAP + ScrollTrigger + Flip ·
