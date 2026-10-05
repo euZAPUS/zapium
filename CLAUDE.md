@@ -19,7 +19,7 @@ Fase 0 completada. **Fase 1 (sistema de diseño, esqueleto y hero espectacular) 
   solo archivo (`src/styles/tokens.css`). Varía el tipo de interacción entre secciones, nunca la identidad visual.
 - **Estilo «Papel y patata»** (elegido): contornos negros gruesos, sombras duras tipo pegatina, colores de
   confeti (`--accent` naranja patata, `--pink`, `--mint`, `--sky`, `--sun`). Sale del dibujo de la patata del autor.
-- **Dos temas: claro y oscuro**, con selector y respeto a `prefers-color-scheme`. Colores con `light-dark()`;
+- **Dos temas: claro y oscuro** (oscuro por defecto), con selector. Colores con `light-dark()`;
   ningún componente lleva colores sueltos.
 - **Quiere impacto desde el primer segundo**: «que nada más abrir se cree algo abusivamente creativo, animado,
   especial, lleno de brillos». El hero se monta solo (intro coreografiada), con doodles, chispas, mano de cursor
@@ -40,17 +40,20 @@ Fase 0 completada. **Fase 1 (sistema de diseño, esqueleto y hero espectacular) 
 ## Carga, mundo y escenas (decisiones del autor)
 
 - **Tema oscuro por defecto** (el autor lo prefiere). El claro se elige con el selector y se recuerda (`localStorage: theme`).
-  No se sigue `prefers-color-scheme`. Ojo: **`body` no lleva fondo** (el de `<html>` se ve detrás del mundo).
+  No se sigue `prefers-color-scheme`. El tema vive en `<html data-mode>` (NO `data-theme`: el Artifact de claude.ai pone el suyo y pisaba el nuestro). Ojo: **`body` no lleva fondo** (el de `<html>` se ve detrás del mundo).
 - **Estética de la home = «factory grid» + plano** (referencia `docs/reference-alche.md`) con el toque amigable de la patata:
   - `World.astro` + `scripts/world/`: pasillo de paneles en perspectiva en un shader (OGL, ~0,6 de resolución) que avanza con el
-    scroll y se inclina con el ratón. **Solo escritorio** (puntero fino, ≥ 52rem, WebGL, sin reduced-motion); si no, rejilla CSS.
+    scroll y se inclina con el ratón; el cursor ilumina las losetas (estela) y el clic lanza una onda. **También en móvil** (más barato:
+    ~0,42 de resolución; el toque lanza la onda); sin WebGL o con reduced-motion, rejilla CSS.
   - `Gizmo.astro` + `world/gizmo.ts`: gizmo de ejes X/Y/Z y texto «User Perspective» estilo Blender (decorativo). **No** habrá
     patata 3D modelada: el autor la descartó; la patata es siempre su dibujo 2D moviéndose.
   - `Hud.astro`: regla de posición con la sección actual. Navegación y etiquetas en monoespaciada.
 - **Carga a modo de plano GOBERNADA POR EL SCROLL** (`Preloader.astro` + `preloader.ts`): el dibujo avanza con rueda / flechas /
   gesto táctil y solo llega al 100 % si la página ya cargó de verdad. Primero, aviso de sonido (se recuerda). Escritorio,
   una vez por sesión (`sessionStorage: zapium-intro`). `?intro` la fuerza, `?nointro` la desactiva (capturas). Esc o «Saltar».
-  Mientras carga: `html.is-loading` pausa las animaciones del hero y `header/main/footer` van `inert`. En móvil NO sale (LCP).
+  Mientras carga: `html.is-loading` pausa las animaciones del hero y `header/main/footer` van `inert`.
+  **También en móvil** (el autor lo pidió): el gesto táctil vertical avanza la carga y el plano se ve entero (`preserveAspectRatio meet`).
+  Riesgo conocido: retrasa el LCP en la primera visita (medirlo en la fase 6 y, si hace falta, acortarla en móvil).
 - **Sonido minimalista, OPT-IN** (`scripts/audio.ts`, sintetizado con Web Audio, sin archivos): rueda de clics rápidos y suaves
   ligada al scroll, «tock» sutil en pulsaciones, campanilla al acabar la carga, «boing» de la patata. Aviso en la carga + botón en la
   cabecera; elección en `localStorage: zapium-sound`. Arranca apagado hasta que el visitante lo activa.
@@ -60,6 +63,12 @@ Fase 0 completada. **Fase 1 (sistema de diseño, esqueleto y hero espectacular) 
   - `AboutTrack`: «Sobre mí» como **scroll horizontal** fijado (tarjetas: dropshipping, trading simulado, YouTube IA, 42, ASIR, fotos).
   - `AiSection`, `StackSection`, `ContactSection` (correo montado por JS, no en claro en el HTML; botón de copiar).
   - Móvil y reduced-motion: todo apilado, sin fijados.
+  - `LabTeaser` + páginas **`/lab/` y `/en/lab/`** (`LabPage`): tres mini-apps sin backend, con la lógica pura en `src/apps/lib/`
+    **con tests** (`pnpm test`): `SubnetApp` (subredes IPv4/CIDR, ASIR), `BitsApp` (enteros de 32 bits, bases y operadores, C/42),
+    `RiskApp` (tamaño de posición por riesgo, trading **simulado**, con aviso de que no es asesoramiento). Se describen como
+    «hechas con Claude Code para practicar». Añadir apps nuevas: lógica en `lib/` + test + componente `XApp.astro` + tarjeta en `LabPage`.
+  - `Shape3D` (+ `scripts/shape3d/`): **nudo toroidal iridiscente** con shader propio (OGL), detrás de «Contacto»; gira con cursor/scroll,
+    el clic le da un empujón y suena «boing». Sustituye a una escena de Spline.
 - **Vídeos**: dejar los originales en `_originals/videos/NOMBRE.mp4`, ejecutar `pnpm videos` (WebM + MP4 + póster, sin audio,
   ≤ 1280 px, avisa si > 3 MB) y pasar `src="NOMBRE"` a `<ProofVideo>`. Sin `src` se ve un marcador `[TODO]`.
 - **Vista previa clicable para el autor** (Artifact de claude.ai, privado): `pnpm build && node scripts/preview-bundle.mjs` y publicar
@@ -107,6 +116,8 @@ pnpm images         # _originals/photos -> src/assets/photos (AVIF+WebP, sin EXI
 node scripts/split-avatar.mjs  # capas del avatar original (verifica 0 de diferencia)
 pnpm check:exif     # falla si alguna imagen trae EXIF/XMP/IPTC
 pnpm verify         # format:check + lint + check + check:exif + build
+pnpm test           # tests de la lógica del laboratorio (node --test, Node ≥ 22.18)
+pnpm videos         # _originals/videos -> public/videos (WebM+MP4+póster)
 pnpm shots [url] [filtro]  # capturas Playwright a .screenshots/ (1440/768/375, claro/oscuro, paletas y héroes)
 ```
 
@@ -124,6 +135,12 @@ El hook `.githooks/pre-commit` (activado por `pnpm install` vía `prepare`) ejec
   si posicionas con `transform` y animas con `rotate/scale`, el elemento se desplaza. Posiciona con `translate`.
 - `svg { max-width: 100% }` (global) aplasta svgs dentro de contenedores de ancho 0: poner `max-width: none`.
 - Cuando Prettier reformatea, los `replace` por texto fallan en silencio: comprobar con `grep` tras editar.
+- `body` con fondo propio tapa lo que esté en `z-index: -1` (el mundo): el fondo va solo en `<html>`.
+- OGL no acepta arrays de uniforms (`vec4 u[10]`) como `Float32Array`: usar uniforms sueltos.
+- Una malla con el orden de triángulos al revés se ve «hueca» y oscura (se pintan las caras interiores): comprobar el sentido.
+- Con varios `import()` dinámicos que comparten fragmento, Vite mete rutas absolutas `/_astro/…` en un helper de precarga:
+  `preview-bundle.mjs` lo reescribe para el Artifact.
+- El Artifact de claude.ai pone su propio `data-theme` en `<html>`: nuestro tema usa `data-mode`.
 
 ## Convenciones
 
