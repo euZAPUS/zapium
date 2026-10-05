@@ -69,6 +69,21 @@ Fase 0 completada. **Fase 1 (sistema de diseño, esqueleto y hero espectacular) 
 - Plan por fases del «mundo»: A) carga + hero ✅ · B) mundo + escenas ✅ (primera versión) · C) pantallas 3D curvas de proyectos
   y más escenas · pulido de rendimiento/a11y/SEO (fase 6) · despliegue (fase 7).
 
+## Herramientas evaluadas (a petición del autor): shaders.com, Spline, Framer/Motion
+
+Revisado el 2026-10-05 con los paquetes de npm (las webs están bloqueadas en el entorno de desarrollo). **Ninguna se usa de momento.**
+
+- **shaders.com** (`shaders`): plataforma **propietaria** (Shader Effects License). Gratis solo para uso personal/no comercial/evaluación;
+  «cualquier despliegue público» cuenta como comercial y pide licencia Pro/Team. Usa WebGPU (TypeGPU) y pesa ~27 MB sin comprimir.
+  No redistribuir el código exportado (esto choca con un repo público MIT). **Alternativa elegida:** shaders propios con OGL
+  (Unlicense, sin dependencias): el cursor ilumina las losetas del pasillo, onda al hacer clic, etc. (`world/factory.ts`).
+  Candidata abierta si hiciera falta una librería: `@paper-design/shaders` (Apache-2.0, WebGL, ~0,9 MB).
+- **Spline** (`@splinetool/runtime`): requiere que el autor **cree y exporte** la escena en el editor de Spline (yo no puedo); el
+  runtime pesa ~36 MB sin comprimir, no declara licencia en npm y carga la escena desde su CDN (el Artifact lo bloquearía).
+  Solo tendría sentido con una escena concreta del autor, cargada en diferido en escritorio y con fallback estático.
+- **Framer**: como librería (`motion`, MIT) duplicaría lo que ya hace CSS/WAAPI (+ GSAP previsto para ScrollTrigger). El editor
+  Framer (modelos 3D) es otra herramienta: no encaja con este sitio en código.
+
 ## Stack
 
 Astro 7 (estático) + TypeScript 6 · CSS con variables (sin Tailwind) · GSAP + ScrollTrigger + Flip ·
