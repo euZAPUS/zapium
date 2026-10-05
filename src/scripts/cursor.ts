@@ -77,3 +77,15 @@ if (root && hasFinePointer() && !prefersReducedMotion()) {
     } else if (html.classList.contains('has-cursor') && !raf) raf = requestAnimationFrame(loop);
   });
 }
+
+// En táctil no hay mano: cada toque suelta una pequeña ráfaga de chispas
+if (!hasFinePointer() && !prefersReducedMotion()) {
+  addEventListener(
+    'pointerdown',
+    (e) => {
+      if (e.pointerType === 'mouse') return;
+      burst(e.clientX, e.clientY, 10, 0.7);
+    },
+    { passive: true },
+  );
+}

@@ -190,6 +190,10 @@ for (let x = 120; x <= 1320; x += 240) for (const y of [90, 300, 600, 810]) cros
   }
   :global(html.is-loading) {
     overflow: hidden;
+    overscroll-behavior: none;
+  }
+  .pre {
+    touch-action: none; /* el gesto vertical avanza la carga, no desplaza la página */
   }
 
   /* Persiana: 6 paneles que cubren la pantalla y se retiran al terminar */

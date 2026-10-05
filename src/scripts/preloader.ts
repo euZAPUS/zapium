@@ -26,6 +26,16 @@ if (root && html.classList.contains('is-loading')) {
   let lastTickAt = 0;
   let lastInput = performance.now();
 
+  // En pantallas verticales el dibujo se ve ENTERO (meet) en vez de recortado por los lados (slice)
+  if (innerHeight > innerWidth)
+    root.querySelector('.pre__svg')?.setAttribute('preserveAspectRatio', 'xMidYMid meet');
+
+  // En táctil no hay tecla Esc: el botón dice solo «Saltar»
+  if (matchMedia('(pointer: coarse)').matches) {
+    const skip = root.querySelector('[data-pre-skip]');
+    if (skip) skip.textContent = (skip.textContent ?? '').replace(/\s*\(Esc\)/, '');
+  }
+
   // Mientras dura la carga, el resto de la página no recibe foco ni lectores de pantalla
   const behind = document.querySelectorAll<HTMLElement>('.skip-link, header, main, footer');
   behind.forEach((el) => (el.inert = true));
