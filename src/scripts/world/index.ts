@@ -43,6 +43,27 @@ async function start(el: HTMLElement) {
     { passive: true },
   );
   const view = { z: 0, yaw: 0, pitch: 0, roll: 0 };
+  // Estela luminosa del cursor sobre las losetas + onda al hacer clic
+  type Hit = { p: [number, number, number]; born: number };
+  const trail: Hit[] = [];
+  let ripple: Hit | null = null;
+  let lastPush = 0;
+  addEventListener(
+    'pointermove',
+    (e) => {
+      const now = performance.now();
+      if (e.pointerType !== 'mouse' || now - lastPush < 45) return;
+      lastPush = now;
+      const hit = scene.cast(mouse.x, -mouse.y, { ...view, dim: 1 });
+      trail.unshift({ p: hit, born: now });
+      if (trail.length > 10) trail.pop();
+    },
+    { passive: true },
+  );
+  addEventListener('pointerdown', (e) => {
+    if (e.pointerType !== 'mouse') return;
+    ripple = { p: scene.cast(mouse.x, -mouse.y, { ...view, dim: 1 }), born: performance.now() };
+  });
   let lastY = scrollY;
   let vel = 0;
   let zTarget = 0;
@@ -63,7 +84,15 @@ async function start(el: HTMLElement) {
     view.roll += (Math.max(-0.12, Math.min(0.12, vel * 0.0035)) - view.roll) * 0.08;
     // se oscurece al bajar del hero para que el texto de las secciones se lea bien
     const dim = 0.86 - 0.34 * Math.min(1, Math.max(0, scrollY / (innerHeight * 0.9)));
-    scene.frame(t, { ...view, dim });
+    const nowMs = performance.now();
+    while (trail.length && nowMs - (trail[trail.length - 1]?.born ?? 0) > 1500) trail.pop();
+    if (ripple && nowMs - ripple.born > 1400) ripple = null;
+    scene.frame(t, {
+      ...view,
+      dim,
+      trail: trail.map((h) => [...h.p, (nowMs - h.born) / 1000]),
+      ripple: ripple ? [...ripple.p, (nowMs - ripple.born) / 1000] : null,
+    });
     dispatchEvent(new CustomEvent('zapium:view', { detail: { ...view, z: view.z } }));
     raf = visible && !document.hidden ? requestAnimationFrame(loop) : 0;
   };

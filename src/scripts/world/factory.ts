@@ -17,10 +17,19 @@ export interface WorldInput {
   roll: number;
   /** 0 = oscurecido (leer texto), 1 = pleno. */
   dim: number;
+  /** Estela del cursor sobre el pasillo: puntos [lado, u, v, edad(s)] (ver `cast`). */
+  trail?: number[][];
+  /** Onda de clic: [lado, u, v, edad(s)] o null. */
+  ripple?: number[] | null;
 }
+
+/** Cuántos puntos de la estela entran en el shader. */
+export const TRAIL_MAX = 10;
 
 export interface WorldScene {
   canvas: HTMLCanvasElement;
+  /** Lanza un rayo desde la posición del cursor (-1..1) y devuelve dónde toca el pasillo. */
+  cast(nx: number, ny: number, input: WorldInput): [number, number, number];
   resize(width: number, height: number): void;
   frame(time: number, input: WorldInput): void;
   colors(): void;
@@ -53,7 +62,16 @@ const fragment = /* glsl */ `
   uniform vec3 uB;
   uniform vec3 uC;
   uniform vec3 uD;
+  uniform vec4 uT0, uT1, uT2, uT3, uT4, uT5, uT6, uT7, uT8, uT9;
+  uniform vec4 uRipple;
   varying vec2 vUv;
+
+  // Brillo de un punto de la estela sobre la loseta actual (solo si está en la misma pared/suelo)
+  float trailAt(vec4 tp, float side, vec2 uv, float S) {
+    if (tp.x != side || tp.w >= 1.5) return 0.0;
+    vec2 dd = (uv - tp.yz) / S;
+    return exp(-dot(dd, dd) * 0.9) * (1.0 - tp.w / 1.5);
+  }
 
   float hash(vec2 p) { return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453); }
   vec3 pick(float h) { return h < 0.25 ? uA : h < 0.5 ? uB : h < 0.75 ? uC : uD; }
@@ -95,6 +113,20 @@ const fragment = /* glsl */ `
     float pulse = 0.5 + 0.5 * sin(uTime * 1.3 + hs * 40.0 + cell.x * 0.7);
     col = mix(col, pick(hash(cell + 9.1)) * (0.4 + 0.55 * pulse), lit * 0.75);
     col *= 0.95 + 0.05 * sin(uv.y / S * 46.0 + uTime * 2.0 * lit); // scanlines de pantalla
+
+    // El cursor ilumina las losetas por donde pasa (estela que se apaga) y una onda al hacer clic
+    float glow = trailAt(uT0, side, uv, S) + trailAt(uT1, side, uv, S) + trailAt(uT2, side, uv, S)
+      + trailAt(uT3, side, uv, S) + trailAt(uT4, side, uv, S) + trailAt(uT5, side, uv, S)
+      + trailAt(uT6, side, uv, S) + trailAt(uT7, side, uv, S) + trailAt(uT8, side, uv, S)
+      + trailAt(uT9, side, uv, S);
+    if (uRipple.x == side && uRipple.w < 1.4) {
+      float rd = length((uv - uRipple.yz) / S);
+      float ring = exp(-pow((rd - uRipple.w * 3.2) * 2.4, 2.0)) * (1.0 - uRipple.w / 1.4);
+      glow += ring * 1.4;
+    }
+    vec3 cursorCol = mix(uA, mix(uB, uC, 0.5 + 0.5 * sin(uTime * 0.7)), 0.5 + 0.5 * sin(uTime * 1.3 + uv.x));
+    col = mix(col, col * 1.6 + cursorCol * 0.55, clamp(glow, 0.0, 1.0));
+    col += cursorCol * glow * 0.12;
 
     // Biselado y líneas de rejilla (más gruesas con la distancia para no centellear)
     vec2 q = min(f, 1.0 - f) * S;
@@ -142,6 +174,17 @@ export function createWorld(): WorldScene {
       uB: { value: [1, 0.55, 0.72] },
       uC: { value: [0.3, 0.7, 1] },
       uD: { value: [0.22, 0.83, 0.62] },
+      uT0: { value: [-1, 0, 0, 99] },
+      uT1: { value: [-1, 0, 0, 99] },
+      uT2: { value: [-1, 0, 0, 99] },
+      uT3: { value: [-1, 0, 0, 99] },
+      uT4: { value: [-1, 0, 0, 99] },
+      uT5: { value: [-1, 0, 0, 99] },
+      uT6: { value: [-1, 0, 0, 99] },
+      uT7: { value: [-1, 0, 0, 99] },
+      uT8: { value: [-1, 0, 0, 99] },
+      uT9: { value: [-1, 0, 0, 99] },
+      uRipple: { value: [-1, 0, 0, 99] },
     },
   });
   const mesh = new Mesh(gl, { geometry: new Triangle(gl), program });
@@ -163,11 +206,34 @@ export function createWorld(): WorldScene {
   };
   colors();
 
+  let aspect = 1;
   return {
     canvas: gl.canvas as HTMLCanvasElement,
+    // Mismo cálculo que el shader (roll → pitch → yaw, pasillo W×H), para saber qué losetas toca el cursor
+    cast(nx, ny, input) {
+      const len = Math.hypot(nx * aspect, ny, 1.3);
+      let x = (nx * aspect) / len;
+      let y = ny / len;
+      let z = 1.3 / len;
+      const cr = Math.cos(input.roll);
+      const sr = Math.sin(input.roll);
+      [x, y] = [cr * x + sr * y, -sr * x + cr * y];
+      const cp = Math.cos(input.pitch);
+      const sp = Math.sin(input.pitch);
+      [y, z] = [cp * y + sp * z, -sp * y + cp * z];
+      const cy = Math.cos(input.yaw);
+      const sy = Math.sin(input.yaw);
+      [x, z] = [cy * x + sy * z, -sy * x + cy * z];
+      const tx = 1.15 / Math.max(Math.abs(x), 1e-4);
+      const ty = 0.72 / Math.max(Math.abs(y), 1e-4);
+      const t = Math.min(tx, ty);
+      const wall = tx < ty;
+      return [wall ? (x > 0 ? 1 : 2) : y > 0 ? 3 : 4, input.z + z * t, wall ? y * t : x * t];
+    },
     resize(w, h) {
       renderer.setSize(w, h);
       program.uniforms.uRes!.value = [w, h];
+      aspect = w / h;
     },
     frame(t, input) {
       program.uniforms.uTime!.value = t;
@@ -175,6 +241,10 @@ export function createWorld(): WorldScene {
       program.uniforms.uLook!.value = [input.yaw, input.pitch];
       program.uniforms.uRoll!.value = input.roll;
       program.uniforms.uDim!.value = input.dim;
+      const none = [-1, 0, 0, 99];
+      for (let i = 0; i < TRAIL_MAX; i++)
+        program.uniforms[`uT${i}`]!.value = input.trail?.[i] ?? none;
+      program.uniforms.uRipple!.value = input.ripple ?? [-1, 0, 0, 99];
       renderer.render({ scene: mesh });
     },
     colors,
