@@ -1,14 +1,16 @@
 /**
- * Elemento 3D del hero. Se carga con import dinámico, cuando el navegador está
- * ocioso, y SOLO si hay WebGL y el usuario no pidió menos movimiento. Si no, se
- * queda el degradado estático (fallback) que ya pinta el CSS.
- * Se pausa fuera de pantalla y con la pestaña oculta.
+ * Fondo WebGL del hero + interacción (mascota, doodles, parallax).
+ * El WebGL se carga con import dinámico cuando el navegador está ocioso y SOLO
+ * si hay WebGL y el usuario no pidió menos movimiento; si no, se queda el
+ * degradado estático que pinta el CSS. Se pausa fuera de pantalla y con la
+ * pestaña oculta.
  */
 import { prefersReducedMotion } from '../tokens';
-import type { HeroScene } from './types';
+import type { MeshScene } from './mesh';
+import './interact';
 
-const fx = document.querySelector<HTMLElement>('[data-hero-fx]');
-const stage = fx?.parentElement;
+const bg = document.querySelector<HTMLElement>('[data-hero-bg]');
+const hero = bg?.parentElement;
 
 function hasWebGL(): boolean {
   try {
@@ -20,14 +22,9 @@ function hasWebGL(): boolean {
 }
 
 async function start(host: HTMLElement, area: HTMLElement) {
-  // ?hero=portal permite ver la opción B mientras se decide (fase 1)
-  const variant = new URLSearchParams(location.search).get('hero') === 'portal' ? 'portal' : 'orb';
-  let scene: HeroScene;
+  let scene: MeshScene;
   try {
-    scene =
-      variant === 'portal'
-        ? (await import('./portal')).createPortal()
-        : (await import('./orb')).createOrb();
+    scene = (await import('./mesh')).createMesh();
   } catch (err) {
     console.warn('[hero] WebGL no disponible, se usa el fallback estático', err);
     return;
@@ -36,24 +33,18 @@ async function start(host: HTMLElement, area: HTMLElement) {
   host.append(scene.canvas);
   const resize = () => {
     const r = host.getBoundingClientRect();
-    scene.resize(Math.max(1, r.width * 1.16), Math.max(1, r.height * 1.16));
+    scene.resize(Math.max(1, r.width), Math.max(1, r.height));
   };
   new ResizeObserver(resize).observe(host);
   resize();
 
-  const pointer = { x: 0, y: 0 };
+  const pointer = { x: 0.75, y: 0.5 };
   addEventListener(
     'pointermove',
     (e) => {
       const r = area.getBoundingClientRect();
-      pointer.x = Math.max(
-        -1.5,
-        Math.min(1.5, (e.clientX - (r.left + r.width / 2)) / (r.width / 2)),
-      );
-      pointer.y = Math.max(
-        -1.5,
-        Math.min(1.5, (e.clientY - (r.top + r.height / 2)) / (r.height / 2)),
-      );
+      pointer.x = Math.max(0, Math.min(1, (e.clientX - r.left) / r.width));
+      pointer.y = Math.max(0, Math.min(1, (e.clientY - r.top) / r.height));
     },
     { passive: true },
   );
@@ -74,15 +65,13 @@ async function start(host: HTMLElement, area: HTMLElement) {
   }).observe(area);
   document.addEventListener('visibilitychange', wake);
 
-  // Primer fotograma antes de mostrar el canvas (evita un parpadeo)
-  scene.frame(0, pointer);
+  scene.frame(0, pointer); // primer fotograma antes de mostrar el canvas
   requestAnimationFrame(() => host.setAttribute('data-ready', ''));
   wake();
 
-  // El tema cambia los colores de los tokens
   new MutationObserver(() => scene.colors()).observe(document.documentElement, {
     attributes: true,
-    attributeFilter: ['data-theme', 'data-palette'],
+    attributeFilter: ['data-theme'],
   });
   matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => scene.colors());
 
@@ -93,8 +82,8 @@ async function start(host: HTMLElement, area: HTMLElement) {
   });
 }
 
-if (fx && stage && !prefersReducedMotion() && hasWebGL()) {
-  const go = () => start(fx, stage);
-  if ('requestIdleCallback' in window) requestIdleCallback(go, { timeout: 1500 });
-  else setTimeout(go, 300);
+if (bg && hero && !prefersReducedMotion() && hasWebGL()) {
+  const go = () => start(bg, hero);
+  if ('requestIdleCallback' in window) requestIdleCallback(go, { timeout: 1200 });
+  else setTimeout(go, 250);
 }

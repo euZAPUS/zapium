@@ -2,7 +2,7 @@
 import type { Locale } from '~/config/site';
 import { homePath, otherLocale, useT } from '~/i18n';
 import Icon from './Icon.astro';
-import Potato from './Potato.astro';
+import logo from '~/assets/avatar/logo.png';
 
 interface Props {
   locale: Locale;
@@ -21,7 +21,7 @@ const links = [
 <header class="header" data-header>
   <div class="container header__bar">
     <a class="brand" href={homePath(locale)} aria-label={`zapium — ${t.nav.home}`}>
-      <Potato arms={false} class="brand__logo" />
+      <img class="brand__logo" src={logo.src} width={logo.width} height={logo.height} alt="" />
       <span class="brand__name">zapium</span>
     </a>
 
@@ -104,9 +104,6 @@ const links = [
     border-bottom: var(--border-w) solid var(--line);
     transition: box-shadow var(--dur-base) var(--ease-out);
   }
-  :global(:root[data-palette='b']) .header {
-    border-bottom-color: var(--line-soft);
-  }
   .header__bar {
     height: 100%;
     display: flex;
@@ -123,7 +120,7 @@ const links = [
     font-size: var(--text-l);
     letter-spacing: -0.03em;
   }
-  .brand :global(.brand__logo) {
+  .brand__logo {
     width: 2.6rem;
     height: 2.1rem;
   }
