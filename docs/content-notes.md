@@ -50,5 +50,6 @@ Datos extraídos del README/docs públicos del repo (no inventados):
 ## Referencias visuales (reels de Instagram del autor)
 
 - <https://www.instagram.com/reel/DdhcSJ7IHlZ/> y <https://www.instagram.com/reel/DaqsZgFxUcP/>
-- **No se han podido ver** (Instagram bloqueado en el entorno de desarrollo). Pendiente: que el autor describa o capture
+- <https://alche.studio/> — «bro, esto» (el autor la señala como referencia clave).
+- **No se han podido ver** (Instagram y alche.studio bloqueados en el entorno de desarrollo). Pendiente: que el autor describa o capture
   los efectos concretos que le gustan.
