@@ -28,6 +28,12 @@ body {
   overflow-x: clip;
 }
 
+/* Nada de lo que sobresalga (p. ej. el nudo 3D de «Contacto» en móvil) puede ensanchar la página: en móvil el navegador
+   «alejaría» la vista para que quepa. `clip` (no `hidden`) no crea contenedor de scroll, así que el `sticky` sigue funcionando. */
+main {
+  overflow-x: clip;
+}
+
 h1,
 h2,
 h3 {

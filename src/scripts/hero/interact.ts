@@ -91,6 +91,7 @@ if (mascot && bubble) {
     mascot.classList.remove('is-jumping', 'is-dizzy');
     void mascot.offsetWidth;
     mascot.classList.add(dizzy ? 'is-dizzy' : 'is-jumping');
+    dispatchEvent(new CustomEvent('potato:hop', { detail: { dizzy } })); // la patata 3D (potato/index.ts) gira
     ping(px, py, dizzy ? 160 : 96);
     if (dizzy) clicks = [];
   });

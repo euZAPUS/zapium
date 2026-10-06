@@ -8,7 +8,7 @@ siempre está a un clic. Público: reclutadores, responsables técnicos, gente d
 
 ## Estado
 
-Fase 0 completada. **Fase 1 (sistema de diseño, esqueleto y hero espectacular) hecha, pendiente de OK del autor.** Plan por fases: 0 setup · 1 sistema de diseño + hero ·
+Fase 0 completada. **Fase 1 (sistema de diseño, esqueleto y hero espectacular) hecha, pendiente de OK del autor.** Giro «serio» + patata 3D con scroll hechos el 2026-10-06 (ver «Dirección visual» y «Hero 3D»). Plan por fases: 0 setup · 1 sistema de diseño + hero ·
 2 secciones con contenido · 3 animaciones/interacciones · 4 proyectos, casos de estudio y demos ·
 5 mascota + sección IA · 6 rendimiento/a11y/SEO · 7 despliegue.
 **Al terminar cada fase: dev server, capturas (375/768/1440), resumen y esperar OK antes de seguir.**
@@ -41,8 +41,10 @@ Fase 0 completada. **Fase 1 (sistema de diseño, esqueleto y hero espectacular) 
 - **Referencias del autor:** reels de Instagram de webs hiperanimadas (mano que sigue al cursor con
   resplandores, scroll que entra en portales). No se han podido ver (Instagram bloqueado); ver `docs/content-notes.md`.
 - **Mascota = la patata del autor, SU dibujo ORIGINAL** (`src/assets/avatar-original.png`). Se corta en capas
-  (`scripts/split-avatar.mjs`: cuerpo + 2 brazos + logo + favicon, mismos píxeles, verificado 0 de diferencia) para
-  animar brazos, saltos e inclinación. Sombreritos/accesorios por el slot `hat` (fase 5), cambian de mood según
+  (`scripts/split-avatar.mjs`: cuerpo + 2 brazos + logo + favicon, mismos píxeles, verificado 0 de diferencia). **El autor pidió (2026-10-06)
+  «un modelo 3D de ella»**: el hero la muestra como **losa 3D extruida** (ver «Hero 3D»); la cara lleva el dibujo original como textura SIN retocar
+  (en reposo se ve igual) y el canto es negro lacado. La versión 2D (`Mascot.astro`) sigue en el DOM como botón de clic, texto alternativo y
+  reserva sin WebGL / con reduced-motion, y en la guía de «Sobre mí». Sombreritos/accesorios por el slot `hat` (fase 5), cambian de mood según
   sección/proyecto y la patata **guía** por la web. Sin logos ni personajes de marcas existentes.
 - **Easter eggs: sí**, siempre opcionales (clic en la patata = chiste + salto; 5 clics seguidos = se marea;
   un «ping» (anillo) acompaña al clic). Chistes en español **y** en inglés.
@@ -112,8 +114,23 @@ Fase 0 completada. **Fase 1 (sistema de diseño, esqueleto y hero espectacular) 
   `.preview/index.html` con `root: .preview` y la lista de archivos que imprime el script. El Artifact envuelve la página (se publica
   como **fragmento**, sin `<html>/<head>/<body>`), exige rutas **relativas** y prohíbe nombres que empiecen por `_`
   (`_astro` → `assets`). Hacerlo al terminar cada entrega y **republicar a la misma URL**.
-- Plan por fases del «mundo»: A) carga + hero ✅ · B) mundo + escenas ✅ (primera versión) · C) pantallas 3D curvas de proyectos
+- Plan por fases del «mundo»: A) carga + hero ✅ (ahora con patata 3D y secuencia de scroll) · B) mundo + escenas ✅ (primera versión) · C) pantallas 3D curvas de proyectos
   y más escenas · pulido de rendimiento/a11y/SEO (fase 6) · despliegue (fase 7).
+
+## Hero 3D: la patata que gira y la «otra dimensión» (2026-10-06, referencia: la «A» que gira en alche.studio)
+
+- `src/scripts/potato/`: `scene.ts` (OGL: dos pasadas en un lienzo, 1) túnel y 2) patata), `geometry.ts` (extrusión + recorte de orejas, código
+  puro con tests: `pnpm test`), `outlines.json` (contornos de las capas; los genera `node scripts/make-potato-outlines.mjs` con marching squares sobre
+  el alfa de `src/assets/avatar/{body,arm-l,arm-r}.png`; **regenerarlo si cambian las capas**), `index.ts` (controlador de scroll/cursor).
+- **Hero fijado** (`Hero.astro`, `.hero[data-gl]`: `--travel: 230svh`; el CSS solo fija si existe `data-gl`, que pone el script cuando el WebGL
+  arranca). Progreso `p` (0-1): la patata va del escenario al centro y crece (0-0,42), gira ~2,5 vueltas, un **iris** de la otra dimensión se abre
+  desde ella (0,1-0,66; túnel cebra en espiral negro/hueso con 1 franja de cada 8 en naranja y aberración cromática), se cuela por el túnel
+  (0,6-0,95) y el túnel se funde al color de fondo (0,88-1) para dar paso a «Proyectos». El texto del hero se desvanece pronto (`--copy`),
+  un rótulo «Dimensión 02 · Proyectos» marca la secuencia (`--dim`), el mundo se deja de pintar con el iris cubriendo (`html.is-covered`).
+  Mandos: las constantes de `index.ts` (fases) y `scene.ts` (`fov 24`, grosores 62/15 px, biseles 24/12, shaders).
+- Cursor: la patata se inclina hacia él; clic = giro (5 seguidos = más), brazos que se mecen. Al aparecer tras la carga entra girando + «ping».
+- Sin WebGL / reduced-motion / fallo: hero apilado de siempre con la patata 2D. Móvil: misma secuencia (lienzo a dpr ≤ 1,25).
+- Arreglo de paso: `main { overflow-x: clip }` (el nudo 3D de «Contacto» ensanchaba la página en móvil y «alejaba» la vista).
 
 ## Herramientas evaluadas (a petición del autor): shaders.com, Spline, Framer/Motion
 
@@ -151,6 +168,7 @@ pnpm lint           # ESLint
 pnpm format         # Prettier (escribe)
 pnpm images         # _originals/photos -> src/assets/photos (AVIF+WebP, sin EXIF)
 node scripts/split-avatar.mjs  # capas del avatar original (verifica 0 de diferencia)
+node scripts/make-potato-outlines.mjs  # siluetas de las capas -> src/scripts/potato/outlines.json (patata 3D)
 pnpm check:exif     # falla si alguna imagen trae EXIF/XMP/IPTC
 pnpm verify         # format:check + lint + check + check:exif + build
 pnpm test           # tests de la lógica del laboratorio (node --test, Node ≥ 22.18)
@@ -221,7 +239,8 @@ El hook `.githooks/pre-commit` (activado por `pnpm install` vía `prepare`) ejec
 ## NO hacer
 
 - **No tocar el avatar**: ni redibujarlo, ni recortarlo con halos/bordes tipo pegatina, ni añadirle manchas.
-  Sale siempre de `src/assets/avatar-original.png` (a través de las capas generadas).
+  Sale siempre de `src/assets/avatar-original.png` (a través de las capas generadas). La versión 3D solo extruye sus siluetas y usa las capas
+  como textura (sin retocar colores).
 - **No poner círculos/discos de fondo** detrás de la patata (el autor lo rechazó). El fondo es una malla orgánica a pantalla completa.
 - No usar logos, personajes ni marcas de terceros (ni imitarlos).
 - No colores, tipografías ni easings fuera de los tokens.

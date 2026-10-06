@@ -43,6 +43,7 @@ export const en: Dict = {
     fig: 'FIG. 01 — THE POTATO (ORIGINAL DRAWING)',
     scale: 'SCALE 1:1',
     scroll: 'Keep scrolling',
+    portal: 'Dimension 02 · Projects',
     jokes: [
       "Ouch! Careful, I'm a potato, not a ball.",
       'Hairless and proud.',

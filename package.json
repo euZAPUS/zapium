@@ -27,7 +27,7 @@
     "prepare": "git config core.hooksPath .githooks || true",
     "shots": "node scripts/shots.mjs",
     "videos": "node scripts/optimize-videos.mjs",
-    "test": "node --test \"src/apps/lib/*.test.mjs\""
+    "test": "node --test \"src/apps/lib/*.test.mjs\" \"src/scripts/potato/*.test.mjs\""
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.7.4",

@@ -16,98 +16,196 @@ let n = 0;
 ---
 
 <section class="hero" id="top" aria-labelledby="hero-title" data-hero>
-  <!-- Resplandor cálido estático detrás de la patata (el fondo vivo es el «mundo», ver World.astro) -->
-  <div class="hero__bg" aria-hidden="true" data-hero-bg></div>
+  <div class="hero__stick">
+    <!-- Resplandor cálido estático detrás de la patata (el fondo vivo es el «mundo», ver World.astro) -->
+    <div class="hero__bg" aria-hidden="true" data-hero-bg></div>
 
-  <div class="container hero__inner">
-    <div class="hero__copy">
-      <p class="eyebrow reveal" style="--delay:500ms">
-        {t.hero.eyebrow}
-      </p>
-      <h1 id="hero-title" class="hero__title" aria-label={PERSON.name}>
-        {words.map((letters) => (
-          <span class="hero__word" aria-hidden="true">
-            {letters.map((ch) => {
-              const i = n++;
-              return (
-                <span class="ch" style={`--i:${i};--r:${(i % 2 ? 1 : -1) * (6 + (i % 3) * 3)}deg`}>
-                  {ch}
-                </span>
-              );
-            })}
-          </span>
-        ))}
-      </h1>
-      <p class="hero__tagline reveal" style="--delay:1250ms">
-        {t.hero.tagline}
-      </p>
-      <div class="hero__cta">
-        <a
-          class="btn btn--primary reveal"
-          style="--delay:1400ms"
-          href="#projects"
-          data-cursor="link"
+    <div class="container hero__inner">
+      <div class="hero__copy">
+        <p class="eyebrow reveal" style="--delay:500ms">
+          {t.hero.eyebrow}
+        </p>
+        <h1 id="hero-title" class="hero__title" aria-label={PERSON.name}>
+          {words.map((letters) => (
+            <span class="hero__word" aria-hidden="true">
+              {letters.map((ch) => {
+                const i = n++;
+                return (
+                  <span
+                    class="ch"
+                    style={`--i:${i};--r:${(i % 2 ? 1 : -1) * (6 + (i % 3) * 3)}deg`}
+                  >
+                    {ch}
+                  </span>
+                );
+              })}
+            </span>
+          ))}
+        </h1>
+        <p class="hero__tagline reveal" style="--delay:1250ms">
+          {t.hero.tagline}
+        </p>
+        <div class="hero__cta">
+          <a
+            class="btn btn--primary reveal"
+            style="--delay:1400ms"
+            href="#projects"
+            data-cursor="link"
+          >
+            {t.hero.ctaProjects}
+            <Icon name="arrow" />
+          </a>
+          <a
+            class="btn reveal"
+            style="--delay:1500ms"
+            href="/assets/cv.pdf"
+            aria-disabled="true"
+            title={t.ui.cvSoon}
+            data-cursor="link"
+            data-cv
+          >
+            <Icon name="download" />
+            {t.hero.ctaCv}
+          </a>
+          <a class="btn reveal" style="--delay:1600ms" href="#contact" data-cursor="link">
+            <Icon name="mail" />
+            {t.hero.ctaContact}
+          </a>
+        </div>
+      </div>
+
+      <div class="hero__stage" style="--intro:150ms">
+        <Mascot alt={t.hero.mascotAlt} buttonLabel={t.hero.mascotButton} />
+        <p class="hero__callout hero__callout--fig" aria-hidden="true">
+          {t.hero.fig}
+        </p>
+        <p class="hero__callout hero__callout--scale" aria-hidden="true">
+          {t.hero.scale}
+        </p>
+        <p
+          class="hero__bubble"
+          data-bubble
+          data-jokes={JSON.stringify(t.hero.jokes)}
+          aria-live="polite"
         >
-          {t.hero.ctaProjects}
-          <Icon name="arrow" />
-        </a>
-        <a
-          class="btn reveal"
-          style="--delay:1500ms"
-          href="/assets/cv.pdf"
-          aria-disabled="true"
-          title={t.ui.cvSoon}
-          data-cursor="link"
-          data-cv
-        >
-          <Icon name="download" />
-          {t.hero.ctaCv}
-        </a>
-        <a class="btn reveal" style="--delay:1600ms" href="#contact" data-cursor="link">
-          <Icon name="mail" />
-          {t.hero.ctaContact}
-        </a>
+          {t.hero.bubble}
+        </p>
       </div>
     </div>
 
-    <div class="hero__stage" style="--intro:150ms">
-      <Mascot alt={t.hero.mascotAlt} buttonLabel={t.hero.mascotButton} />
-      <p class="hero__callout hero__callout--fig" aria-hidden="true">
-        {t.hero.fig}
-      </p>
-      <p class="hero__callout hero__callout--scale" aria-hidden="true">
-        {t.hero.scale}
-      </p>
-      <p
-        class="hero__bubble"
-        data-bubble
-        data-jokes={JSON.stringify(t.hero.jokes)}
-        aria-live="polite"
-      >
-        {t.hero.bubble}
-      </p>
-    </div>
-  </div>
+    <!-- La patata 3D y la «otra dimensión» (WebGL, potato/index.ts) se pintan aquí encima del texto -->
+    <div class="hero__gl" data-hero-gl aria-hidden="true"></div>
+    <p class="hero__dim" aria-hidden="true">
+      <span>{t.hero.portal}</span>
+      <i></i>
+    </p>
 
-  <a class="hero__scroll reveal" style="--delay:2300ms" href="#projects" data-cursor="link">
-    <span>{t.hero.scroll}</span>
-    <Icon name="arrow" class="hero__scroll-arrow" />
-  </a>
+    <a class="hero__scroll reveal" style="--delay:2300ms" href="#projects" data-cursor="link">
+      <span>{t.hero.scroll}</span>
+      <Icon name="arrow" class="hero__scroll-arrow" />
+    </a>
+  </div>
 </section>
 
 <style>
   .hero {
+    position: relative;
+    isolation: isolate;
+    overflow: clip;
+    /* Movimiento del cursor sobre el hero (lo escribe hero/interact.ts): -1 a 1 */
+    --mx: 0;
+    --my: 0;
+    /* Con la patata 3D (data-gl) el hero se fija y el scroll recorre «travel» (potato/index.ts escribe --hp y --copy) */
+    --travel: 230svh;
+    --hp: 0;
+    --copy: 1;
+  }
+  .hero__stick {
     position: relative;
     min-height: 100svh;
     padding-top: calc(var(--header-h) + var(--space-6));
     padding-bottom: var(--space-9);
     display: grid;
     align-items: center;
-    isolation: isolate;
+  }
+  :global(html.js) .hero[data-gl] {
+    height: calc(100svh + var(--travel));
+  }
+  :global(html.js) .hero[data-gl] .hero__stick {
+    position: sticky;
+    top: 0;
+    height: 100svh;
+    min-height: 0;
+    padding-bottom: var(--space-7);
     overflow: clip;
-    /* Movimiento del cursor sobre el hero (lo escribe hero/interact.ts): -1 a 1 */
-    --mx: 0;
-    --my: 0;
+  }
+  .hero__gl {
+    position: absolute;
+    inset: 0;
+    z-index: 3;
+    pointer-events: none;
+  }
+  .hero__gl :global(canvas) {
+    display: block;
+    max-width: none;
+  }
+  /* La patata 2D deja paso a la 3D (siguen en el DOM: botón de clic, texto alternativo y reserva sin WebGL) */
+  .hero[data-gl] :global(.mascot__layer) {
+    opacity: 0;
+  }
+  .hero[data-gl] .hero__copy,
+  .hero[data-gl] .hero__bubble,
+  .hero[data-gl] .hero__callout {
+    opacity: var(--copy);
+    translate: 0 calc((1 - var(--copy)) * -2.5rem);
+  }
+  .hero[data-gl][data-away] .hero__copy,
+  .hero[data-gl][data-away] .hero__bubble,
+  .hero[data-gl][data-away] .hero__callout {
+    visibility: hidden;
+  }
+  .hero[data-gl] .hero__scroll {
+    opacity: calc(1 - var(--hp) * 10);
+  }
+  /* Rótulo de la secuencia: aparece mientras se abre la otra dimensión */
+  .hero__dim {
+    position: absolute;
+    z-index: 4;
+    left: 50%;
+    bottom: var(--space-6);
+    translate: -50% 0;
+    display: none;
+    width: min(22rem, calc(100% - 2 * var(--gutter)));
+    margin: 0;
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    text-align: center;
+    color: var(--ink);
+    opacity: var(--dim, 0);
+    padding: var(--space-3) var(--space-4);
+    background: var(--bg);
+    border: var(--border-w) solid var(--line-soft);
+  }
+  .hero[data-gl] .hero__dim {
+    display: block;
+  }
+  .hero__dim span::before {
+    content: '';
+    display: inline-block;
+    width: 0.4rem;
+    height: 0.4rem;
+    margin-inline-end: 0.7em;
+    background: var(--accent);
+  }
+  .hero__dim i {
+    display: block;
+    height: 1px;
+    margin-top: var(--space-2);
+    background: var(--accent);
+    transform-origin: 0 50%;
+    scale: var(--hp) 1;
   }
 
   /* ── Fondo ───────────────────────────────────────────────────── */
@@ -297,7 +395,7 @@ let n = 0;
 
   /* ── Móvil / tablet ──────────────────────────────────────────── */
   @media (max-width: 52rem) {
-    .hero {
+    .hero__stick {
       min-height: auto;
       padding-top: calc(var(--header-h) + var(--space-5));
       padding-bottom: var(--space-9);
