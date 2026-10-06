@@ -51,3 +51,6 @@ Previsto en Cloudflare Pages (build: `pnpm build`, salida: `dist/`). _[TODO fase
 - **Contenido** (textos, fotos, avatar, mascota, iconos, diseño): todos los derechos reservados, ver
   [LICENSE-CONTENT.md](LICENSE-CONTENT.md).
 - **Terceros:** [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
+- **Inspiración:** el diseño de la home (rejilla técnica, pantallas flotantes con scroll lateral, tipografía mono) está inspirado en
+  [alche.studio](https://alche.studio). Solo ideas y mecánicas, reimplementadas desde cero: no se ha copiado código ni recursos
+  (ver `docs/reference-alche.md`).

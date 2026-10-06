@@ -13,7 +13,10 @@ const year = new Date().getFullYear();
 <footer class="footer">
   <div class="container footer__inner">
     <p>
-      © {year} {PERSON.name} · {t.footer.madeWith}
+      © {year} {PERSON.name} · {t.footer.madeWith} · {t.footer.inspiredBy}
+      <a href="https://alche.studio" target="_blank" rel="noopener noreferrer" data-cursor="link">
+        alche.studio
+      </a>
     </p>
     <p class="footer__legal">{t.footer.rights}</p>
   </div>
@@ -25,6 +28,15 @@ const year = new Date().getFullYear();
     border-top: var(--border-w) solid var(--line-soft);
     font-size: var(--text-s);
     color: var(--ink-muted);
+  }
+  .footer a {
+    color: var(--ink);
+    text-decoration: underline dotted;
+    text-underline-offset: 0.25em;
+    transition: color var(--dur-fast);
+  }
+  .footer a:hover {
+    color: var(--accent);
   }
   .footer__inner {
     display: flex;

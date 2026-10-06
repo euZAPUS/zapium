@@ -380,5 +380,6 @@ export const en: Dict = {
   footer: {
     rights: 'All rights reserved on the content. Code under the MIT license.',
     madeWith: 'Made with Claude Code',
+    inspiredBy: 'Design inspired by',
   },
 };

@@ -35,6 +35,7 @@ Fase 0 completada. **Fase 1 (sistema de diseño, esqueleto y hero espectacular) 
   Nada de librerías de iconos genéricas. Temas del autor: rayo (zap), código, velas (trading), bolsa (dropshipping),
   play (vídeo), terminal (shell de 42), cubo (huerto de Zapper), moneda, red (ASIR), «C».
 - **Cursor = mano naranja** con resplandor y estela de chispas (`cursor.ts` + `fx.ts`), solo con puntero fino.
+- **Crédito visible (pedido por el autor):** el pie de página dice «Diseño inspirado en alche.studio» (enlace, es/en) y el README lo recoge. No quitarlo.
 - **Referencias del autor:** reels de Instagram de webs hiperanimadas (mano que sigue al cursor con
   resplandores, scroll que entra en portales). No se han podido ver (Instagram bloqueado); ver `docs/content-notes.md`.
 - **Mascota = la patata del autor, SU dibujo ORIGINAL** (`src/assets/avatar-original.png`). Se corta en capas

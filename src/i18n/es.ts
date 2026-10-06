@@ -378,6 +378,7 @@ export const es = {
   footer: {
     rights: 'Todos los derechos reservados sobre el contenido. Código bajo licencia MIT.',
     madeWith: 'Hecho con Claude Code',
+    inspiredBy: 'Diseño inspirado en',
   },
 };
 export type Dict = typeof es;
