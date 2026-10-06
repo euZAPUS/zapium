@@ -14,6 +14,8 @@ import {
 } from 'ogl';
 import { readColor } from '../tokens';
 
+const tint = (a: number[], b: number[], k: number) => a.map((v, i) => v + ((b[i] ?? 0) - v) * k);
+
 export interface KnotScene {
   canvas: HTMLCanvasElement;
   resize(width: number, height: number): void;
@@ -116,8 +118,8 @@ const fragment = /* glsl */ `
     // Iridiscencia: paleta coseno (película fina) desplazada por el ángulo de vista y el tiempo
     vec3 irid = 0.5 + 0.5 * cos(6.28318 * (vec3(0.0, 0.33, 0.67) + ndv * 1.15 + uTime * 0.04));
     vec3 brand = mix(uC, uB, 0.5 + 0.5 * N.y);
-    brand = mix(brand, uA, smoothstep(0.1, 0.9, 0.5 + 0.5 * sin(N.x * 2.4 + uTime * 0.5)));
-    vec3 col = mix(brand, irid, 0.38 + 0.4 * fres);
+    brand = mix(brand, uA, 0.55 * smoothstep(0.1, 0.9, 0.5 + 0.5 * sin(N.x * 2.4 + uTime * 0.5)));
+    vec3 col = mix(brand, irid, 0.06 + 0.16 * fres); // casi cromo: un destello de iridiscencia solo en el borde
 
     // Luz que sigue al cursor + brillo especular + borde de luz
     vec3 L = normalize(vec3(uLight, 0.9));
@@ -149,8 +151,8 @@ export function createKnot(lowPower = false): KnotScene {
       uTime: { value: 0 },
       uLight: { value: [0.3, 0.5] },
       uA: { value: readColor('--accent') },
-      uB: { value: readColor('--pink') },
-      uC: { value: readColor('--sky') },
+      uB: { value: readColor('--ink') },
+      uC: { value: tint(readColor('--bg'), readColor('--ink'), 0.4) },
       uInk: { value: readColor('--potato-line') },
     },
   });
@@ -183,8 +185,8 @@ export function createKnot(lowPower = false): KnotScene {
     },
     colors() {
       program.uniforms.uA!.value = readColor('--accent');
-      program.uniforms.uB!.value = readColor('--pink');
-      program.uniforms.uC!.value = readColor('--sky');
+      program.uniforms.uB!.value = readColor('--ink');
+      program.uniforms.uC!.value = tint(readColor('--bg'), readColor('--ink'), 0.4);
       program.uniforms.uInk!.value = readColor('--potato-line');
     },
     destroy() {

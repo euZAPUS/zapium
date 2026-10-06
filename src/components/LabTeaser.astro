@@ -10,9 +10,9 @@ interface Props {
 const { locale } = Astro.props;
 const l = useT(locale).lab;
 const apps = [
-  { id: 'subnet', doodle: 'network', color: 'var(--sky)', app: l.subnet },
-  { id: 'bits', doodle: 'chip', color: 'var(--accent)', app: l.bits },
-  { id: 'risk', doodle: 'candles', color: 'var(--mint)', app: l.risk },
+  { id: 'subnet', doodle: 'network', app: l.subnet },
+  { id: 'bits', doodle: 'chip', app: l.bits },
+  { id: 'risk', doodle: 'candles', app: l.risk },
 ] as const;
 ---
 
@@ -27,7 +27,7 @@ const apps = [
   <ul class="teaser__grid">
     {apps.map((a) => (
       <li class="card teaser__card">
-        <Doodle name={a.doodle} style="--size:3.4rem" color={a.color} />
+        <Doodle name={a.doodle} style="--size:3.2rem" />
         <p class="tag">{a.app.tag}</p>
         <h3>{a.app.title}</h3>
         <p class="teaser__desc">{a.app.desc}</p>

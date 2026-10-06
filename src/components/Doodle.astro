@@ -36,7 +36,7 @@ interface Props {
   delay?: number;
   /** Rotación base en grados */
   rot?: number;
-  /** Color del relleno principal (token CSS) */
+  /** (Sin efecto visual desde el giro «plano técnico»: la piel de línea fina ignora los colores.) */
   color?: string;
   /** Se oculta en pantallas pequeñas */
   hideOnMobile?: boolean;
@@ -119,6 +119,19 @@ const art: Record<DoodleName, string> = {
     display: inline-block;
     width: var(--size, 4rem);
     aspect-ratio: 1;
+  }
+  /* Piel «plano técnico»: trazo fino de una sola tinta en vez de pegatinas de colores. Los dibujos siguen
+     siendo los mismos; el naranja de la patata aparece al pasar el cursor. */
+  .doodle svg * {
+    fill: none !important;
+    stroke: var(--doodle-line, var(--ink-muted)) !important;
+    stroke-width: 1.5px !important;
+    stroke-dasharray: none !important;
+    vector-effect: non-scaling-stroke;
+    transition: stroke 0.25s;
+  }
+  .doodle:hover svg * {
+    stroke: var(--accent) !important;
   }
   .doodle__in,
   .doodle__in svg {

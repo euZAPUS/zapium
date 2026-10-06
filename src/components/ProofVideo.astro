@@ -1,11 +1,10 @@
 ---
 /**
- * «Prueba» de lo hecho: vídeo corto del autor usando su proyecto, dentro de un marco de
- * ventana. La misma pieza sirve, desenfocada y a pantalla completa, de fondo de la escena
- * (`backdrop`), mientras el «real» va delante. Los vídeos (WebM/MP4 comprimidos, mudos) viven
+ * «Prueba» de lo hecho en formato estático (lista apilada de Works cuando no hay WebGL): vídeo
+ * corto del autor dentro de un marco de ventana. Los vídeos (WebM/MP4 comprimidos, mudos) viven
  * en public/videos/ y los genera scripts/optimize-videos.mjs. Sin vídeo, se ve un marcador
  * [TODO] visible. Autoplay solo al entrar en pantalla (scripts/story.ts); con
- * prefers-reduced-motion se queda el póster.
+ * prefers-reduced-motion se queda el póster. (En el carrusel WebGL el vídeo es una textura.)
  */
 interface Props {
   /** Texto del marcador cuando aún no hay vídeo */
@@ -14,24 +13,18 @@ interface Props {
   title?: string;
   /** Nombre base en public/videos/ (sin extensión): NAME.webm, NAME.mp4, NAME.jpg */
   src?: string;
-  backdrop?: boolean;
   class?: string;
 }
-const { label, title = '', src, backdrop = false, class: className } = Astro.props;
+const { label, title = '', src, class: className } = Astro.props;
 ---
 
-<div
-  class:list={['proof', { 'proof--backdrop': backdrop }, className]}
-  aria-hidden={backdrop ? 'true' : undefined}
->
-  {!backdrop && (
-    <div class="proof__bar">
-      <i />
-      <i />
-      <i />
-      <span>{title}</span>
-    </div>
-  )}
+<div class:list={['proof', className]}>
+  <div class="proof__bar">
+    <i />
+    <i />
+    <i />
+    <span>{title}</span>
+  </div>
   <div class="proof__screen">
     {src ? (
       <video
@@ -41,7 +34,7 @@ const { label, title = '', src, backdrop = false, class: className } = Astro.pro
         playsinline
         preload="none"
         poster={`/videos/${src}.jpg`}
-        aria-label={backdrop ? undefined : label}
+        aria-label={label}
         tabindex="-1"
       >
         <source src={`/videos/${src}.webm`} type="video/webm" />
@@ -49,7 +42,7 @@ const { label, title = '', src, backdrop = false, class: className } = Astro.pro
       </video>
     ) : (
       <div class="proof__todo">
-        <p>{backdrop ? '' : label}</p>
+        <p>{label}</p>
         <span class="proof__scan"></span>
       </div>
     )}
@@ -62,7 +55,7 @@ const { label, title = '', src, backdrop = false, class: className } = Astro.pro
     display: grid;
     grid-template-rows: auto 1fr;
     background: var(--surface);
-    border: var(--border-w) solid var(--line);
+    border: var(--border-w) solid var(--line-soft);
     border-radius: var(--radius-m);
     box-shadow: var(--shadow-hard-lg);
     overflow: hidden;
@@ -73,7 +66,7 @@ const { label, title = '', src, backdrop = false, class: className } = Astro.pro
     gap: 0.4rem;
     padding: 0.55rem 0.8rem;
     background: var(--bg-soft);
-    border-bottom: var(--border-w) solid var(--line);
+    border-bottom: var(--border-w) solid var(--line-soft);
     font-family: var(--font-mono);
     font-size: var(--text-xs);
     letter-spacing: 0.06em;
@@ -83,14 +76,12 @@ const { label, title = '', src, backdrop = false, class: className } = Astro.pro
     width: 0.7rem;
     height: 0.7rem;
     border-radius: 50%;
-    border: 2px solid var(--potato-line);
+    border: 1px solid var(--ink-muted);
+    background: transparent;
+  }
+  .proof__bar i:first-child {
     background: var(--accent);
-  }
-  .proof__bar i:nth-child(2) {
-    background: var(--pink);
-  }
-  .proof__bar i:nth-child(3) {
-    background: var(--mint);
+    border-color: var(--accent);
   }
   .proof__bar span {
     margin-inline-start: 0.4rem;
@@ -98,7 +89,7 @@ const { label, title = '', src, backdrop = false, class: className } = Astro.pro
   .proof__screen {
     position: relative;
     aspect-ratio: 16 / 10;
-    background: #0e0c09;
+    background: #050506;
   }
   .proof__screen video {
     position: absolute;
@@ -117,8 +108,8 @@ const { label, title = '', src, backdrop = false, class: className } = Astro.pro
     padding: var(--space-5);
     text-align: center;
     background:
-      repeating-linear-gradient(135deg, transparent 0 14px, rgb(246 239 226 / 0.05) 14px 28px),
-      linear-gradient(160deg, #1d1812, #14110d);
+      repeating-linear-gradient(135deg, transparent 0 14px, rgb(238 238 239 / 0.05) 14px 28px),
+      linear-gradient(160deg, #101012, #09090a);
   }
   .proof__todo p {
     margin: 0;
@@ -126,7 +117,7 @@ const { label, title = '', src, backdrop = false, class: className } = Astro.pro
     font-family: var(--font-mono);
     font-size: var(--text-s);
     line-height: 1.5;
-    color: #f6efe2;
+    color: #eeeeef;
   }
   .proof__scan {
     position: absolute;
@@ -144,43 +135,8 @@ const { label, title = '', src, backdrop = false, class: className } = Astro.pro
     }
   }
 
-  /* Versión de fondo: sin marco, a sangre y desenfocada */
-  .proof--backdrop {
-    position: absolute;
-    inset: 0;
-    display: block;
-    border: 0;
-    border-radius: 0;
-    box-shadow: none;
-    background: none;
-    filter: blur(34px) saturate(1.5) brightness(0.55);
-  }
-  /* En el tema claro el fondo desenfocado no se oscurece: queda un lavado pastel */
-  :global(html[data-mode='light']) .proof--backdrop {
-    filter: blur(34px) saturate(1.25) brightness(1.08);
-  }
-  .proof--backdrop .proof__todo {
-    background:
-      radial-gradient(40% 50% at 25% 30%, var(--accent), transparent 70%),
-      radial-gradient(35% 45% at 75% 35%, var(--pink), transparent 70%),
-      radial-gradient(45% 50% at 55% 80%, var(--sky), transparent 70%), var(--bg);
-    background-size: 140% 140%;
-    animation: drift 14s ease-in-out infinite alternate;
-  }
-  @keyframes drift {
-    to {
-      background-position: 100% 60%;
-    }
-  }
-  .proof--backdrop .proof__screen {
-    position: absolute;
-    inset: 0;
-    aspect-ratio: auto;
-  }
-
   @media (prefers-reduced-motion: reduce) {
-    .proof__scan,
-    .proof--backdrop .proof__todo {
+    .proof__scan {
       animation: none;
     }
   }

@@ -7,7 +7,6 @@ interface Props {
 }
 const { locale } = Astro.props;
 const s = useT(locale).story.stack;
-const tints = ['var(--accent)', 'var(--pink)', 'var(--sky)', 'var(--mint)'];
 ---
 
 <section class="stack container" id="stack" aria-labelledby="stack-title">
@@ -19,8 +18,8 @@ const tints = ['var(--accent)', 'var(--pink)', 'var(--sky)', 'var(--mint)'];
     <p class="stack__intro">{s.intro}</p>
   </header>
   <div class="stack__groups">
-    {s.groups.map((g, i) => (
-      <section class="card stack__group" style={`--tint:${tints[i % tints.length]}`}>
+    {s.groups.map((g) => (
+      <section class="card stack__group">
         <h3>{g.k}</h3>
         <ul class="chips">
           {g.items.map((it) => (
@@ -72,19 +71,20 @@ const tints = ['var(--accent)', 'var(--pink)', 'var(--sky)', 'var(--mint)'];
     list-style: none;
   }
   .chip {
-    padding: 0.3rem 0.8rem;
-    background: var(--tint);
-    color: #14110d;
-    border: 2px solid var(--potato-line);
+    padding: 0.28rem 0.8rem;
+    color: var(--ink);
+    border: 1px solid var(--line-soft);
     border-radius: var(--radius-pill);
-    box-shadow: 0.14rem 0.16rem 0 var(--potato-line);
     font-family: var(--font-mono);
-    font-size: var(--text-s);
-    font-weight: 700;
-    transition: transform var(--dur-fast) var(--ease-pop);
+    font-size: var(--text-xs);
+    letter-spacing: 0.04em;
+    transition:
+      border-color var(--dur-fast),
+      background var(--dur-fast);
   }
   .chip:hover {
-    transform: translateY(-3px) rotate(-2deg);
+    border-color: var(--accent);
+    background: color-mix(in srgb, var(--accent) 12%, transparent);
   }
   @media (max-width: 40rem) {
     .stack__groups {

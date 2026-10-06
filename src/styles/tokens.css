@@ -7,8 +7,10 @@
  * sirve para los dos temas. El tema lo decide `color-scheme`: OSCURO por defecto
  * (decisión del autor) y claro solo si <html data-mode="light"> lo fija.
  *
- * Dirección visual: «Papel y patata» — contornos negros gruesos, sombras duras,
- * colores de pegatina; sale del dibujo de la patata del autor.
+ * Dirección visual (2026-10-06, a petición del autor, referencia alche.studio): técnica y sobria —
+ * fondos casi negros (o gris «plano» en claro), líneas finas de 1 px, mono para etiquetas y el naranja
+ * de la patata como ÚNICO color vivo. Antes era «Papel y patata» (contornos gruesos, sombras duras,
+ * confeti de colores); el autor lo encontró demasiado «happy». La patata sigue siendo SU dibujo original.
  */
 
 :root {
@@ -22,34 +24,35 @@
     rgb(246 239 226 / 0.94)
   ); /* borde «pegatina» para que el contorno se vea sobre fondo oscuro */
 
-  /* ── Color (paleta A «Papel y patata») ──────────────────────────── */
-  --bg: light-dark(#fbf6ec, #14110d);
-  --bg-soft: light-dark(#f3ead8, #1b1712);
-  --surface: light-dark(#fffdf8, #211c15);
-  --ink: light-dark(#17130e, #f6efe2);
-  --ink-muted: light-dark(#5f564a, #b3a998);
-  --line: light-dark(#17130e, #f6efe2);
-  --line-soft: light-dark(rgb(23 19 14 / 0.16), rgb(246 239 226 / 0.16));
+  /* ── Color: neutros casi puros + naranja ─────────────────────────── */
+  --bg: light-dark(#e8eaee, #09090a);
+  --bg-soft: light-dark(#dde0e6, #101012);
+  --surface: light-dark(#f3f4f7, #151517);
+  --ink: light-dark(#0c0d0f, #eeeeef);
+  --ink-muted: light-dark(#555962, #8d8f96);
+  --line: light-dark(#0c0d0f, #eeeeef);
+  --line-soft: light-dark(rgb(12 13 15 / 0.2), rgb(238 238 239 / 0.16));
   --accent: #ffae00; /* relleno (botones, marcas). Nunca como color de texto sobre --bg */
   --accent-ink: #17130e; /* texto sobre --accent */
-  --accent-2: light-dark(#ff6b4a, #ff8a6b);
+  --accent-2: light-dark(#b86f00, #ffc247); /* ámbar: hover y avisos */
   --focus: light-dark(#0b5fff, #ffc94d);
   --glow: light-dark(rgb(255 174 0 / 0.35), rgb(255 174 0 / 0.28));
-  /* Colores de «confeti»: doodles, chispas, malla del hero. Siempre con contorno oscuro. */
-  --pink: light-dark(#ff8fb8, #ff9cc3);
-  --mint: light-dark(#38d39f, #5be3b4);
-  --sky: light-dark(#4db3ff, #7cc8ff);
-  --sun: #ffd23f;
+  /* Tonos de apoyo MUY apagados (estado/datos); el único color vivo es --accent. */
+  --pink: light-dark(#a8788a, #cba3b3);
+  --mint: light-dark(#4a8f78, #8cc3ab);
+  --sky: light-dark(#4f77a3, #8fb1d6);
+  --sun: #ffcf5a;
 
   /* ── Forma ──────────────────────────────────────────────────────── */
-  --border-w: 3px;
-  --icon-stroke: 2.4;
-  --radius-s: 0.6rem;
-  --radius-m: 1.1rem;
-  --radius-l: 1.8rem;
+  --border-w: 1px;
+  --icon-stroke: 1.9;
+  --radius-s: 0.3rem;
+  --radius-m: 0.5rem;
+  --radius-l: 0.9rem;
   --radius-pill: 999px;
-  --shadow-hard: 0.28rem 0.28rem 0 0 var(--line); /* sombra «sticker» */
-  --shadow-hard-lg: 0.5rem 0.5rem 0 0 var(--line);
+  /* Los nombres «hard» vienen de la etapa «sticker»; ahora son sombras suaves y difusas */
+  --shadow-hard: 0 0.6rem 1.8rem -0.9rem light-dark(rgb(12 13 15 / 0.35), rgb(0 0 0 / 0.7));
+  --shadow-hard-lg: 0 1.4rem 3.5rem -1.2rem light-dark(rgb(12 13 15 / 0.4), rgb(0 0 0 / 0.85));
   --blur: 0px;
 
   /* ── Tipografía ─────────────────────────────────────────────────── */

@@ -40,6 +40,8 @@ export const en: Dict = {
     bubble: "Hi! I'm the potato. Let me show you around.",
     mascotAlt: 'Drawing of an orange potato with a black outline, dot eyes and line arms.',
     mascotButton: 'Make the potato jump',
+    fig: 'FIG. 01 — THE POTATO (ORIGINAL DRAWING)',
+    scale: 'SCALE 1:1',
     scroll: 'Keep scrolling',
     jokes: [
       "Ouch! Careful, I'm a potato, not a ball.",

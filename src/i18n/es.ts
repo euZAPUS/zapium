@@ -38,6 +38,8 @@ export const es = {
     mascotAlt: 'Dibujo de una patata naranja con contorno negro, ojos de punto y brazos de línea.',
     mascotButton: 'Hacer saltar a la patata',
     scroll: 'Sigue bajando',
+    fig: 'FIG. 01 — LA PATATA (DIBUJO ORIGINAL)',
+    scale: 'ESC. 1:1',
     jokes: [
       '¡Ay! Cuidado, que soy una patata, no una pelota.',
       'Sin pelo y sin complejos.',

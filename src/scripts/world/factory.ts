@@ -109,9 +109,9 @@ const fragment = /* glsl */ `
     vec3 col = uPanel * (0.72 + 0.5 * hs);
 
     // Celdas «encendidas» con los colores de la marca, que respiran
-    float lit = step(0.9, hash(cell * 1.37 + side * 5.1));
+    float lit = step(0.97, hash(cell * 1.37 + side * 5.1));
     float pulse = 0.5 + 0.5 * sin(uTime * 1.3 + hs * 40.0 + cell.x * 0.7);
-    col = mix(col, pick(hash(cell + 9.1)) * (0.4 + 0.55 * pulse), lit * 0.75);
+    col = mix(col, pick(hash(cell + 9.1)) * (0.3 + 0.5 * pulse), lit * 0.55);
     col *= 0.95 + 0.05 * sin(uv.y / S * 46.0 + uTime * 2.0 * lit); // scanlines de pantalla
 
     // El cursor ilumina las losetas por donde pasa (estela que se apaga) y una onda al hacer clic
@@ -199,10 +199,12 @@ export function createWorld(lowPower = false): WorldScene {
     const light = document.documentElement.dataset.mode === 'light';
     program.uniforms.uLine!.value = mix3(bg, ink, light ? 0.55 : 0.32);
     program.uniforms.uGlow!.value = light ? 0.03 : 0.12;
-    program.uniforms.uA!.value = readColor('--accent');
-    program.uniforms.uB!.value = readColor('--pink');
-    program.uniforms.uC!.value = readColor('--sky');
-    program.uniforms.uD!.value = readColor('--mint');
+    // Paleta contenida: naranja de la patata y tintas neutras (nada de confeti)
+    const accent = readColor('--accent');
+    program.uniforms.uA!.value = accent;
+    program.uniforms.uB!.value = mix3(accent, ink, 0.6);
+    program.uniforms.uC!.value = mix3(bg, ink, 0.55);
+    program.uniforms.uD!.value = mix3(accent, bg, 0.35);
   };
   colors();
 

@@ -17,14 +17,21 @@ Fase 0 completada. **Fase 1 (sistema de diseño, esqueleto y hero espectacular) 
 
 - **Un único sistema visual**: paleta, tipografía, espaciados y easings viven como tokens CSS en un
   solo archivo (`src/styles/tokens.css`). Varía el tipo de interacción entre secciones, nunca la identidad visual.
-- **Estilo «Papel y patata»** (elegido): contornos negros gruesos, sombras duras tipo pegatina, colores de
-  confeti (`--accent` naranja patata, `--pink`, `--mint`, `--sky`, `--sun`). Sale del dibujo de la patata del autor.
+- **Estilo «plano técnico» (giro del 2026-10-06, referencia alche.studio)**. El autor encontró el estilo anterior («Papel y patata»:
+  contornos gruesos, sombras duras, confeti de colores, doodles de pegatina) **demasiado «happy»** y pidió algo más cercano a Alche
+  «creativamente y de contenido». Ahora: neutros casi puros (casi negro en oscuro, gris «plano» en claro), **líneas de 1 px**, sombras
+  suaves y difusas (los tokens `--shadow-hard*` conservan el nombre antiguo), radios pequeños, etiquetas y botones en **monoespaciada**
+  (píldoras finas), títulos en **peso 300–400**, y el **naranja de la patata como único color vivo** (CTA, punto de las etiquetas, hover,
+  datos clave). `--pink/--mint/--sky/--sun` siguen existiendo pero **muy apagados** y casi sin uso; no volver a poner confeti de colores.
+  Los **doodles** conservan sus dibujos pero se pintan como **línea fina de una sola tinta** (piel CSS en `Doodle.astro`; se ponen
+  naranjas al pasar el cursor); las **chispas** (`fx.ts`) son destellos finos naranja/hueso sin contorno; el suelo del mundo y el nudo 3D
+  son casi monocromos (cromo + un poco de naranja). La patata sigue siendo SU dibujo original (no se toca). Se mantiene el tono honesto.
 - **Dos temas: claro y oscuro** (oscuro por defecto), con selector. Colores con `light-dark()`;
   ningún componente lleva colores sueltos.
 - **Quiere impacto desde el primer segundo**: «que nada más abrir se cree algo abusivamente creativo, animado,
-  especial, lleno de brillos». El hero se monta solo (intro coreografiada), con doodles, chispas, mano de cursor
-  y fondo vivo. Más es mejor, **sin romper legibilidad ni rendimiento**.
-- **Iconos y doodles SVG a medida** (`Icon.astro`, `Doodle.astro`): contorno negro grueso, `currentColor`/tokens.
+  especial». El hero se monta solo (intro coreografiada), con doodles de línea, destellos, mano de cursor
+  y fondo vivo, pero **sobrio** (ver «plano técnico»), **sin romper legibilidad ni rendimiento**.
+- **Iconos y doodles SVG a medida** (`Icon.astro`, `Doodle.astro`): trazo fino, `currentColor`/tokens.
   Nada de librerías de iconos genéricas. Temas del autor: rayo (zap), código, velas (trading), bolsa (dropshipping),
   play (vídeo), terminal (shell de 42), cubo (huerto de Zapper), moneda, red (ASIR), «C».
 - **Cursor = mano naranja** con resplandor y estela de chispas (`cursor.ts` + `fx.ts`), solo con puntero fino.

@@ -25,20 +25,7 @@ const s = useT(locale).story.about;
       <ul class="track__rail" data-track-rail>
         {s.cards.map((c, i) => (
           <li class="card tcard">
-            <Doodle
-              name={c.doodle as DoodleName}
-              style="--size:3.6rem"
-              color={
-                [
-                  'var(--pink)',
-                  'var(--accent)',
-                  'var(--sky)',
-                  'var(--mint)',
-                  'var(--sun)',
-                  'var(--accent-2)',
-                ][i % 6]
-              }
-            />
+            <Doodle name={c.doodle as DoodleName} style="--size:3.2rem" />
             <p class="tag">{c.tag}</p>
             <h3>{c.title}</h3>
             <p class="tcard__body">{c.body}</p>
@@ -104,7 +91,7 @@ const s = useT(locale).story.about;
     font-size: var(--text-s);
     color: var(--ink-muted);
     padding-top: var(--space-3);
-    border-top: 2px dashed var(--line-soft);
+    border-top: 1px dashed var(--line-soft);
   }
   .tcard__n {
     position: absolute;

@@ -20,14 +20,14 @@ interface Particle {
   star: boolean;
 }
 
-const TOKENS = ['--accent', '--pink', '--sky', '--mint', '--sun', '--accent-2'] as const;
-const MAX_PARTICLES = 260;
+// Solo naranja y tinta (hueso en oscuro): destellos finos, sin confeti de colores
+const TOKENS = ['--accent', '--accent', '--ink', '--sun'] as const;
+const MAX_PARTICLES = 160;
 
 let canvas: HTMLCanvasElement | undefined;
 let ctx: CanvasRenderingContext2D | null = null;
 let dpr = 1;
 let palette: string[] = [];
-let ink = '#17130e';
 let particles: Particle[] = [];
 let raf = 0;
 let last = 0;
@@ -39,7 +39,6 @@ const css = (token: string) => {
 
 function refreshPalette() {
   palette = TOKENS.map(css);
-  ink = css('--potato-line');
 }
 
 function ensure(): boolean {
@@ -67,7 +66,7 @@ function ensure(): boolean {
 }
 
 function starPath(c: CanvasRenderingContext2D, r: number) {
-  const k = r * 0.14;
+  const k = r * 0.07; // destello fino de 4 puntas
   c.beginPath();
   c.moveTo(0, -r);
   c.quadraticCurveTo(k, -k, r, 0);
@@ -101,8 +100,6 @@ function tick(now: number) {
     c.translate(p.x, p.y);
     c.rotate(p.rot);
     c.fillStyle = p.color;
-    c.strokeStyle = ink;
-    c.lineWidth = 1.6;
     if (p.star) {
       starPath(c, p.size * scale);
     } else {
@@ -110,7 +107,6 @@ function tick(now: number) {
       c.arc(0, 0, p.size * 0.38 * scale, 0, Math.PI * 2);
     }
     c.fill();
-    c.stroke();
     c.restore();
   }
   raf = particles.length ? requestAnimationFrame(tick) : 0;
@@ -123,7 +119,7 @@ function spawn(p: Omit<Particle, 'life' | 'color' | 'star'> & { color?: string; 
   particles.push({
     life: 0,
     color: p.color ?? palette[Math.floor(Math.random() * palette.length)] ?? '#ffae00',
-    star: p.star ?? Math.random() < 0.72,
+    star: p.star ?? Math.random() < 0.85,
     ...p,
   });
   if (!raf) {
@@ -143,7 +139,7 @@ export function burst(x: number, y: number, count = 22, power = 1) {
       vx: Math.cos(a) * v,
       vy: Math.sin(a) * v - 140 * power,
       max: 0.7 + Math.random() * 0.8,
-      size: 6 + Math.random() * 12,
+      size: 5 + Math.random() * 9,
       rot: Math.random() * 6,
       spin: (Math.random() - 0.5) * 9,
     });
@@ -160,7 +156,7 @@ export function trail(x: number, y: number, speed = 10) {
       vx: (Math.random() - 0.5) * 70,
       vy: -20 - Math.random() * 60,
       max: 0.55 + Math.random() * 0.5,
-      size: 5 + Math.random() * 8,
+      size: 4 + Math.random() * 6,
       rot: Math.random() * 6,
       spin: (Math.random() - 0.5) * 6,
     });
