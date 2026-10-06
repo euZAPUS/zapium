@@ -40,7 +40,7 @@ Fase 0 completada. **Fase 1 (sistema de diseño, esqueleto y hero espectacular) 
 ## Carga, mundo y escenas (decisiones del autor)
 
 - **Tema oscuro por defecto** (el autor lo prefiere). El claro se elige con el selector y se recuerda (`localStorage: theme`).
-  No se sigue `prefers-color-scheme`. El tema vive en `<html data-mode>` (NO `data-theme`: el Artifact de claude.ai pone el suyo y pisaba el nuestro). Ojo: **`body` no lleva fondo** (el de `<html>` se ve detrás del mundo).
+  No se sigue `prefers-color-scheme`. El tema vive en `<html data-mode>` (NO `data-theme`: el Artifact de claude.ai pone el suyo y pisaba el nuestro). Ojo: **`body` no lleva fondo** (`background: transparent` explícito: el esqueleto del Artifact le pone uno blanquecino y tapaba el tema y el mundo; el de `<html>` se ve detrás del mundo).
 - **Estética de la home = «factory grid» + plano** (referencia `docs/reference-alche.md`) con el toque amigable de la patata:
   - `World.astro` + `scripts/world/`: pasillo de paneles en perspectiva en un shader (OGL, ~0,6 de resolución) que avanza con el
     scroll y se inclina con el ratón; el cursor ilumina las losetas (estela) y el clic lanza una onda. **También en móvil** (más barato:
@@ -58,8 +58,18 @@ Fase 0 completada. **Fase 1 (sistema de diseño, esqueleto y hero espectacular) 
   ligada al scroll, «tock» sutil en pulsaciones, campanilla al acabar la carga, «boing» de la patata. Aviso en la carga + botón en la
   cabecera; elección en `localStorage: zapium-sound`. Arranca apagado hasta que el visitante lo activa.
 - **Escenas de contenido** (textos reales en `src/i18n/*.ts → story`, con `[TODO]` donde falta información):
-  - `ProjectScene`: escena fijada con vídeo «real» en una ventana que gira en 3D delante y **el mismo vídeo desenfocado de fondo**
-    (`ProofVideo`), y la patata guía (`Guide`) que cruza girando con el scroll.
+  - `ProjectWall` (+ `scripts/wall.ts`): **la pared de proyectos** (sustituye a la escena fijada, que el autor encontró monótona: quería
+    «lateral, 3D, en un grid, animado y flotante»). Rejilla de dos filas; el destacado (Zapper AIO) ocupa 3×2 celdas con el vídeo «real»
+    delante del **mismo vídeo desenfocado de fondo** (`ProofVideo`), más 8 tarjetas (Libft, zapium, las 3 apps del lab, dropshipping,
+    trading, YouTube IA, GitHub; textos en `story.projects.items`, enlaces en el `meta` del componente). Escritorio: la sección se fija y el
+    scroll vertical recorre la pared; el JS escribe `--hp` (avance), `--ep` (entrada) y por tarjeta `--d` (distancia al centro, con zona
+    muerta) y el CSS lo convierte en giro/profundidad/escala tipo coverflow con perspectiva compartida; las tarjetas flotan (`bob`), se
+    inclinan hacia el puntero con brillo, el punto de fuga sigue al ratón y la patata guía cruza girando. Condición de fijado:
+    `min-width: 60rem` + `min-height: 38rem` + sin reduced-motion (**la misma condición está en el `@media` del CSS y en `wall.ts`**;
+    si se cambia una, cambiar la otra). Móvil: el destacado va apilado y las 8 tarjetas forman un carril de dos filas con scroll-snap nativo
+    y la misma inclinación (con `perspective()` por tarjeta, porque `overflow` aplana el 3D). Reduced-motion: rejilla normal. Al enfocar
+    con teclado una tarjeta fuera de plano, `wall.ts` recoloca el scroll. Hay que mantener `grid-template-columns: minmax(0, 1fr)` en el
+    `.wall__stick`: sin eso la rejilla se ensancha al ancho de toda la pared y el punto de fuga se descentra.
   - `AboutTrack`: «Sobre mí» como **scroll horizontal** fijado (tarjetas: dropshipping, trading simulado, YouTube IA, 42, ASIR, fotos).
   - `AiSection`, `StackSection`, `ContactSection` (correo montado por JS, no en claro en el HTML; botón de copiar).
   - Móvil y reduced-motion: todo apilado, sin fijados.

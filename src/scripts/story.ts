@@ -1,6 +1,6 @@
 /**
  * Coreografía de las secciones con scroll:
- *  - `--sp` (escena fijada) y `--hp` (carril horizontal) = progreso 0 → 1 de cada una;
+ *  - `--hp` (carril horizontal de «Sobre mí») = progreso 0 → 1;
  *  - `--travel` = px que debe avanzar el carril horizontal;
  *  - vídeos de «prueba»: solo se reproducen mientras están en pantalla (mudos, en bucle);
  *  - correo: se monta en el navegador (no aparece en claro en el HTML) y se puede copiar.
@@ -9,7 +9,6 @@
 export {};
 
 const calm = matchMedia('(prefers-reduced-motion: reduce)').matches;
-const scenes = [...document.querySelectorAll<HTMLElement>('[data-scene]')];
 const tracks = [...document.querySelectorAll<HTMLElement>('[data-track]')];
 
 const clamp01 = (v: number) => Math.max(0, Math.min(1, v));
@@ -25,11 +24,6 @@ function measure() {
 let frame = 0;
 function update() {
   frame = 0;
-  for (const el of scenes) {
-    const r = el.getBoundingClientRect();
-    const total = r.height - innerHeight;
-    el.style.setProperty('--sp', (total > 0 ? clamp01(-r.top / total) : 0).toFixed(4));
-  }
   for (const el of tracks) {
     const r = el.getBoundingClientRect();
     const total = r.height - innerHeight;
@@ -40,7 +34,7 @@ const schedule = () => {
   if (!frame) frame = requestAnimationFrame(update);
 };
 
-if (scenes.length || tracks.length) {
+if (tracks.length) {
   measure();
   update();
   addEventListener('scroll', schedule, { passive: true });

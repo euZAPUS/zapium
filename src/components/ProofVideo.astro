@@ -155,11 +155,15 @@ const { label, title = '', src, backdrop = false, class: className } = Astro.pro
     background: none;
     filter: blur(34px) saturate(1.5) brightness(0.55);
   }
+  /* En el tema claro el fondo desenfocado no se oscurece: queda un lavado pastel */
+  :global(html[data-mode='light']) .proof--backdrop {
+    filter: blur(34px) saturate(1.25) brightness(1.08);
+  }
   .proof--backdrop .proof__todo {
     background:
       radial-gradient(40% 50% at 25% 30%, var(--accent), transparent 70%),
       radial-gradient(35% 45% at 75% 35%, var(--pink), transparent 70%),
-      radial-gradient(45% 50% at 55% 80%, var(--sky), transparent 70%), #14110d;
+      radial-gradient(45% 50% at 55% 80%, var(--sky), transparent 70%), var(--bg);
     background-size: 140% 140%;
     animation: drift 14s ease-in-out infinite alternate;
   }
