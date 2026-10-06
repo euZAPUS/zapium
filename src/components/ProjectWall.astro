@@ -9,19 +9,26 @@
  * El proyecto destacado (Zapper AIO) ocupa 3×2 celdas y lleva el vídeo «real» delante del
  * mismo vídeo desenfocado de fondo.
  */
+import { existsSync } from 'node:fs';
+import { join } from 'node:path';
 import { PERSON, type Locale } from '~/config/site';
 import { labPath, useT } from '~/i18n';
 import Doodle, { type DoodleName } from './Doodle.astro';
 import Icon from './Icon.astro';
 import Guide from './Guide.astro';
 import ProofVideo from './ProofVideo.astro';
+import DemoDialog from './DemoDialog.astro';
 
 interface Props {
   locale: Locale;
 }
 const { locale } = Astro.props;
 const s = useT(locale).story.projects;
-const repo = `${PERSON.github}/zapper-aio`;
+// OJO: `zapper-aio` es PRIVADO (404 para los visitantes). Solo se enlaza lo público: el repo de descargas.
+const repo = `${PERSON.github}/zapper-aio-releases`;
+// Demo jugable (public/demos/huerto/, la entrega el autor): sin la carpeta no se pinta el botón.
+const demoSrc = '/demos/huerto/index.html';
+const hasDemo = existsSync(join(process.cwd(), 'public', demoSrc));
 const releases = `${PERSON.github}/zapper-aio-releases/releases/latest`;
 const lab = labPath(locale);
 
@@ -89,13 +96,27 @@ const meta: Record<string, { href: string; doodle: DoodleName; color: string }> 
                   ))}
                 </dl>
                 <div class="hero__links">
-                  <a class="btn btn--primary btn--small" href={repo} data-cursor="link">
-                    <Icon name="branch" />
-                    {s.repo}
-                  </a>
-                  <a class="btn btn--small" href={releases} data-cursor="link">
+                  {hasDemo && (
+                    <DemoDialog
+                      src={demoSrc}
+                      lang={locale}
+                      label={s.demo}
+                      title={s.demoTitle}
+                      note={s.demoNote}
+                      close={s.demoClose}
+                    />
+                  )}
+                  <a
+                    class:list={['btn', 'btn--small', { 'btn--primary': !hasDemo }]}
+                    href={releases}
+                    data-cursor="link"
+                  >
                     <Icon name="download" />
                     {s.download}
+                  </a>
+                  <a class="btn btn--small" href={repo} data-cursor="link">
+                    <Icon name="branch" />
+                    {s.repo}
                   </a>
                 </div>
               </div>
@@ -262,6 +283,11 @@ const meta: Record<string, { href: string; doodle: DoodleName; color: string }> 
   }
   .pcard:nth-child(even) .pcard__float {
     animation-direction: alternate-reverse;
+  }
+  /* Con el cursor o el foco encima, la tarjeta se queda quieta (se puede pulsar sin perseguirla) */
+  .pcard:hover .pcard__float,
+  .pcard:focus-within .pcard__float {
+    animation-play-state: paused;
   }
   .pcard--hero .pcard__float {
     animation-name: bob-soft; /* la tarjeta grande oscila menos: 0,6° en 70 rem se nota mucho */

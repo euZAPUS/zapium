@@ -12,6 +12,7 @@
  *
  * Uso: pnpm build && node scripts/preview-bundle.mjs   → escribe .preview/
  */
+import { existsSync } from 'node:fs';
 import { cp, mkdir, readFile, readdir, rm, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 
@@ -26,6 +27,8 @@ await rm(OUT, { recursive: true, force: true });
 for (const p of PAGES) await mkdir(join(OUT, p.dest, '..'), { recursive: true });
 await cp('dist/_astro', join(OUT, 'assets'), { recursive: true });
 await cp('dist/favicon.png', join(OUT, 'favicon.png'));
+// Demos jugables (public/demos/*): se copian tal cual; el iframe las carga con ruta relativa.
+if (existsSync('dist/demos')) await cp('dist/demos', join(OUT, 'demos'), { recursive: true });
 
 // CSS: url(/_astro/x) → url(./x) (relativo al propio CSS).
 // JS: el helper de precarga de Vite antepone «/» a las rutas de los fragmentos (`/_astro/x.js`);
@@ -49,6 +52,7 @@ function localize(html, up, isMain) {
   let out = html
     .replaceAll('"/_astro/', `"${up}assets/`)
     .replaceAll('"/favicon.png"', `"${up}favicon.png"`)
+    .replaceAll('data-src="/demos/', `data-src="${up}demos/`)
     // enlaces entre páginas (con y sin ancla), de más específico a menos
     .replace(/href="\/en\/lab\/(#[^"]*)?"/g, (_, h = '') => `href="${up}en/lab/index.html${h}"`)
     .replace(/href="\/lab\/(#[^"]*)?"/g, (_, h = '') => `href="${up}lab/index.html${h}"`)

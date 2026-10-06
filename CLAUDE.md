@@ -70,6 +70,15 @@ Fase 0 completada. **Fase 1 (sistema de diseño, esqueleto y hero espectacular) 
     y la misma inclinación (con `perspective()` por tarjeta, porque `overflow` aplana el 3D). Reduced-motion: rejilla normal. Al enfocar
     con teclado una tarjeta fuera de plano, `wall.ts` recoloca el scroll. Hay que mantener `grid-template-columns: minmax(0, 1fr)` en el
     `.wall__stick`: sin eso la rejilla se ensancha al ancho de toda la pared y el punto de fuga se descentra.
+  - `DemoDialog` (+ `scripts/demo.ts`): **demo jugable** de Zapper AIO («Zapper Huerto»: temporizador + huerto con datos de ejemplo, hecha por
+    el autor con el mismo código de la app). Vive en **`public/demos/huerto/`** (`index.html` + `assets/huerto.js` + `assets/style.css`, estática, rutas
+    relativas, sin red, sin guardar nada, ES/EN con `?lang=`; la regenera `npm run build:huerto -w @zapper/desktop` en el repo privado). El botón
+    «Probar la demo» de la tarjeta destacada **solo se pinta si esa carpeta existe** (`existsSync` en `ProjectWall.astro`). Al pulsarlo se abre un
+    `<dialog>` modal y SOLO entonces se crea el `<iframe sandbox="allow-scripts allow-popups allow-popups-to-escape-sandbox">` (sin
+    `allow-same-origin`: origen opaco, `localStorage` falla dentro, por eso la demo guarda en memoria); al cerrar se destruye el iframe. Dentro del
+    diálogo se usa el cursor nativo (la mano personalizada no entra en iframes). La tarjeta deja de flotar con el cursor o el foco encima.
+    La demo es **código compilado con todos los derechos reservados** (no MIT; ver `LICENSE-CONTENT.md`). Pendiente: comprobar que el bundle
+    conserva los avisos de licencia de sus dependencias (React, etc.) y añadirlos a `THIRD_PARTY_NOTICES.md`.
   - `AboutTrack`: «Sobre mí» como **scroll horizontal** fijado (tarjetas: dropshipping, trading simulado, 42, ASIR, fotos).
   - `AiSection`, `StackSection`, `ContactSection` (correo montado por JS, no en claro en el HTML; botón de copiar).
   - Móvil y reduced-motion: todo apilado, sin fijados.
@@ -180,6 +189,8 @@ El hook `.githooks/pre-commit` (activado por `pnpm install` vía `prepare`) ejec
 
 ## Honestidad del contenido
 
+- **Solo enlazar repos PÚBLICOS**: `zapper-aio` y `zapper-datos` son **privados** (404 para los visitantes; ya nos pasó con el botón «Ver el repositorio»).
+  Públicos: `zapium`, `zapper-aio-releases` (descargas), `Campus42`, `zapped`. Comprobar la visibilidad antes de enlazar un repo nuevo.
 - **YouTube con IA: fuera** (decisión del autor, no rentaba). **Zapper AIO lo creó él** («Mi rol: Autor»).
 - **No inventar** datos, proyectos, experiencia ni resultados. Dropshipping y trading simulado
   son **proyectos/experimentos personales y de aprendizaje**, no experiencia laboral: se cuentan así,

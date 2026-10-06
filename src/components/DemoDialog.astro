@@ -1,0 +1,141 @@
+---
+/**
+ * Demo jugable de un proyecto dentro de la web: botón + <dialog> modal con un <iframe>.
+ * Reglas (CLAUDE.md → Presupuestos): el iframe se crea SOLO al hacer clic (scripts/demo.ts),
+ * lleva `sandbox="allow-scripts …"` SIN `allow-same-origin` (origen opaco: no puede tocar
+ * esta página ni su almacenamiento) y se destruye al cerrar para parar el temporizador y
+ * el WebGL de la demo. La demo vive en public/demos/NOMBRE/ (estática, rutas relativas,
+ * sin red, sin guardar nada). Si esa carpeta no existe, el componente no pinta nada.
+ */
+import Icon from './Icon.astro';
+
+interface Props {
+  /** Ruta pública del index.html de la demo */
+  src: string;
+  /** Idioma que se le pasa a la demo (?lang=) */
+  lang: string;
+  label: string;
+  title: string;
+  note: string;
+  close: string;
+  class?: string;
+}
+const { src, lang, label, title, note, close, class: className } = Astro.props;
+const url = `${src}?lang=${lang}`;
+---
+
+<button
+  type="button"
+  class:list={['btn', 'btn--primary', 'btn--small', className]}
+  data-demo-open
+  data-cursor="link"
+>
+  <Icon name="arrow" />
+  {label}
+</button>
+
+<dialog
+  class="demo"
+  data-demo-dialog
+  data-src={url}
+  data-title={title}
+  aria-labelledby="demo-title"
+>
+  <header class="demo__bar">
+    <div>
+      <p id="demo-title" class="demo__title">
+        {title}
+      </p>
+      <p class="demo__note">{note}</p>
+    </div>
+    <button type="button" class="btn btn--small" data-demo-close>
+      <Icon name="close" />
+      {close}
+    </button>
+  </header>
+  <div class="demo__body" data-demo-body></div>
+</dialog>
+
+<style is:global>
+  dialog.demo {
+    width: min(72rem, 96vw);
+    height: min(56rem, 92dvh);
+    max-width: none;
+    max-height: none;
+    margin: auto;
+    padding: 0;
+    overflow: hidden;
+    color: var(--ink);
+    background: var(--surface);
+    border: var(--border-w) solid var(--line);
+    border-radius: var(--radius-m);
+    box-shadow: var(--shadow-hard-lg);
+  }
+  dialog.demo[open] {
+    display: grid;
+    grid-template-rows: auto minmax(0, 1fr);
+  }
+  dialog.demo::backdrop {
+    background: rgb(10 8 6 / 0.72);
+    backdrop-filter: blur(6px);
+  }
+  .demo__bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-4);
+    padding: var(--space-3) var(--space-4);
+    border-bottom: var(--border-w) solid var(--line);
+    background: var(--bg-soft);
+  }
+  .demo__title {
+    margin: 0;
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: var(--text-m);
+    line-height: 1.1;
+  }
+  .demo__note {
+    margin: 0.2rem 0 0;
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    color: var(--ink-muted);
+  }
+  .demo__body {
+    position: relative;
+    min-height: 0;
+    background: #0e0c09;
+  }
+  .demo__body iframe {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    max-width: none;
+    border: 0;
+  }
+  /* La mano personalizada no entra en el iframe: dentro del diálogo se usa el cursor nativo */
+  html.has-cursor dialog.demo,
+  html.has-cursor dialog.demo * {
+    cursor: auto;
+  }
+  html.has-cursor dialog.demo button {
+    cursor: pointer;
+  }
+  html.is-demo {
+    overflow: hidden;
+  }
+  html.is-demo .cursor {
+    opacity: 0;
+  }
+  /* Móvil: a pantalla completa */
+  @media (max-width: 40rem) {
+    dialog.demo {
+      width: 100vw;
+      height: 100dvh;
+      border-radius: 0;
+      border-width: 0;
+      box-shadow: none;
+    }
+  }
+</style>
