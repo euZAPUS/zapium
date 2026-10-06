@@ -49,7 +49,11 @@ const save = (buf, name) =>
     clip: { x: 300, y: 2040, width: 680, height: 500 },
     fullPage: true,
   });
-  const bg = { r: 14, g: 15, b: 22 };
+  // El fondo del collage es el MISMO que el de la página de la demo (se lee de un píxel), para que no se vea la unión
+  const px = await sharp(await page.screenshot({ clip: { x: 8, y: 8, width: 4, height: 4 } }))
+    .raw()
+    .toBuffer();
+  const bg = { r: px[0] ?? 14, g: px[1] ?? 15, b: px[2] ?? 22 };
   const t = await sharp(timer).resize({ height: 760 }).toBuffer();
   const g = await sharp(garden).resize({ width: 640 }).toBuffer();
   const gm = await sharp(g).metadata();
@@ -72,13 +76,18 @@ const apps = [
   { id: 'risk', example: null },
 ];
 {
-  const ctx = await browser.newContext({ viewport: { width: W, height: H }, deviceScaleFactor: 1 });
+  // 1060×662 (16:10) a 1,21× → 1283×801; el contenedor mide ~980 px y el margen es mínimo
+  const ctx = await browser.newContext({
+    viewport: { width: 1060, height: 662 },
+    deviceScaleFactor: 1.21,
+  });
   const page = await ctx.newPage();
   await page.addInitScript(() => localStorage.setItem('theme', 'dark'));
   await page.goto(`${base}/lab/?nointro`, { waitUntil: 'networkidle' });
   await page.addStyleTag({
     content:
-      '.header, .hud, .gizmo, [data-hud], .lab__head, .cursor, .fx-canvas{display:none!important}',
+      // Sin el «mundo» (rejilla/pasillo del fondo) ni nada fijo: la app queda sobre un fondo plano y liso
+      '.header, .hud, .gizmo, [data-hud], .lab__head, .cursor, .fx-canvas, .world, [data-world]{display:none!important} html, body{background:#09090a!important}',
   });
   for (const a of apps) {
     const el = page.locator(`#${a.id}`);

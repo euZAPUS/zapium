@@ -34,7 +34,10 @@ Fase 0 completada. **Fase 1 (sistema de diseño, esqueleto y hero espectacular) 
 - **Iconos y doodles SVG a medida** (`Icon.astro`, `Doodle.astro`): trazo fino, `currentColor`/tokens.
   Nada de librerías de iconos genéricas. Temas del autor: rayo (zap), código, velas (trading), bolsa (dropshipping),
   play (vídeo), terminal (shell de 42), cubo (huerto de Zapper), moneda, red (ASIR), «C».
-- **Cursor = mano naranja** con resplandor y estela de chispas (`cursor.ts` + `fx.ts`), solo con puntero fino.
+- **Cursor = mano naranja** pegada al puntero (SIN suavizado: se coloca síncronamente en `pointermove`; el autor notó «input lag»), resplandor
+  pequeño y estela discreta de chispas (`cursor.ts` + `fx.ts`: 1 chispa cada ~56 px, lienzo a 1×, máx. 70), solo con puntero fino.
+  **Rendimiento (norma):** nada de `backdrop-filter` sobre contenido que esté encima del WebGL (recompone el desenfoque cada fotograma);
+  el mundo se deja de pintar mientras Proyectos lo tapa (`html.is-covered`); `hero/interact.ts` solo trabaja con el hero a la vista.
 - **Crédito visible (pedido por el autor):** el pie de página dice «Diseño inspirado en alche.studio» (enlace, es/en) y el README lo recoge. No quitarlo.
 - **Referencias del autor:** reels de Instagram de webs hiperanimadas (mano que sigue al cursor con
   resplandores, scroll que entra en portales). No se han podido ver (Instagram bloqueado); ver `docs/content-notes.md`.
@@ -74,7 +77,7 @@ Fase 0 completada. **Fase 1 (sistema de diseño, esqueleto y hero espectacular) 
     pantallas (**paralaje**); (2) **paneles** = una pantalla 3D suelta por proyecto: convexa, con **lente de barril + aberración cromática**,
     viñeta, borde de cristal iridiscente, giro hacia el centro (coverflow), vaivén (flotan) y una **onda/doblez** que la recorre con la velocidad
     del scroll. Cada pantalla es un **vídeo** (`public/videos/NOMBRE.*`, textura viva, solo se reproduce la activa), una **captura**
-    (`public/works/NOMBRE.webp`, la genera `node scripts/capture-works.mjs`; **regenerarla cuando cambie el aspecto de las apps**) o un marcador
+    (`public/works/NOMBRE.webp`, la genera `node scripts/capture-works.mjs`; **regenerarla cuando cambie el aspecto de las apps**; salen sobre fondo plano y liso, SIN el mundo/grid de detrás: el autor vio el grid viejo dentro de las pantallas) o un marcador
     `[TODO]` dibujado en un canvas. Escritorio y móvil: la sección se fija (`data-gl`) y el scroll vertical recorre las pantallas con una pausa en
     cada una; el texto del proyecto activo (DOM real; el resto `visibility:hidden`) va **abajo a la izquierda** como en la referencia, con
     números 01–05 abajo a la derecha (también flechas del teclado y foco); la patata guía cruza por abajo. En vertical (móvil) la pantalla sube y el

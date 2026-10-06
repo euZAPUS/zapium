@@ -22,7 +22,7 @@ interface Particle {
 
 // Solo naranja y tinta (hueso en oscuro): destellos finos, sin confeti de colores
 const TOKENS = ['--accent', '--accent', '--ink', '--sun'] as const;
-const MAX_PARTICLES = 160;
+const MAX_PARTICLES = 70;
 
 let canvas: HTMLCanvasElement | undefined;
 let ctx: CanvasRenderingContext2D | null = null;
@@ -51,7 +51,7 @@ function ensure(): boolean {
   ctx = canvas.getContext('2d');
   const resize = () => {
     if (!canvas) return;
-    dpr = Math.min(devicePixelRatio || 1, 2);
+    dpr = 1; // las chispas son pequeñas: a 1× el lienzo cuesta menos y no se nota
     canvas.width = Math.round(innerWidth * dpr);
     canvas.height = Math.round(innerHeight * dpr);
   };
@@ -146,19 +146,16 @@ export function burst(x: number, y: number, count = 22, power = 1) {
   }
 }
 
-/** Chispa suelta de la estela del cursor; `speed` en px/frame. */
-export function trail(x: number, y: number, speed = 10) {
-  const n = speed > 28 ? 2 : 1;
-  for (let i = 0; i < n; i++) {
-    spawn({
-      x: x + (Math.random() - 0.5) * 14,
-      y: y + (Math.random() - 0.5) * 14,
-      vx: (Math.random() - 0.5) * 70,
-      vy: -20 - Math.random() * 60,
-      max: 0.55 + Math.random() * 0.5,
-      size: 4 + Math.random() * 6,
-      rot: Math.random() * 6,
-      spin: (Math.random() - 0.5) * 6,
-    });
-  }
+/** Chispa suelta de la estela del cursor (se llama pocas veces: cada ~56 px de recorrido). */
+export function trail(x: number, y: number) {
+  spawn({
+    x: x + (Math.random() - 0.5) * 14,
+    y: y + (Math.random() - 0.5) * 14,
+    vx: (Math.random() - 0.5) * 70,
+    vy: -20 - Math.random() * 60,
+    max: 0.4 + Math.random() * 0.35,
+    size: 4 + Math.random() * 6,
+    rot: Math.random() * 6,
+    spin: (Math.random() - 0.5) * 6,
+  });
 }

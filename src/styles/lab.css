@@ -3,11 +3,10 @@
   display: grid;
   gap: var(--space-5);
   padding: var(--space-6);
-  background: color-mix(in srgb, var(--surface) 82%, transparent);
+  background: color-mix(in srgb, var(--surface) 92%, transparent);
   border: var(--border-w) solid var(--line-soft);
   border-radius: var(--radius-l);
   box-shadow: var(--shadow-hard-lg);
-  backdrop-filter: blur(12px);
   scroll-margin-top: calc(var(--header-h) + var(--space-5));
 }
 .app__body {

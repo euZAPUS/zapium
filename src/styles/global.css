@@ -106,7 +106,7 @@ button {
 
 /* Botones: píldora fina (como el «Contact / Recruit» de la referencia); un único componente para toda la web */
 .btn {
-  --btn-bg: color-mix(in srgb, var(--surface) 55%, transparent);
+  --btn-bg: color-mix(in srgb, var(--surface) 78%, transparent);
   --btn-fg: var(--ink);
   --btn-line: var(--line-soft);
   display: inline-flex;
@@ -126,7 +126,6 @@ button {
   text-decoration: none;
   cursor: pointer;
   white-space: nowrap;
-  backdrop-filter: blur(10px);
   transition:
     background var(--dur-fast) var(--ease-out),
     border-color var(--dur-fast) var(--ease-out),
@@ -173,11 +172,10 @@ button {
 /* Panel: relleno translúcido, línea fina y sin sombra dura */
 .card {
   padding: var(--space-5);
-  background: color-mix(in srgb, var(--surface) 78%, transparent);
+  background: color-mix(in srgb, var(--surface) 90%, transparent);
   border: var(--border-w) solid var(--line-soft);
   border-radius: var(--radius-m);
   box-shadow: var(--shadow-hard);
-  backdrop-filter: blur(12px);
 }
 /* Etiqueta mono con un punto de color (el naranja de la patata) */
 .tag {
@@ -242,9 +240,9 @@ html.has-cursor .cursor {
   will-change: translate;
 }
 .cursor__glow {
-  width: 5.5rem;
-  height: 5.5rem;
-  margin: -2.75rem 0 0 -2.75rem;
+  width: 3.6rem;
+  height: 3.6rem;
+  margin: -1.8rem 0 0 -1.8rem;
   border-radius: 50%;
   background: radial-gradient(circle, var(--glow), transparent 68%);
   mix-blend-mode: normal;
@@ -263,7 +261,7 @@ html.has-cursor .cursor {
   stroke-width: 3.6;
   stroke-linejoin: round;
   stroke-linecap: round;
-  filter: drop-shadow(0 0 0.35rem var(--glow)) drop-shadow(0.12rem 0.16rem 0 rgb(23 19 14 / 0.55));
+  filter: drop-shadow(0.1rem 0.14rem 0 rgb(23 19 14 / 0.5));
   transition:
     scale var(--dur-base) var(--ease-pop),
     fill var(--dur-fast) var(--ease-out);

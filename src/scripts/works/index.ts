@@ -215,6 +215,11 @@ async function init(section: HTMLElement) {
     last = now;
     const r = read();
     visible = r.bottom > -300 && r.top < innerHeight + 300;
+    // Con la sección fijada ocupa toda la pantalla y es opaca: el mundo de detrás se deja de pintar
+    document.documentElement.classList.toggle(
+      'is-covered',
+      r.top <= 1 && r.bottom >= innerHeight - 1,
+    );
     const prev = p;
     p += (target - p) * (1 - Math.exp(-dt * 6.5));
     const vel = Math.abs(p - prev) / dt;

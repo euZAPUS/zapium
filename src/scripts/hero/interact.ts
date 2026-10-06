@@ -15,10 +15,12 @@ const calm = prefersReducedMotion();
 // ── Parallax del hero y mirada/inclinación de la patata ───────────────
 if (hero && hasFinePointer() && !calm) {
   let frame = 0;
+  let inView = true;
+  new IntersectionObserver(([entry]) => (inView = !!entry?.isIntersecting)).observe(hero);
   addEventListener(
     'pointermove',
     (e) => {
-      if (frame) return;
+      if (frame || !inView) return;
       frame = requestAnimationFrame(() => {
         frame = 0;
         const r = hero.getBoundingClientRect();

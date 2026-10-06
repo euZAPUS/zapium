@@ -258,7 +258,7 @@ export function createWorksScene(sources: ScreenSource[], lowPower = false): Wor
   const renderer = new Renderer({
     alpha: false,
     antialias: !lowPower,
-    dpr: Math.min(devicePixelRatio || 1, lowPower ? 1 : 1.5),
+    dpr: Math.min(devicePixelRatio || 1, lowPower ? 1 : 1.25),
   });
   const gl = renderer.gl;
   gl.disable(gl.DEPTH_TEST);

@@ -52,7 +52,7 @@ async function start(el: HTMLElement) {
     'pointermove',
     (e) => {
       const now = performance.now();
-      if (e.pointerType !== 'mouse' || now - lastPush < 45) return;
+      if (e.pointerType !== 'mouse' || now - lastPush < 90) return;
       lastPush = now;
       const hit = scene.cast(mouse.x, -mouse.y, { ...view, dim: 1 });
       trail.unshift({ p: hit, born: now });
@@ -71,6 +71,8 @@ async function start(el: HTMLElement) {
   let visible = true;
   let raf = 0;
   const t0 = performance.now();
+  // Proyectos (pantalla completa, opaca) tapa el mundo: no tiene sentido pintarlo detrás
+  const covered = () => document.documentElement.classList.contains('is-covered');
 
   const loop = (now: number) => {
     const t = (now - t0) / 1000;
@@ -98,16 +100,20 @@ async function start(el: HTMLElement) {
       ripple: ripple ? [...ripple.p, (nowMs - ripple.born) / 1000] : null,
     });
     dispatchEvent(new CustomEvent('zapium:view', { detail: { ...view, z: view.z } }));
-    raf = visible && !document.hidden ? requestAnimationFrame(loop) : 0;
+    raf = visible && !covered() && !document.hidden ? requestAnimationFrame(loop) : 0;
   };
   const wake = () => {
-    if (!raf && visible && !document.hidden) raf = requestAnimationFrame(loop);
+    if (!raf && visible && !covered() && !document.hidden) raf = requestAnimationFrame(loop);
   };
   new IntersectionObserver(([entry]) => {
     visible = !!entry?.isIntersecting;
     wake();
   }).observe(el);
   document.addEventListener('visibilitychange', wake);
+  new MutationObserver(wake).observe(document.documentElement, {
+    attributes: true,
+    attributeFilter: ['class'],
+  });
 
   scene.frame(0, { ...view, dim: 0.86 });
   requestAnimationFrame(() => {
