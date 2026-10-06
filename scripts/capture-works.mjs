@@ -37,7 +37,7 @@ const save = (buf, name) =>
     deviceScaleFactor: 1.5,
   });
   const page = await ctx.newPage();
-  await page.goto(`${base}/demos/huerto/index.html?lang=es`, { waitUntil: 'networkidle' });
+  await page.goto(`${base}/demos/huerto/huerto.html?lang=es`, { waitUntil: 'networkidle' });
   await page.waitForTimeout(1500);
   await page.getByText('Rellenar con un huerto de ejemplo').click();
   await page.waitForTimeout(1500);

@@ -18,10 +18,11 @@ interface Props {
   title: string;
   note: string;
   close: string;
+  loading: string;
+  error: string;
   class?: string;
 }
-const { src, lang, label, title, note, close, class: className } = Astro.props;
-const url = `${src}?lang=${lang}`;
+const { src, lang, label, title, note, close, loading, error, class: className } = Astro.props;
 ---
 
 <button
@@ -37,7 +38,10 @@ const url = `${src}?lang=${lang}`;
 <dialog
   class="demo"
   data-demo-dialog
-  data-src={url}
+  data-src={src}
+  data-lang={lang}
+  data-loading={loading}
+  data-error={error}
   data-title={title}
   aria-labelledby="demo-title"
 >
@@ -105,6 +109,19 @@ const url = `${src}?lang=${lang}`;
     position: relative;
     min-height: 0;
     background: #050506;
+  }
+  .demo__msg {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    margin: 0;
+    padding: var(--space-5);
+    text-align: center;
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    letter-spacing: 0.08em;
+    color: var(--ink-muted);
   }
   .demo__body iframe {
     position: absolute;

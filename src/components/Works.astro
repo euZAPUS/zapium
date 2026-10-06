@@ -29,7 +29,7 @@ const isPublic = (p: string) => existsSync(join(process.cwd(), 'public', p));
 const repo = `${PERSON.github}/zapper-aio-releases`;
 const releases = `${PERSON.github}/zapper-aio-releases/releases/latest`;
 const lab = labPath(locale);
-const demoSrc = '/demos/huerto/index.html';
+const demoSrc = '/demos/huerto/huerto.html'; // archivo ÚNICO (todo inline): ver scripts/demo.ts
 const hasDemo = isPublic(demoSrc);
 
 interface Link {
@@ -190,6 +190,8 @@ const nn = (n: number) => String(n).padStart(2, '0');
                   title={s.demoTitle}
                   note={s.demoNote}
                   close={s.demoClose}
+                  loading={s.demoLoading}
+                  error={s.demoError}
                 />
               )}
               {w.links.map((l) => (

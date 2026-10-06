@@ -79,14 +79,16 @@ Fase 0 completada. **Fase 1 (sistema de diseño, esqueleto y hero espectacular) 
     Añadir un proyecto: entrada en `story.projects.items` (es/en) + objeto en `works` de `Works.astro` (+ captura o vídeo). Los enlaces SOLO a
     repos públicos. Escena en `scene.ts`: `SCREEN_W`, `SPACING`, `FOV` y el GLSL `DEFORM` son los mandos del «efecto ola».
   - `DemoDialog` (+ `scripts/demo.ts`): **demo jugable** de Zapper AIO («Zapper Huerto»: temporizador + huerto con datos de ejemplo, hecha por
-    el autor con el mismo código de la app). Vive en **`public/demos/huerto/`** (`index.html` + `assets/huerto.js` + `assets/style.css`, estática, rutas
-    relativas, sin red, sin guardar nada, ES/EN con `?lang=`; la regenera `npm run build:huerto -w @zapper/desktop` en el repo privado). El botón
-    «Probar la demo» de la tarjeta destacada **solo se pinta si esa carpeta existe** (`existsSync` en `Works.astro`). Al pulsarlo se abre un
-    `<dialog>` modal y SOLO entonces se crea el `<iframe sandbox="allow-scripts allow-popups allow-popups-to-escape-sandbox">` (sin
-    `allow-same-origin`: origen opaco, `localStorage` falla dentro, por eso la demo guarda en memoria); al cerrar se destruye el iframe. Dentro del
-    diálogo se usa el cursor nativo (la mano personalizada no entra en iframes). La tarjeta deja de flotar con el cursor o el foco encima.
-    La demo es **código compilado con todos los derechos reservados** (no MIT; ver `LICENSE-CONTENT.md`). Los avisos de React/Tailwind/motion están en
-    `THIRD_PARTY_NOTICES.md` (pendiente confirmar la lista exacta con el `package.json` del repo privado).
+    el autor con el mismo código de la app). Vive en **`public/demos/huerto/huerto.html`** (UN solo archivo con todo inline, ~890 KB; la regenera
+    `npm run build:huerto -w @zapper/desktop` en el repo privado y sale como `huerto-single.html`). Sin red, sin guardar nada, ES/EN. El botón
+    «Probar la demo» **solo se pinta si ese archivo existe** (`existsSync` en `Works.astro`). Al pulsarlo se abre un `<dialog>` modal, se hace
+    `fetch` del HTML y se inyecta en un `<iframe srcdoc sandbox="allow-scripts allow-popups allow-popups-to-escape-sandbox">` (sin
+    `allow-same-origin`: origen opaco, `localStorage` falla dentro, por eso la demo guarda en memoria); al cerrar se destruye el iframe.
+    **Por qué srcdoc y no `src`**: un iframe con sandbox no lleva cookies y sus peticiones fallaban en la vista previa privada del Artifact
+    («la demo no va»); con srcdoc no pide nada. La demo lee `?lang=` de `location.search`, vacío en srcdoc: `demo.ts` reemplaza
+    `new URLSearchParams(location.search)` por uno con el idioma de la página (si una recompilación cambiara esa cadena, la demo usaría el idioma del navegador).
+    Dentro del diálogo se usa el cursor nativo. La demo es **código compilado con todos los derechos reservados** (no MIT; ver `LICENSE-CONTENT.md`).
+    Los avisos de React/Tailwind/motion están en `THIRD_PARTY_NOTICES.md` (pendiente confirmar la lista exacta con el `package.json` del repo privado).
   - `AboutTrack`: «Sobre mí» como **scroll horizontal** fijado (tarjetas: dropshipping, trading simulado, 42, ASIR, fotos).
   - `AiSection`, `StackSection`, `ContactSection` (correo montado por JS, no en claro en el HTML; botón de copiar).
   - Móvil y reduced-motion: todo apilado, sin fijados.

@@ -215,6 +215,8 @@ export const es = {
       demo: 'Probar la demo',
       demoTitle: 'Zapper Huerto · demo',
       demoNote: 'El temporizador y el huerto de Zapper AIO, con datos de ejemplo. Nada se guarda.',
+      demoLoading: 'Cargando la demo…',
+      demoError: 'No se ha podido cargar la demo. Prueba a recargar la página.',
       demoClose: 'Cerrar',
       videoTodo: '[TODO] Aquí irá un vídeo corto de Zapper AIO en uso',
       bubble: 'Mi proyecto principal. Aquí irá un vídeo mío usándola.',

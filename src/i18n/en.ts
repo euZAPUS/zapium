@@ -217,6 +217,8 @@ export const en: Dict = {
       demo: 'Try the demo',
       demoTitle: 'Zapper Garden · demo',
       demoNote: 'The Zapper AIO focus timer and plant garden, with sample data. Nothing is saved.',
+      demoLoading: 'Loading the demo…',
+      demoError: 'The demo could not be loaded. Try reloading the page.',
       demoClose: 'Close',
       videoTodo: '[TODO] A short video of Zapper AIO in use will go here',
       bubble: 'My main project. A video of me using it will go here.',
