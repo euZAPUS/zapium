@@ -201,7 +201,7 @@ export const es = {
           k: 'Problema',
           v: 'Tener notas, tareas, horario y hábitos en un solo sitio, sin cuentas ni suscripciones.',
         },
-        { k: 'Mi rol', v: '[TODO] Qué parte hice yo y qué parte la IA.' },
+        { k: 'Mi rol', v: 'Autor: lo he creado yo.' },
         { k: 'Stack', v: 'Tauri · React · TypeScript · SQLite · Tailwind · Vite' },
         {
           k: 'Resultado',
@@ -268,13 +268,6 @@ export const es = {
           cta: 'Leer más',
         },
         {
-          id: 'youtube',
-          tag: 'EXPERIMENTO',
-          title: 'YouTube con IA',
-          body: '[TODO] Qué hice y qué aprendí.',
-          cta: 'Leer más',
-        },
-        {
           id: 'github',
           tag: 'GITHUB',
           title: 'Más en GitHub',
@@ -303,13 +296,6 @@ export const es = {
           body: '+2.000 € en una cuenta de paper trading de 100.000 €.',
           note: 'Es dinero simulado (paper trading), no real. [TODO] periodo y estrategia.',
           doodle: 'candles',
-        },
-        {
-          tag: 'Experimento',
-          title: 'YouTube con IA',
-          body: '[TODO] Qué hice, qué canal o vídeos, y qué aprendí.',
-          note: '',
-          doodle: 'play',
         },
         {
           tag: 'Estudios',

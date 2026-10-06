@@ -26,7 +26,7 @@ Fase 0 completada. **Fase 1 (sistema de diseño, esqueleto y hero espectacular) 
   y fondo vivo. Más es mejor, **sin romper legibilidad ni rendimiento**.
 - **Iconos y doodles SVG a medida** (`Icon.astro`, `Doodle.astro`): contorno negro grueso, `currentColor`/tokens.
   Nada de librerías de iconos genéricas. Temas del autor: rayo (zap), código, velas (trading), bolsa (dropshipping),
-  play (vídeo/YouTube IA), terminal (shell de 42), cubo (huerto de Zapper), moneda, red (ASIR), «C».
+  play (vídeo), terminal (shell de 42), cubo (huerto de Zapper), moneda, red (ASIR), «C».
 - **Cursor = mano naranja** con resplandor y estela de chispas (`cursor.ts` + `fx.ts`), solo con puntero fino.
 - **Referencias del autor:** reels de Instagram de webs hiperanimadas (mano que sigue al cursor con
   resplandores, scroll que entra en portales). No se han podido ver (Instagram bloqueado); ver `docs/content-notes.md`.
@@ -61,7 +61,7 @@ Fase 0 completada. **Fase 1 (sistema de diseño, esqueleto y hero espectacular) 
   - `ProjectWall` (+ `scripts/wall.ts`): **la pared de proyectos** (sustituye a la escena fijada, que el autor encontró monótona: quería
     «lateral, 3D, en un grid, animado y flotante»). Rejilla de dos filas; el destacado (Zapper AIO) ocupa 3×2 celdas con el vídeo «real»
     delante del **mismo vídeo desenfocado de fondo** (`ProofVideo`), más 8 tarjetas (Libft, zapium, las 3 apps del lab, dropshipping,
-    trading, YouTube IA, GitHub; textos en `story.projects.items`, enlaces en el `meta` del componente). Escritorio: la sección se fija y el
+    trading, GitHub; textos en `story.projects.items`, enlaces en el `meta` del componente). Escritorio: la sección se fija y el
     scroll vertical recorre la pared; el JS escribe `--hp` (avance), `--ep` (entrada) y por tarjeta `--d` (distancia al centro, con zona
     muerta) y el CSS lo convierte en giro/profundidad/escala tipo coverflow con perspectiva compartida; las tarjetas flotan (`bob`), se
     inclinan hacia el puntero con brillo, el punto de fuga sigue al ratón y la patata guía cruza girando. Condición de fijado:
@@ -70,7 +70,7 @@ Fase 0 completada. **Fase 1 (sistema de diseño, esqueleto y hero espectacular) 
     y la misma inclinación (con `perspective()` por tarjeta, porque `overflow` aplana el 3D). Reduced-motion: rejilla normal. Al enfocar
     con teclado una tarjeta fuera de plano, `wall.ts` recoloca el scroll. Hay que mantener `grid-template-columns: minmax(0, 1fr)` en el
     `.wall__stick`: sin eso la rejilla se ensancha al ancho de toda la pared y el punto de fuga se descentra.
-  - `AboutTrack`: «Sobre mí» como **scroll horizontal** fijado (tarjetas: dropshipping, trading simulado, YouTube IA, 42, ASIR, fotos).
+  - `AboutTrack`: «Sobre mí» como **scroll horizontal** fijado (tarjetas: dropshipping, trading simulado, 42, ASIR, fotos).
   - `AiSection`, `StackSection`, `ContactSection` (correo montado por JS, no en claro en el HTML; botón de copiar).
   - Móvil y reduced-motion: todo apilado, sin fijados.
   - `LabTeaser` + páginas **`/lab/` y `/en/lab/`** (`LabPage`): tres mini-apps sin backend, con la lógica pura en `src/apps/lib/`
@@ -180,7 +180,8 @@ El hook `.githooks/pre-commit` (activado por `pnpm install` vía `prepare`) ejec
 
 ## Honestidad del contenido
 
-- **No inventar** datos, proyectos, experiencia ni resultados. Dropshipping, trading y YouTube con IA
+- **YouTube con IA: fuera** (decisión del autor, no rentaba). **Zapper AIO lo creó él** («Mi rol: Autor»).
+- **No inventar** datos, proyectos, experiencia ni resultados. Dropshipping y trading simulado
   son **proyectos/experimentos personales y de aprendizaje**, no experiencia laboral: se cuentan así,
   sin cifras ni logros que el autor no haya dado.
 - Estudios: Campus 42 y DigiTech (1º de ASIR). Solo texto, sin logos.

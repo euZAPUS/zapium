@@ -203,7 +203,7 @@ export const en: Dict = {
           k: 'Problem',
           v: 'Keeping notes, tasks, timetable and habits in one place, with no accounts or subscriptions.',
         },
-        { k: 'My role', v: '[TODO] What I did and what the AI did.' },
+        { k: 'My role', v: 'Author: I created it myself.' },
         { k: 'Stack', v: 'Tauri · React · TypeScript · SQLite · Tailwind · Vite' },
         {
           k: 'Result',
@@ -270,13 +270,6 @@ export const en: Dict = {
           cta: 'Read more',
         },
         {
-          id: 'youtube',
-          tag: 'EXPERIMENT',
-          title: 'YouTube with AI',
-          body: '[TODO] What I did and what I learned.',
-          cta: 'Read more',
-        },
-        {
           id: 'github',
           tag: 'GITHUB',
           title: 'More on GitHub',
@@ -305,13 +298,6 @@ export const en: Dict = {
           body: '+€2,000 on a €100,000 paper trading account.',
           note: 'It is simulated money (paper trading), not real. [TODO] period and strategy.',
           doodle: 'candles',
-        },
-        {
-          tag: 'Experiment',
-          title: 'YouTube with AI',
-          body: '[TODO] What I did, which channel or videos, and what I learned.',
-          note: '',
-          doodle: 'play',
         },
         {
           tag: 'Studies',

@@ -31,7 +31,7 @@ Datos extraídos del README/docs públicos del repo (no inventados):
   ❓ Resultado (ventas, gasto): no lo ha dicho → **no afirmar ninguno**; contarlo como aprendizaje.
 - **Trading:** **+2.000 € en una cuenta de _paper trading_ de 100.000 €** (≈ 2 %). Es dinero **simulado**: la web debe decir
   «paper trading (simulado)» de forma explícita. ❓ Periodo de tiempo y estrategia.
-- **YouTube con IA:** mencionado, sin detalles. ❓ Qué hizo, canal/enlace, resultados.
+- **YouTube con IA:** el autor lo **descartó** («no renta»): se quitó de la web (muro de proyectos y «Sobre mí»). No volver a ponerlo.
 - **IA:** mencionada como experiencia; el detalle va en «Cómo trabajo con IA».
 
 ## Estudios
