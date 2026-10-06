@@ -519,10 +519,10 @@ const nn = (n: number) => String(n).padStart(2, '0');
   .works[data-gl] .work__info {
     position: absolute;
     z-index: 2;
-    right: max(var(--gutter), 4.5vw);
-    top: 50%;
-    width: min(30rem, 31vw);
-    translate: 0 calc(-50% + 1.4rem);
+    left: max(var(--gutter), 5.5rem);
+    bottom: 4.4rem;
+    width: min(46rem, 60vw);
+    translate: 0 1.4rem;
     opacity: 0;
     visibility: hidden;
     pointer-events: none;
@@ -538,15 +538,20 @@ const nn = (n: number) => String(n).padStart(2, '0');
     content: '';
     position: absolute;
     z-index: -1;
-    inset: -3rem -4rem -3rem -3rem;
+    inset: -3rem -3rem -2rem -4rem;
     background: radial-gradient(
       ellipse closest-side,
-      color-mix(in srgb, var(--bg) 82%, transparent),
+      color-mix(in srgb, var(--bg) 90%, transparent),
       transparent
     );
   }
+  .works[data-gl] .works__head,
+  .works[data-gl] .works__nav,
+  .works[data-gl] .works__hint {
+    text-shadow: 0 0 0.9rem var(--bg);
+  }
   .works[data-gl] .work[data-active] .work__info {
-    translate: 0 -50%;
+    translate: 0 0;
     opacity: 1;
     visibility: visible;
     pointer-events: auto;
@@ -556,7 +561,20 @@ const nn = (n: number) => String(n).padStart(2, '0');
       visibility 0s;
   }
   .works[data-gl] .work__title {
-    font-size: clamp(2rem, 1rem + 2.7vw, 3.8rem);
+    font-size: clamp(2rem, 1rem + 2.3vw, 3.5rem);
+  }
+  .works[data-gl] .work__num,
+  .works[data-gl] .facts {
+    display: none;
+  }
+  .works[data-gl] .work__body {
+    color: color-mix(in srgb, var(--ink) 78%, var(--bg));
+    max-width: 42rem;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
   }
   .works[data-gl] .works__nav {
     display: block;

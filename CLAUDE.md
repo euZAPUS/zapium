@@ -65,19 +65,21 @@ Fase 0 completada. **Fase 1 (sistema de diseño, esqueleto y hero espectacular) 
   ligada al scroll, «tock» sutil en pulsaciones, campanilla al acabar la carga, «boing» de la patata. Aviso en la carga + botón en la
   cabecera; elección en `localStorage: zapium-sound`. Arranca apagado hasta que el visitante lo activa.
 - **Escenas de contenido** (textos reales en `src/i18n/*.ts → story`, con `[TODO]` donde falta información):
-  - `Works` (+ `scripts/works/{index,scene}.ts`): **pantallas curvas** de proyectos (sustituye a la pared de tarjetas; el autor pidió algo como
-    alche.studio: «el grid girado y la pantalla siguiendo como un efecto de ola con doblez»). Escena WebGL propia (OGL): una **hoja con rejilla y
-    cruces `+`** y las pantallas de cada proyecto pegadas a ella, deformadas por la MISMA función del vertex shader (`deform`): guiñada de la hoja,
-    **doblez** (rodilla suave a la derecha del centro) y **ola** que viaja con el scroll (su energía = velocidad del scroll; en reposo solo respira);
-    la luz sale de la normal deformada, así que pliegue y onda se ven como sombras; al moverse hay un poco de separación RGB. Cada pantalla es un
-    **vídeo** (`public/videos/NOMBRE.*`, textura viva, solo se reproduce la activa), una **captura** (`public/works/NOMBRE.webp`, la genera
-    `node scripts/capture-works.mjs` desde la demo y el lab ya compilados; **regenerarla cuando cambie el aspecto de las apps**) o un marcador
+  - `Works` (+ `scripts/works/{index,scene}.ts`): **pantallas flotantes** de proyectos, casi como la sección Works de alche.studio (el autor
+    pidió «que estén flotando y de fondo el grid, no pegados al grid»; análisis en `docs/reference-alche.md`). Escena WebGL propia (OGL) con
+    **dos capas separadas**: (1) **fondo** = pared cilíndrica de baldosas vista desde dentro, un único shader a pantalla completa (rayo →
+    cilindro → baldosas con huecos, bloques 2×2 «quad-tree», cruces `+`, fundido lateral) cuyas baldosas toman el **color del proyecto activo**
+    (la textura muestreada en mosaico y apagada; cruza entre el anterior y el siguiente) y que se desplaza ~⅓ de lo que se desplazan las
+    pantallas (**paralaje**); (2) **paneles** = una pantalla 3D suelta por proyecto: convexa, con **lente de barril + aberración cromática**,
+    viñeta, borde de cristal iridiscente, giro hacia el centro (coverflow), vaivén (flotan) y una **onda/doblez** que la recorre con la velocidad
+    del scroll. Cada pantalla es un **vídeo** (`public/videos/NOMBRE.*`, textura viva, solo se reproduce la activa), una **captura**
+    (`public/works/NOMBRE.webp`, la genera `node scripts/capture-works.mjs`; **regenerarla cuando cambie el aspecto de las apps**) o un marcador
     `[TODO]` dibujado en un canvas. Escritorio y móvil: la sección se fija (`data-gl`) y el scroll vertical recorre las pantallas con una pausa en
-    cada una; el texto de cada proyecto es DOM real (solo se ve el activo; el resto `visibility:hidden`); números 01–05, flechas del teclado y
-    foco recolocan el scroll; la patata guía cruza por abajo. En vertical (móvil) la pantalla sube y el texto va debajo. Sin WebGL o con
-    reduced-motion: lista apilada (captura + texto). Debajo, **«Más proyectos»**: índice en filas (Libft, zapium, dropshipping, trading, GitHub).
+    cada una; el texto del proyecto activo (DOM real; el resto `visibility:hidden`) va **abajo a la izquierda** como en la referencia, con
+    números 01–05 abajo a la derecha (también flechas del teclado y foco); la patata guía cruza por abajo. En vertical (móvil) la pantalla sube y el
+    texto va debajo. Sin WebGL o con reduced-motion: lista apilada (captura + texto + datos). Debajo, **«Más proyectos»** (índice en filas).
     Añadir un proyecto: entrada en `story.projects.items` (es/en) + objeto en `works` de `Works.astro` (+ captura o vídeo). Los enlaces SOLO a
-    repos públicos. Escena en `scene.ts`: `SCREEN_W`, `SPACING`, `FOV` y el GLSL `DEFORM` son los mandos del «efecto ola».
+    repos públicos. Mandos en `scene.ts`: `PANEL_W`, `SPACING`, `FOV`, `uBow`, `uRot`, `uDepth`, `uFloat` y el GLSL del fondo/paneles.
   - `DemoDialog` (+ `scripts/demo.ts`): **demo jugable** de Zapper AIO («Zapper Huerto»: temporizador + huerto con datos de ejemplo, hecha por
     el autor con el mismo código de la app). Vive en **`public/demos/huerto/huerto.html`** (UN solo archivo con todo inline, ~890 KB; la regenera
     `npm run build:huerto -w @zapper/desktop` en el repo privado y sale como `huerto-single.html`). Sin red, sin guardar nada, ES/EN. El botón

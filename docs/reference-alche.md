@@ -40,3 +40,20 @@ imágenes AVIF · tipografías Noto Sans JP (variable), IBM Plex Mono y Google S
 - Rendimiento: el original pesa mucho. Para cumplir Lighthouse móvil ≥ 90, el mundo 3D completo solo en escritorio;
   móvil y `prefers-reduced-motion` con versión estática equivalente (hero actual + secciones normales).
 - Todo el contenido tiene que seguir siendo accesible y legible sin WebGL (texto real en el DOM, no solo en el canvas).
+
+## Segunda pasada (2026-10-06): cómo está hecha la sección «Works / Service» (solo ideas, nada copiado)
+
+Se volvió a renderizar la web (espejo local) y se leyó su JS minificado (three.js). Lo que importa para imitar el efecto:
+
+- **Capas separadas.** Un `Grid` (plano con rejilla y cruces `+`, `renderOrder` muy bajo), un **fondo «quad-tree»** (mosaico de baldosas que
+  muestra la imagen/vídeo del trabajo activo **difuminada**, también al fondo) y, delante, las **miniaturas** como objetos 3D sueltos
+  (una malla de pantalla de un `.glb`, con grosor). Las pantallas **no van pegadas** a la rejilla: se desplazan a otra velocidad
+  (las cruces se mueven ~0,3 del scroll; las miniaturas ~0,95) → paralaje.
+- **Pantallas:** ligeramente convexas (`z += cos(x)…`), con **distorsión de lente** y **aberración cromática** (cada canal con su distorsión;
+  4 muestras), viñeta radial, reflejo de un cubemap y la **velocidad del scroll** mueve el UV (estela). Las vecinas se ven a los lados, giradas.
+- **«Ola con doblez»** en la sección Service: grid y miniaturas comparten un shader con `z = -sin(x·π + …)·amplitud` (una S suave: izquierda cerca,
+  derecha lejos); la amplitud entra con el scroll. La miniatura activa puede «abrirse» a pantalla casi completa mezclando su vértice con un quad.
+- **Textos** (fecha, título grande ligero, subtítulo, etiquetas) **abajo a la izquierda**, «More Works ↗» abajo a la derecha, nav mono arriba,
+  regla de secciones a la izquierda, gizmo y paneles de parámetros. Cargas con Lottie y carga por scroll.
+- **Adaptación en zapium** (`Works.astro` / `works/scene.ts`): fondo = pared cilíndrica de baldosas por shader (sin geometría), paneles =
+  planos subdivididos deformados en el vertex shader. Sin `.glb` ni Lottie.
