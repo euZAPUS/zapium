@@ -191,8 +191,7 @@ addEventListener(
   'pointerdown',
   (e) => {
     if (!on) return;
-    if ((e.target as Element | null)?.closest('a, button, [data-cursor], [data-doodle], summary'))
-      sfx.click();
+    if ((e.target as Element | null)?.closest('a, button, [data-cursor], summary')) sfx.click();
   },
   { capture: true },
 );

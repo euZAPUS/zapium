@@ -104,9 +104,10 @@ button {
   color: var(--ink-muted);
 }
 
-/* Botones: píldora fina (como el «Contact / Recruit» de la referencia); un único componente para toda la web */
+/* Botones: rectángulo casi recto con texto mono en mayúsculas (como los de la referencia); un único componente para toda la web.
+   El principal va INVERTIDO (tinta sobre fondo) y solo se enciende en naranja al pasar el cursor. */
 .btn {
-  --btn-bg: color-mix(in srgb, var(--surface) 78%, transparent);
+  --btn-bg: transparent;
   --btn-fg: var(--ink);
   --btn-line: var(--line-soft);
   display: inline-flex;
@@ -118,36 +119,39 @@ button {
   background: var(--btn-bg);
   color: var(--btn-fg);
   border: var(--border-w) solid var(--btn-line);
-  border-radius: var(--radius-pill);
+  border-radius: var(--radius-s);
   font-family: var(--font-mono);
   font-weight: 500;
   font-size: var(--text-xs);
-  letter-spacing: 0.06em;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
   text-decoration: none;
   cursor: pointer;
   white-space: nowrap;
   transition:
     background var(--dur-fast) var(--ease-out),
     border-color var(--dur-fast) var(--ease-out),
-    color var(--dur-fast) var(--ease-out),
-    scale var(--dur-fast) var(--ease-out);
+    color var(--dur-fast) var(--ease-out);
 }
 .btn:hover {
   --btn-line: var(--ink);
-  background: color-mix(in srgb, var(--ink) 9%, transparent);
+  background: color-mix(in srgb, var(--ink) 8%, transparent);
 }
 .btn:active {
-  scale: 0.97;
+  background: color-mix(in srgb, var(--ink) 14%, transparent);
 }
 .btn--primary {
-  --btn-bg: var(--accent);
-  --btn-fg: var(--accent-ink);
-  --btn-line: var(--accent);
-  font-weight: 600;
+  --btn-bg: var(--ink);
+  --btn-fg: var(--bg);
+  --btn-line: var(--ink);
 }
 .btn--primary:hover {
+  --btn-fg: var(--accent-ink);
   --btn-line: var(--accent);
-  background: color-mix(in srgb, var(--accent) 86%, var(--ink));
+  background: var(--accent);
+}
+.btn--primary:active {
+  background: color-mix(in srgb, var(--accent) 82%, var(--ink));
 }
 .btn[aria-disabled='true'] {
   opacity: 0.5;
@@ -165,29 +169,38 @@ button {
   fill: none;
   stroke: currentColor;
   stroke-width: var(--icon-stroke);
-  stroke-linecap: round;
-  stroke-linejoin: round;
+  stroke-linecap: square;
+  stroke-linejoin: miter;
 }
 
-/* Panel: relleno translúcido, línea fina y sin sombra dura */
+/* Panel: relleno translúcido, línea fina y marcas de esquina (viewfinder), como los recuadros técnicos de la referencia */
 .card {
+  --tick: 0.6rem;
   padding: var(--space-5);
-  background: color-mix(in srgb, var(--surface) 90%, transparent);
+  background:
+    linear-gradient(var(--mark), var(--mark)) 0 0 / var(--tick) 1px no-repeat,
+    linear-gradient(var(--mark), var(--mark)) 0 0 / 1px var(--tick) no-repeat,
+    linear-gradient(var(--mark), var(--mark)) 100% 0 / var(--tick) 1px no-repeat,
+    linear-gradient(var(--mark), var(--mark)) 100% 0 / 1px var(--tick) no-repeat,
+    linear-gradient(var(--mark), var(--mark)) 0 100% / var(--tick) 1px no-repeat,
+    linear-gradient(var(--mark), var(--mark)) 0 100% / 1px var(--tick) no-repeat,
+    linear-gradient(var(--mark), var(--mark)) 100% 100% / var(--tick) 1px no-repeat,
+    linear-gradient(var(--mark), var(--mark)) 100% 100% / 1px var(--tick) no-repeat,
+    color-mix(in srgb, var(--surface) 90%, transparent);
   border: var(--border-w) solid var(--line-soft);
-  border-radius: var(--radius-m);
-  box-shadow: var(--shadow-hard);
+  border-radius: var(--radius-s);
 }
-/* Etiqueta mono con un punto de color (el naranja de la patata) */
+/* Etiqueta mono en mayúsculas con un cuadradito de color (el naranja de la patata) */
 .tag {
   margin: 0;
   display: inline-flex;
   align-items: center;
-  gap: 0.5em;
+  gap: 0.6em;
   width: fit-content;
-  padding: 0.18rem 0.7rem;
+  padding: 0.18rem 0.6rem;
   color: var(--ink-muted);
   border: var(--border-w) solid var(--line-soft);
-  border-radius: var(--radius-pill);
+  border-radius: var(--radius-s);
   font-family: var(--font-mono);
   font-size: 0.7rem;
   font-weight: 500;
@@ -196,9 +209,8 @@ button {
 }
 .tag::before {
   content: '';
-  width: 0.38rem;
-  height: 0.38rem;
-  border-radius: 50%;
+  width: 0.32rem;
+  height: 0.32rem;
   background: var(--accent);
 }
 
@@ -213,7 +225,7 @@ button {
   color: var(--ink-muted);
 }
 
-/* Cursor personalizado: una mano naranja (como la patata) con resplandor y estela de chispas.
+/* Cursor personalizado: retícula técnica (anillo fino con marcas + punto naranja).
    Solo con puntero fino y sin reduced-motion; si no, se conserva el cursor nativo. */
 html.has-cursor,
 html.has-cursor a,
@@ -232,65 +244,64 @@ html.has-cursor [data-cursor] {
 html.has-cursor .cursor {
   opacity: 1;
 }
-.cursor__glow,
-.cursor__hand {
+.cursor__ring,
+.cursor__dot {
   position: absolute;
   top: 0;
   left: 0;
   will-change: translate;
 }
-.cursor__glow {
-  width: 3.6rem;
-  height: 3.6rem;
-  margin: -1.8rem 0 0 -1.8rem;
-  border-radius: 50%;
-  background: radial-gradient(circle, var(--glow), transparent 68%);
-  mix-blend-mode: normal;
-  transition: scale var(--dur-base) var(--ease-pop);
-}
-.cursor__hand {
-  width: 2.9rem;
-  height: 2.9rem;
+.cursor__ring {
+  width: 2.4rem;
+  height: 2.4rem;
   max-width: none; /* el contenedor mide 0: sin esto el svg se aplasta */
-  /* la punta del dedo índice (32, 8 de 64) queda sobre el puntero real */
-  margin: -0.5rem 0 0 -1.45rem;
+  margin: -1.2rem 0 0 -1.2rem;
   overflow: visible;
-  transform-origin: 50% 12%;
-  fill: var(--accent);
-  stroke: var(--potato-line);
-  stroke-width: 3.6;
-  stroke-linejoin: round;
-  stroke-linecap: round;
-  filter: drop-shadow(0.1rem 0.14rem 0 rgb(23 19 14 / 0.5));
-  transition:
-    scale var(--dur-base) var(--ease-pop),
-    fill var(--dur-fast) var(--ease-out);
-}
-.cursor__knuckles {
   fill: none;
-  stroke-width: 3;
+  stroke: var(--ink);
+  stroke-width: 1;
+  vector-effect: non-scaling-stroke;
+  transition:
+    scale var(--dur-base) var(--ease-out),
+    stroke var(--dur-fast) var(--ease-out);
 }
-.cursor[data-state='link'] .cursor__hand {
-  scale: 1.22;
-  fill: var(--sun);
+.cursor__ring :is(circle, path) {
+  vector-effect: non-scaling-stroke;
 }
-.cursor[data-state='link'] .cursor__glow {
+.cursor__ticks {
+  transition: opacity var(--dur-fast) var(--ease-out);
+}
+.cursor__dot {
+  width: 0.34rem;
+  height: 0.34rem;
+  margin: -0.17rem 0 0 -0.17rem;
+  background: var(--accent);
+  transition: scale var(--dur-fast) var(--ease-out);
+}
+.cursor[data-state='link'] .cursor__ring {
+  scale: 1.5;
+  stroke: var(--accent);
+}
+.cursor[data-state='link'] .cursor__ticks {
+  opacity: 0;
+}
+.cursor[data-state='link'] .cursor__dot {
+  scale: 0;
+}
+.cursor[data-state='down'] .cursor__ring {
+  scale: 0.7;
+}
+.cursor[data-state='down'] .cursor__dot {
   scale: 1.8;
 }
-.cursor[data-state='down'] .cursor__hand {
-  scale: 0.82;
-}
-.cursor[data-state='down'] .cursor__glow {
-  scale: 0.8;
-}
 
-/* Capa de chispas (estela del cursor y ráfagas), la gestiona scripts/fx.ts */
-.fx-canvas {
+/* «Ping» de clic / aterrizaje (scripts/ping.ts): anillo fino que se expande y se desvanece */
+.ping {
   position: fixed;
-  inset: 0;
   z-index: var(--z-fx);
-  width: 100%;
-  height: 100%;
+  translate: -50% -50%;
+  border: 1px solid var(--accent);
+  border-radius: 50%;
   pointer-events: none;
 }
 

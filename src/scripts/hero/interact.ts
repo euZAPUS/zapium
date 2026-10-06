@@ -1,9 +1,9 @@
 /**
- * Interacción del hero: parallax de los doodles, inclinación de la patata hacia
- * el cursor, clic en la patata (salto + chiste + chispas; muchos clics = se
- * marea), clic en doodles y chispas al aterrizar la patata en la intro.
+ * Interacción del hero: parallax con el cursor, inclinación de la patata hacia
+ * el cursor, clic en la patata (salto + chiste + «ping»; muchos clics = se
+ * marea) y «ping» al aterrizar la patata en la intro.
  */
-import { burst } from '../fx';
+import { ping } from '../ping';
 import { whenReady } from '../ready';
 import { hasFinePointer, prefersReducedMotion } from '../tokens';
 
@@ -39,13 +39,13 @@ if (hero && hasFinePointer() && !calm) {
   );
 }
 
-// ── Intro: al aterrizar la patata, ráfaga de chispas y saludo ─────────
+// ── Intro: al aterrizar la patata, un «ping» y saludo ─────────
 if (mascot && !calm) {
   const fallMs = 150 + 0.4 * 1250; // el aterrizaje ocurre al ~38 % de la animación
   void whenReady().then(() =>
     setTimeout(() => {
       const r = mascot.getBoundingClientRect();
-      burst(r.left + r.width / 2, r.bottom - r.height * 0.12, 34, 1.15);
+      ping(r.left + r.width / 2, r.bottom - r.height * 0.12, 220);
       mascot.classList.add('is-greeting');
       setTimeout(() => mascot.classList.remove('is-greeting'), 2200);
       document
@@ -91,21 +91,7 @@ if (mascot && bubble) {
     mascot.classList.remove('is-jumping', 'is-dizzy');
     void mascot.offsetWidth;
     mascot.classList.add(dizzy ? 'is-dizzy' : 'is-jumping');
-    burst(px, py, dizzy ? 60 : 24, dizzy ? 1.5 : 1);
+    ping(px, py, dizzy ? 160 : 96);
     if (dizzy) clicks = [];
-  });
-}
-
-// ── Clic en doodles: explotan en chispas ──────────────────────────────
-if (!calm) {
-  document.querySelectorAll<HTMLElement>('[data-doodle]').forEach((d) => {
-    d.addEventListener('click', () => {
-      const r = d.getBoundingClientRect();
-      burst(r.left + r.width / 2, r.top + r.height / 2, 18, 0.9);
-      d.animate([{ scale: 1 }, { scale: 1.5, rotate: '25deg' }, { scale: 1 }], {
-        duration: 450,
-        easing: 'cubic-bezier(0.34, 1.56, 0.64, 1)',
-      });
-    });
   });
 }

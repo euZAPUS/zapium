@@ -1,7 +1,6 @@
 ---
 import type { Locale } from '~/config/site';
 import { useT } from '~/i18n';
-import Doodle, { type DoodleName } from './Doodle.astro';
 import Guide from './Guide.astro';
 
 interface Props {
@@ -25,13 +24,12 @@ const s = useT(locale).story.about;
       <ul class="track__rail" data-track-rail>
         {s.cards.map((c, i) => (
           <li class="card tcard">
-            <Doodle name={c.doodle as DoodleName} style="--size:3.2rem" />
             <p class="tag">{c.tag}</p>
             <h3>{c.title}</h3>
             <p class="tcard__body">{c.body}</p>
             {c.note && <p class="tcard__note">{c.note}</p>}
             <span class="tcard__n" aria-hidden="true">
-              {String(i + 1).padStart(2, '0')}
+              {String(i + 1).padStart(2, '0')} / {String(s.cards.length).padStart(2, '0')}
             </span>
           </li>
         ))}
@@ -91,7 +89,7 @@ const s = useT(locale).story.about;
     font-size: var(--text-s);
     color: var(--ink-muted);
     padding-top: var(--space-3);
-    border-top: 1px dashed var(--line-soft);
+    border-top: 1px solid var(--line-soft);
   }
   .tcard__n {
     position: absolute;
@@ -156,16 +154,15 @@ const s = useT(locale).story.about;
       left: var(--gutter);
       right: var(--gutter);
       bottom: 0.7rem;
-      height: 4px;
+      height: 1px;
       background: var(--line-soft);
-      border-radius: 4px;
     }
     :global(html.js) .track__progress i {
       display: block;
-      height: 100%;
       width: 100%;
+      height: 3px;
+      margin-top: -1px;
       background: var(--accent);
-      border-radius: 4px;
       transform-origin: 0 50%;
       scale: var(--hp) 1;
     }

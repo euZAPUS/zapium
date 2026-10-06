@@ -17,25 +17,24 @@ Fase 0 completada. **Fase 1 (sistema de diseño, esqueleto y hero espectacular) 
 
 - **Un único sistema visual**: paleta, tipografía, espaciados y easings viven como tokens CSS en un
   solo archivo (`src/styles/tokens.css`). Varía el tipo de interacción entre secciones, nunca la identidad visual.
-- **Estilo «plano técnico» (giro del 2026-10-06, referencia alche.studio)**. El autor encontró el estilo anterior («Papel y patata»:
-  contornos gruesos, sombras duras, confeti de colores, doodles de pegatina) **demasiado «happy»** y pidió algo más cercano a Alche
-  «creativamente y de contenido». Ahora: neutros casi puros (casi negro en oscuro, gris «plano» en claro), **líneas de 1 px**, sombras
-  suaves y difusas (los tokens `--shadow-hard*` conservan el nombre antiguo), radios pequeños, etiquetas y botones en **monoespaciada**
-  (píldoras finas), títulos en **peso 300–400**, y el **naranja de la patata como único color vivo** (CTA, punto de las etiquetas, hover,
-  datos clave). `--pink/--mint/--sky/--sun` siguen existiendo pero **muy apagados** y casi sin uso; no volver a poner confeti de colores.
-  Los **doodles** conservan sus dibujos pero se pintan como **línea fina de una sola tinta** (piel CSS en `Doodle.astro`; se ponen
-  naranjas al pasar el cursor); las **chispas** (`fx.ts`) son destellos finos naranja/hueso sin contorno; el suelo del mundo y el nudo 3D
-  son casi monocromos (cromo + un poco de naranja). La patata sigue siendo SU dibujo original (no se toca). Se mantiene el tono honesto.
+- **Estilo «plano técnico» serio (segundo giro, 2026-10-06, referencia alche.studio)**. El autor encontró «de niños» tanto «Papel y patata»
+  como la primera versión «plano» (chispas/«virutillas», doodles, mano de cursor, iconos redondeados, rebotes). Ahora: neutros casi puros
+  (casi negro en oscuro, gris «plano» en claro), **líneas de 1 px**, **esquinas casi rectas** (`--radius-s: 2px`; botones, etiquetas y tarjetas
+  rectos, nada de píldoras), tipografía **Inter ligera (300–400)** para títulos y **monoespaciada en mayúsculas** para etiquetas, navegación y
+  botones, **marcas de esquina tipo viewfinder** en `.card`, numeración `01 / 05`, y el **naranja de la patata como único color vivo**
+  (indicadores, hover, datos clave; el botón principal va invertido —tinta sobre fondo— y se enciende en naranja al pasar el cursor).
+  **Eliminado y NO volver a poner:** chispas/estela de partículas (`fx.ts`), doodles (`Doodle.astro`), mano de cursor, rebotes/muelles en
+  las animaciones (`--ease-pop/--ease-spring` ahora son curvas de salida sin sobrepaso), confeti de colores y la fuente Bricolage.
+  El cursor es una **retícula** (anillo fino con marcas + punto naranja, colocada síncronamente) y el clic lanza un **«ping»** (anillo que se
+  expande, `scripts/ping.ts`). Iconos propios **geométricos** (`Icon.astro`: líneas rectas, `stroke-linecap: square`). `--pink/--mint/--sky/--sun`
+  siguen existiendo muy apagados y casi sin uso. Se mantiene el tono honesto.
 - **Dos temas: claro y oscuro** (oscuro por defecto), con selector. Colores con `light-dark()`;
   ningún componente lleva colores sueltos.
 - **Quiere impacto desde el primer segundo**: «que nada más abrir se cree algo abusivamente creativo, animado,
-  especial». El hero se monta solo (intro coreografiada), con doodles de línea, destellos, mano de cursor
-  y fondo vivo, pero **sobrio** (ver «plano técnico»), **sin romper legibilidad ni rendimiento**.
-- **Iconos y doodles SVG a medida** (`Icon.astro`, `Doodle.astro`): trazo fino, `currentColor`/tokens.
-  Nada de librerías de iconos genéricas. Temas del autor: rayo (zap), código, velas (trading), bolsa (dropshipping),
-  play (vídeo), terminal (shell de 42), cubo (huerto de Zapper), moneda, red (ASIR), «C».
-- **Cursor = mano naranja** pegada al puntero (SIN suavizado: se coloca síncronamente en `pointermove`; el autor notó «input lag»), resplandor
-  pequeño y estela discreta de chispas (`cursor.ts` + `fx.ts`: 1 chispa cada ~56 px, lienzo a 1×, máx. 70), solo con puntero fino.
+  especial». El hero se monta solo (intro coreografiada) con retícula de cursor y fondo vivo,
+  pero **sobrio** (ver «plano técnico»), **sin romper legibilidad ni rendimiento**.
+- **Iconos SVG a medida** (`Icon.astro`): geométricos, trazo fino, `currentColor`/tokens. Nada de librerías de iconos genéricas.
+- **Cursor = retícula técnica** (SIN suavizado: se coloca síncronamente en `pointermove`; el autor notó «input lag»), solo con puntero fino (`cursor.ts`).
   **Rendimiento (norma):** nada de `backdrop-filter` sobre contenido que esté encima del WebGL (recompone el desenfoque cada fotograma);
   el mundo se deja de pintar mientras Proyectos lo tapa (`html.is-covered`); `hero/interact.ts` solo trabaja con el hero a la vista.
 - **Crédito visible (pedido por el autor):** el pie de página dice «Diseño inspirado en alche.studio» (enlace, es/en) y el README lo recoge. No quitarlo.
@@ -46,7 +45,7 @@ Fase 0 completada. **Fase 1 (sistema de diseño, esqueleto y hero espectacular) 
   animar brazos, saltos e inclinación. Sombreritos/accesorios por el slot `hat` (fase 5), cambian de mood según
   sección/proyecto y la patata **guía** por la web. Sin logos ni personajes de marcas existentes.
 - **Easter eggs: sí**, siempre opcionales (clic en la patata = chiste + salto; 5 clics seguidos = se marea;
-  clic en doodles = explotan en chispas). Chistes en español **y** en inglés.
+  un «ping» (anillo) acompaña al clic). Chistes en español **y** en inglés.
 
 ## Carga, mundo y escenas (decisiones del autor)
 

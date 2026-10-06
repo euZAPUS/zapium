@@ -2,7 +2,7 @@
 
 Analizada el 2026-10-05 renderizándola en Chromium (espejo local de solo lectura) y leyendo sus recursos públicos.
 **No se copia código ni recursos** (son suyos y tienen derechos): aquí solo quedan las ideas y mecánicas,
-que se reimplementan desde cero con el estilo propio (patata, doodles, contornos gruesos).
+que se reimplementan desde cero con el estilo propio (la patata, línea fina y neutros).
 
 ## Cómo está hecha (stack visible)
 
@@ -33,7 +33,7 @@ imágenes AVIF · tipografías Noto Sans JP (variable), IBM Plex Mono y Google S
 - **Proyectos como pantallas curvas en carrusel 3D**, con capturas/vídeos del autor como textura.
 - **Contraste de estancias** oscuro ↔ claro «plano», con la regla de sección a la izquierda y chrome en monoespaciada.
 - **Sonido opcional** (con aviso al entrar). Mejor sintetizado con Web Audio (sin ficheros ni licencias).
-- **Sello propio:** patata, doodles, contornos negros gruesos y colores de confeti, que el original no tiene.
+- **Sello propio:** la patata y el naranja como único color vivo, que el original no tiene.
 
 ## Riesgos / decisiones
 

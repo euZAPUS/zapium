@@ -1,7 +1,6 @@
 ---
 import type { Locale } from '~/config/site';
 import { labPath, useT } from '~/i18n';
-import Doodle from './Doodle.astro';
 import Icon from './Icon.astro';
 
 interface Props {
@@ -10,9 +9,9 @@ interface Props {
 const { locale } = Astro.props;
 const l = useT(locale).lab;
 const apps = [
-  { id: 'subnet', doodle: 'network', app: l.subnet },
-  { id: 'bits', doodle: 'chip', app: l.bits },
-  { id: 'risk', doodle: 'candles', app: l.risk },
+  { id: 'subnet', app: l.subnet },
+  { id: 'bits', app: l.bits },
+  { id: 'risk', app: l.risk },
 ] as const;
 ---
 
@@ -25,9 +24,11 @@ const apps = [
     <p class="teaser__intro">{l.teaserIntro}</p>
   </header>
   <ul class="teaser__grid">
-    {apps.map((a) => (
+    {apps.map((a, i) => (
       <li class="card teaser__card">
-        <Doodle name={a.doodle} style="--size:3.2rem" />
+        <span class="teaser__n" aria-hidden="true">
+          {String(i + 1).padStart(2, '0')} / {String(apps.length).padStart(2, '0')}
+        </span>
         <p class="tag">{a.app.tag}</p>
         <h3>{a.app.title}</h3>
         <p class="teaser__desc">{a.app.desc}</p>
@@ -67,6 +68,7 @@ const apps = [
     list-style: none;
   }
   .teaser__card {
+    position: relative;
     display: grid;
     gap: var(--space-3);
     align-content: start;
@@ -74,6 +76,14 @@ const apps = [
   }
   .teaser__card h3 {
     font-size: var(--text-xl);
+  }
+  .teaser__n {
+    position: absolute;
+    top: var(--space-4);
+    right: var(--space-4);
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    color: var(--ink-muted);
   }
   .teaser__desc {
     color: var(--ink-muted);

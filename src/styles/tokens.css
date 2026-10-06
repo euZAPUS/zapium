@@ -7,10 +7,10 @@
  * sirve para los dos temas. El tema lo decide `color-scheme`: OSCURO por defecto
  * (decisión del autor) y claro solo si <html data-mode="light"> lo fija.
  *
- * Dirección visual (2026-10-06, a petición del autor, referencia alche.studio): técnica y sobria —
- * fondos casi negros (o gris «plano» en claro), líneas finas de 1 px, mono para etiquetas y el naranja
- * de la patata como ÚNICO color vivo. Antes era «Papel y patata» (contornos gruesos, sombras duras,
- * confeti de colores); el autor lo encontró demasiado «happy». La patata sigue siendo SU dibujo original.
+ * Dirección visual (2026-10-06, a petición del autor, referencia alche.studio): técnica, sobria y «adulta» —
+ * fondos casi negros (o gris «plano» en claro), líneas finas de 1 px, esquinas casi rectas, tipografía Inter
+ * ligera + mono en mayúsculas para etiquetas, y el naranja de la patata como ÚNICO color vivo (indicadores,
+ * hover). Sin chispas, doodles, rebotes ni confeti: el autor encontró lo anterior «de niños». La patata sigue siendo SU dibujo.
  */
 
 :root {
@@ -45,18 +45,22 @@
 
   /* ── Forma ──────────────────────────────────────────────────────── */
   --border-w: 1px;
-  --icon-stroke: 1.9;
-  --radius-s: 0.3rem;
-  --radius-m: 0.5rem;
-  --radius-l: 0.9rem;
-  --radius-pill: 999px;
+  --icon-stroke: 1.5;
+  --radius-s: 0.125rem;
+  --radius-m: 0.25rem;
+  --radius-l: 0.5rem;
+  --radius-pill: 999px; /* solo para puntos y mandos redondos; botones y etiquetas son rectos */
+  --mark: light-dark(
+    rgb(12 13 15 / 0.75),
+    rgb(238 238 239 / 0.7)
+  ); /* marcas de esquina (viewfinder) */
   /* Los nombres «hard» vienen de la etapa «sticker»; ahora son sombras suaves y difusas */
   --shadow-hard: 0 0.6rem 1.8rem -0.9rem light-dark(rgb(12 13 15 / 0.35), rgb(0 0 0 / 0.7));
   --shadow-hard-lg: 0 1.4rem 3.5rem -1.2rem light-dark(rgb(12 13 15 / 0.4), rgb(0 0 0 / 0.85));
   --blur: 0px;
 
   /* ── Tipografía ─────────────────────────────────────────────────── */
-  --font-display: 'Bricolage Grotesque Variable', 'Arial Black', system-ui, sans-serif;
+  --font-display: 'Inter Variable', system-ui, -apple-system, 'Segoe UI', sans-serif;
   --font-body: 'Inter Variable', system-ui, -apple-system, 'Segoe UI', sans-serif;
   --font-mono: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
 
@@ -88,54 +92,9 @@
   /* ── Movimiento ─────────────────────────────────────────────────── */
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
   --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
-  --ease-pop: cubic-bezier(0.34, 1.56, 0.64, 1);
-  --ease-spring: linear(
-    0,
-    0.083,
-    0.292,
-    0.563,
-    0.838,
-    1.073,
-    1.24,
-    1.329,
-    1.344,
-    1.301,
-    1.22,
-    1.124,
-    1.031,
-    0.956,
-    0.906,
-    0.882,
-    0.884,
-    0.903,
-    0.933,
-    0.966,
-    0.997,
-    1.021,
-    1.036,
-    1.041,
-    1.039,
-    1.031,
-    1.02,
-    1.008,
-    0.998,
-    0.991,
-    0.987,
-    0.986,
-    0.987,
-    0.99,
-    0.994,
-    0.998,
-    1.001,
-    1.004,
-    1.005,
-    1.005,
-    1.004,
-    1.003,
-    1.002,
-    1,
-    1
-  ); /* muelle: sobrepasa y rebota */
+  /* Sin rebote ni sobrepaso (dirección «seria»): los nombres antiguos apuntan a curvas suaves de salida */
+  --ease-pop: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-spring: cubic-bezier(0.16, 1, 0.3, 1);
   --dur-fast: 0.18s;
   --dur-base: 0.45s;
   --dur-slow: 1s;

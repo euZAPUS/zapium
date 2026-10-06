@@ -3,7 +3,6 @@ import '~/styles/global.css';
 import { SITE, type Locale } from '~/config/site';
 import { homePath } from '~/i18n';
 import { useT } from '~/i18n';
-import bricolage from '@fontsource-variable/bricolage-grotesque/files/bricolage-grotesque-latin-wght-normal.woff2?url';
 import inter from '@fontsource-variable/inter/files/inter-latin-wght-normal.woff2?url';
 
 interface Props {
@@ -40,7 +39,6 @@ const alternates = SITE.locales.map((l) => ({
     ))}
     <link rel="alternate" hreflang="x-default" href={alternates[0]?.href} />
     <link rel="icon" href="/favicon.png" type="image/png" sizes="64x64" />
-    <link rel="preload" as="font" type="font/woff2" href={bricolage} crossorigin />
     <link rel="preload" as="font" type="font/woff2" href={inter} crossorigin />
     <!-- Tema antes del primer pintado (sin parpadeo). El tema guardado solo vive en localStorage del visitante. -->
     <script is:inline>
@@ -79,11 +77,11 @@ const alternates = SITE.locales.map((l) => ({
     </a>
     <slot />
     <div class="cursor" data-cursor-root aria-hidden="true">
-      <div class="cursor__glow"></div>
-      <svg class="cursor__hand" viewBox="0 0 64 64" focusable="false">
-        <path d="M23 13c0-5 9-5 9 0v15c2-2 8-2 9 1 3-1 8 0 8 4 3 0 6 3 5 7l-1 8c-1 7-5 12-12 12H29c-6 0-11-4-13-9l-5-11c-2-4 3-7 6-4l6 6z"></path>
-        <path class="cursor__knuckles" d="M32 29v9M41 30v8M49 34v7"></path>
+      <svg class="cursor__ring" viewBox="-20 -20 40 40" focusable="false">
+        <circle r="11"></circle>
+        <path class="cursor__ticks" d="M0 -19V-14M0 14V19M-19 0H-14M14 0H19"></path>
       </svg>
+      <span class="cursor__dot"></span>
     </div>
     <script>
       import '~/scripts/ui';
