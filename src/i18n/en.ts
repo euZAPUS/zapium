@@ -219,11 +219,22 @@ export const en: Dict = {
       videoTodo: '[TODO] A short video of Zapper AIO in use will go here',
       bubble: 'My main project. A video of me using it will go here.',
       wallTitle: 'What I have built',
+      explore: 'Scroll to explore',
+      more: 'More projects',
+      navLabel: 'Go to project',
+      screensLabel: 'Featured projects',
       wallBubble: 'Everything I have made, on one wall. Keep scrolling.',
       wallHint: 'Scroll: the wall slides sideways',
       swipeHint: 'Swipe to see more →',
       wallLabel: 'Projects, swipe horizontally',
       items: [
+        {
+          id: 'huerto',
+          tag: 'DEMO · ZAPPER AIO',
+          title: 'Zapper Garden',
+          body: 'The Zapper AIO focus timer with 3D plants and its garden, playable in the browser. Sample data: nothing is saved.',
+          cta: 'Try the demo',
+        },
         {
           id: 'libft',
           tag: 'CAMPUS 42 · C',

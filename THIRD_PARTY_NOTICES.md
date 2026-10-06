@@ -14,6 +14,20 @@ Este archivo se actualiza cada vez que se añade o quita una dependencia que lle
 | [GSAP](https://gsap.com) (+ ScrollTrigger, Flip)                                         | 3.15.0             | GreenSock «Standard "no charge" license» (propietaria, **no es de código abierto**) | Prevista (fases 3-4)                     | Ver nota GSAP abajo.                                                               |
 | [Lenis](https://github.com/darkroomengineering/lenis)                                    | 1.3.26             | MIT © darkroom.engineering                                                          | Prevista (fase 3)                        | Texto leído de `LICENSE` del paquete.                                              |
 
+### Demo compilada «Zapper Huerto» (`public/demos/huerto/`)
+
+Código de mi propia app (todos los derechos reservados, ver `LICENSE-CONTENT.md`), compilado en un bundle que incluye
+dependencias de terceros bajo licencia MIT. El bundle minificado no conserva sus avisos, así que se dejan aquí:
+
+| Librería                                               | Versión (leída del bundle)                                                 | Licencia                               |
+| ------------------------------------------------------ | -------------------------------------------------------------------------- | -------------------------------------- |
+| [React](https://github.com/facebook/react) / react-dom | 19.x (el bundle usa el símbolo `react.transitional.element`, de React 19)  | MIT © Meta Platforms, Inc. y afiliados |
+| [Tailwind CSS](https://tailwindcss.com)                | 4.3.3 (cabecera `/*! tailwindcss v4.3.3 \| MIT License */` en `style.css`) | MIT © Tailwind Labs, Inc.              |
+
+El bundle de la demo (`huerto.js`) incluye también `motion` (animaciones; el bundle contiene `data-motion-pop-id`): MIT © Matt Perry.
+Comprobado el 2026-10-06 buscando firmas en el bundle; **pendiente** confirmar la lista exacta de dependencias y versiones con el
+`package.json` del repositorio privado de Zapper AIO.
+
 Las licencias de las fuentes se leyeron de los archivos `LICENSE` de cada paquete (campo `license`: OFL-1.1).
 Las fuentes se sirven desde el propio dominio (self-hosted) y el texto de la OFL se conserva en `licenses/`.
 

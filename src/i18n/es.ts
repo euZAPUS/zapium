@@ -217,11 +217,22 @@ export const es = {
       videoTodo: '[TODO] Aquí irá un vídeo corto de Zapper AIO en uso',
       bubble: 'Mi proyecto principal. Aquí irá un vídeo mío usándola.',
       wallTitle: 'Lo que he construido',
+      explore: 'Scroll para explorar',
+      more: 'Más proyectos',
+      navLabel: 'Ir al proyecto',
+      screensLabel: 'Proyectos destacados',
       wallBubble: 'Todo lo que he hecho, en una pared. Sigue bajando.',
       wallHint: 'Haz scroll: la pared se desplaza de lado',
       swipeHint: 'Desliza para ver más →',
       wallLabel: 'Proyectos, desliza horizontalmente',
       items: [
+        {
+          id: 'huerto',
+          tag: 'DEMO · ZAPPER AIO',
+          title: 'Zapper Huerto',
+          body: 'El temporizador de foco con plantas 3D y el huerto de Zapper AIO, jugable en el navegador. Datos de ejemplo: no se guarda nada.',
+          cta: 'Probar la demo',
+        },
         {
           id: 'libft',
           tag: 'CAMPUS 42 · C',

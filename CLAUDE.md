@@ -58,27 +58,28 @@ Fase 0 completada. **Fase 1 (sistema de diseño, esqueleto y hero espectacular) 
   ligada al scroll, «tock» sutil en pulsaciones, campanilla al acabar la carga, «boing» de la patata. Aviso en la carga + botón en la
   cabecera; elección en `localStorage: zapium-sound`. Arranca apagado hasta que el visitante lo activa.
 - **Escenas de contenido** (textos reales en `src/i18n/*.ts → story`, con `[TODO]` donde falta información):
-  - `ProjectWall` (+ `scripts/wall.ts`): **la pared de proyectos** (sustituye a la escena fijada, que el autor encontró monótona: quería
-    «lateral, 3D, en un grid, animado y flotante»). Rejilla de dos filas; el destacado (Zapper AIO) ocupa 3×2 celdas con el vídeo «real»
-    delante del **mismo vídeo desenfocado de fondo** (`ProofVideo`), más 8 tarjetas (Libft, zapium, las 3 apps del lab, dropshipping,
-    trading, GitHub; textos en `story.projects.items`, enlaces en el `meta` del componente). Escritorio: la sección se fija y el
-    scroll vertical recorre la pared; el JS escribe `--hp` (avance), `--ep` (entrada) y por tarjeta `--d` (distancia al centro, con zona
-    muerta) y el CSS lo convierte en giro/profundidad/escala tipo coverflow con perspectiva compartida; las tarjetas flotan (`bob`), se
-    inclinan hacia el puntero con brillo, el punto de fuga sigue al ratón y la patata guía cruza girando. Condición de fijado:
-    `min-width: 60rem` + `min-height: 38rem` + sin reduced-motion (**la misma condición está en el `@media` del CSS y en `wall.ts`**;
-    si se cambia una, cambiar la otra). Móvil: el destacado va apilado y las 8 tarjetas forman un carril de dos filas con scroll-snap nativo
-    y la misma inclinación (con `perspective()` por tarjeta, porque `overflow` aplana el 3D). Reduced-motion: rejilla normal. Al enfocar
-    con teclado una tarjeta fuera de plano, `wall.ts` recoloca el scroll. Hay que mantener `grid-template-columns: minmax(0, 1fr)` en el
-    `.wall__stick`: sin eso la rejilla se ensancha al ancho de toda la pared y el punto de fuga se descentra.
+  - `Works` (+ `scripts/works/{index,scene}.ts`): **pantallas curvas** de proyectos (sustituye a la pared de tarjetas; el autor pidió algo como
+    alche.studio: «el grid girado y la pantalla siguiendo como un efecto de ola con doblez»). Escena WebGL propia (OGL): una **hoja con rejilla y
+    cruces `+`** y las pantallas de cada proyecto pegadas a ella, deformadas por la MISMA función del vertex shader (`deform`): guiñada de la hoja,
+    **doblez** (rodilla suave a la derecha del centro) y **ola** que viaja con el scroll (su energía = velocidad del scroll; en reposo solo respira);
+    la luz sale de la normal deformada, así que pliegue y onda se ven como sombras; al moverse hay un poco de separación RGB. Cada pantalla es un
+    **vídeo** (`public/videos/NOMBRE.*`, textura viva, solo se reproduce la activa), una **captura** (`public/works/NOMBRE.webp`, la genera
+    `node scripts/capture-works.mjs` desde la demo y el lab ya compilados; **regenerarla cuando cambie el aspecto de las apps**) o un marcador
+    `[TODO]` dibujado en un canvas. Escritorio y móvil: la sección se fija (`data-gl`) y el scroll vertical recorre las pantallas con una pausa en
+    cada una; el texto de cada proyecto es DOM real (solo se ve el activo; el resto `visibility:hidden`); números 01–05, flechas del teclado y
+    foco recolocan el scroll; la patata guía cruza por abajo. En vertical (móvil) la pantalla sube y el texto va debajo. Sin WebGL o con
+    reduced-motion: lista apilada (captura + texto). Debajo, **«Más proyectos»**: índice en filas (Libft, zapium, dropshipping, trading, GitHub).
+    Añadir un proyecto: entrada en `story.projects.items` (es/en) + objeto en `works` de `Works.astro` (+ captura o vídeo). Los enlaces SOLO a
+    repos públicos. Escena en `scene.ts`: `SCREEN_W`, `SPACING`, `FOV` y el GLSL `DEFORM` son los mandos del «efecto ola».
   - `DemoDialog` (+ `scripts/demo.ts`): **demo jugable** de Zapper AIO («Zapper Huerto»: temporizador + huerto con datos de ejemplo, hecha por
     el autor con el mismo código de la app). Vive en **`public/demos/huerto/`** (`index.html` + `assets/huerto.js` + `assets/style.css`, estática, rutas
     relativas, sin red, sin guardar nada, ES/EN con `?lang=`; la regenera `npm run build:huerto -w @zapper/desktop` en el repo privado). El botón
-    «Probar la demo» de la tarjeta destacada **solo se pinta si esa carpeta existe** (`existsSync` en `ProjectWall.astro`). Al pulsarlo se abre un
+    «Probar la demo» de la tarjeta destacada **solo se pinta si esa carpeta existe** (`existsSync` en `Works.astro`). Al pulsarlo se abre un
     `<dialog>` modal y SOLO entonces se crea el `<iframe sandbox="allow-scripts allow-popups allow-popups-to-escape-sandbox">` (sin
     `allow-same-origin`: origen opaco, `localStorage` falla dentro, por eso la demo guarda en memoria); al cerrar se destruye el iframe. Dentro del
     diálogo se usa el cursor nativo (la mano personalizada no entra en iframes). La tarjeta deja de flotar con el cursor o el foco encima.
-    La demo es **código compilado con todos los derechos reservados** (no MIT; ver `LICENSE-CONTENT.md`). Pendiente: comprobar que el bundle
-    conserva los avisos de licencia de sus dependencias (React, etc.) y añadirlos a `THIRD_PARTY_NOTICES.md`.
+    La demo es **código compilado con todos los derechos reservados** (no MIT; ver `LICENSE-CONTENT.md`). Los avisos de React/Tailwind/motion están en
+    `THIRD_PARTY_NOTICES.md` (pendiente confirmar la lista exacta con el `package.json` del repo privado).
   - `AboutTrack`: «Sobre mí» como **scroll horizontal** fijado (tarjetas: dropshipping, trading simulado, 42, ASIR, fotos).
   - `AiSection`, `StackSection`, `ContactSection` (correo montado por JS, no en claro en el HTML; botón de copiar).
   - Móvil y reduced-motion: todo apilado, sin fijados.
@@ -136,7 +137,8 @@ node scripts/split-avatar.mjs  # capas del avatar original (verifica 0 de difere
 pnpm check:exif     # falla si alguna imagen trae EXIF/XMP/IPTC
 pnpm verify         # format:check + lint + check + check:exif + build
 pnpm test           # tests de la lógica del laboratorio (node --test, Node ≥ 22.18)
-pnpm videos         # _originals/videos -> public/videos (WebM+MP4+póster)
+pnpm videos         # _originals/videos -> public/videos (WebM+MP4+póster; recorta a 30 s, `-- --max N` para cambiarlo)
+node scripts/capture-works.mjs  # capturas de la demo y del lab -> public/works (necesita `pnpm preview` en :4321)
 pnpm shots [url] [filtro]  # capturas Playwright a .screenshots/ (1440/768/375, claro/oscuro, paletas y héroes)
 ```
 

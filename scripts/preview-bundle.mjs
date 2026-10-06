@@ -29,6 +29,9 @@ await cp('dist/_astro', join(OUT, 'assets'), { recursive: true });
 await cp('dist/favicon.png', join(OUT, 'favicon.png'));
 // Demos jugables (public/demos/*): se copian tal cual; el iframe las carga con ruta relativa.
 if (existsSync('dist/demos')) await cp('dist/demos', join(OUT, 'demos'), { recursive: true });
+// Capturas y vídeos de los proyectos (public/works, public/videos): también relativos
+for (const d of ['works', 'videos'])
+  if (existsSync(`dist/${d}`)) await cp(`dist/${d}`, join(OUT, d), { recursive: true });
 
 // CSS: url(/_astro/x) → url(./x) (relativo al propio CSS).
 // JS: el helper de precarga de Vite antepone «/» a las rutas de los fragmentos (`/_astro/x.js`);
@@ -53,6 +56,12 @@ function localize(html, up, isMain) {
     .replaceAll('"/_astro/', `"${up}assets/`)
     .replaceAll('"/favicon.png"', `"${up}favicon.png"`)
     .replaceAll('data-src="/demos/', `data-src="${up}demos/`)
+    .replaceAll('data-img="/works/', `data-img="${up}works/`)
+    .replaceAll('src="/works/', `src="${up}works/`)
+    .replaceAll('data-video="/videos/', `data-video="${up}videos/`)
+    .replaceAll('data-poster="/videos/', `data-poster="${up}videos/`)
+    .replaceAll('poster="/videos/', `poster="${up}videos/`)
+    .replaceAll('src="/videos/', `src="${up}videos/`)
     // enlaces entre páginas (con y sin ancla), de más específico a menos
     .replace(/href="\/en\/lab\/(#[^"]*)?"/g, (_, h = '') => `href="${up}en/lab/index.html${h}"`)
     .replace(/href="\/lab\/(#[^"]*)?"/g, (_, h = '') => `href="${up}lab/index.html${h}"`)
