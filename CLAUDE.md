@@ -98,6 +98,9 @@ Fase 0 completada. **Fase 1 (sistema de diseño, esqueleto y hero espectacular) 
     el clic le da un empujón y suena «boing». Sustituye a una escena de Spline.
 - **Vídeos**: dejar los originales en `_originals/videos/NOMBRE.mp4`, ejecutar `pnpm videos` (WebM + MP4 + póster, sin audio,
   ≤ 1280 px, avisa si > 3 MB) y pasar `src="NOMBRE"` a `<ProofVideo>`. Sin `src` se ve un marcador `[TODO]`.
+- **REGLA DEL AUTOR (no negociable): tras CADA cambio visible, republicar el Artifact y poner el ENLACE en la PRIMERA línea del mensaje**
+  (https://claude.ai/artifact/V5u75LSfXy4ksy5Qh5kBBb). El autor lo prueba desde el móvil entre otras tareas y pierde tiempo si tiene que pedirlo
+  o buscarlo. Si se hacen varios cambios seguidos, republicar tras cada uno; no esperar al final de la sesión.
 - **Vista previa clicable para el autor** (Artifact de claude.ai, privado): `pnpm build && node scripts/preview-bundle.mjs` y publicar
   `.preview/index.html` con `root: .preview` y la lista de archivos que imprime el script. El Artifact envuelve la página (se publica
   como **fragmento**, sin `<html>/<head>/<body>`), exige rutas **relativas** y prohíbe nombres que empiecen por `_`
