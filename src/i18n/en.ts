@@ -368,6 +368,9 @@ export const en: Dict = {
       copied: 'Copied!',
       github: 'My GitHub',
       noscript: 'Enable JavaScript to see the email (it is hidden against spam).',
+      viewerLabel: 'View 02 · patata.001',
+      viewerMode: 'Perspective · 24°',
+      viewerHint: 'Drag to rotate',
     },
   },
   sections: {

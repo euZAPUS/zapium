@@ -366,6 +366,9 @@ export const es = {
       copied: '¡Copiado!',
       github: 'Mi GitHub',
       noscript: 'Activa JavaScript para ver el correo (está oculto contra el spam).',
+      viewerLabel: 'Vista 02 · patata.001',
+      viewerMode: 'Perspectiva · 24°',
+      viewerHint: 'Arrastra para girar',
     },
   },
   sections: {

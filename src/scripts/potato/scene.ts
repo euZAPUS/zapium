@@ -219,7 +219,10 @@ interface Part {
 export function createPotatoScene(
   textures: { body: HTMLImageElement; armL: HTMLImageElement; armR: HTMLImageElement },
   lowPower = false,
+  /** `tunnel: false` = solo la patata sobre fondo transparente (visor de «Contacto»). */
+  opts: { tunnel?: boolean } = {},
 ): PotatoScene {
+  const withTunnel = opts.tunnel ?? true;
   const renderer = new Renderer({
     alpha: true,
     premultipliedAlpha: true,
@@ -374,11 +377,12 @@ export function createPotatoScene(
       u.uFlow!.value = f.flow;
       u.uFade!.value = f.fade;
       u.uCenter!.value = [(f.x + f.mouse[0] * 10) / width, 1 - (f.y + f.mouse[1] * 8) / height];
-      renderer.render({ scene: tunnelScene, camera, sort: false, frustumCull: false });
+      if (withTunnel)
+        renderer.render({ scene: tunnelScene, camera, sort: false, frustumCull: false });
       renderer.render({
         scene: potatoScene,
         camera,
-        clear: false,
+        clear: !withTunnel, // con túnel, la patata se pinta encima sin borrar
         sort: false,
         frustumCull: false,
       });

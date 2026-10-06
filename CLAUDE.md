@@ -103,8 +103,12 @@ Fase 0 completada. **Fase 1 (sistema de diseño, esqueleto y hero espectacular) 
     **con tests** (`pnpm test`): `SubnetApp` (subredes IPv4/CIDR, ASIR), `BitsApp` (enteros de 32 bits, bases y operadores, C/42),
     `RiskApp` (tamaño de posición por riesgo, trading **simulado**, con aviso de que no es asesoramiento). Se describen como
     «hechas con Claude Code para practicar». Añadir apps nuevas: lógica en `lib/` + test + componente `XApp.astro` + tarjeta en `LabPage`.
-  - `Shape3D` (+ `scripts/shape3d/`): **nudo toroidal iridiscente** con shader propio (OGL), detrás de «Contacto»; gira con cursor/scroll,
-    el clic le da un empujón y suena «boing». Sustituye a una escena de Spline.
+  - **Visor 3D de «Contacto»** (`ContactSection.astro` + `scripts/potato/contact.ts`; sustituye al nudo toroidal, que el autor no entendía: «la figura
+    esa que son dos círculos»): la MISMA patata 3D del hero en un recuadro tipo visor de modelos (marcas de esquina naranjas, rejilla fina,
+    lecturas `ROT X/Y/Z` en vivo, «Vista 02 · patata.001»). Se gira **arrastrando** (inercia; en táctil, deslizar en horizontal con
+    `touch-action: pan-y`), se inclina hacia el cursor, doble clic = giro + «boing», y vuelve sola a mirar de frente. Reutiliza `createPotatoScene(…, { tunnel: false })`
+    y las imágenes de la patata 2D del propio recuadro (que es también la reserva sin WebGL / reduced-motion). Se carga al acercarse a la pantalla.
+- El texto fijo «User Perspective» (`Gizmo.astro`) se esconde cuando el pie de página está a la vista (se solapaba con el «© 2026»).
 - **Vídeos**: dejar los originales en `_originals/videos/NOMBRE.mp4`, ejecutar `pnpm videos` (WebM + MP4 + póster, sin audio,
   ≤ 1280 px, avisa si > 3 MB) y pasar `src="NOMBRE"` a `<ProofVideo>`. Sin `src` se ve un marcador `[TODO]`.
 - **REGLA DEL AUTOR (no negociable): tras CADA cambio visible, republicar el Artifact y poner el ENLACE en la PRIMERA línea del mensaje**
@@ -130,7 +134,7 @@ Fase 0 completada. **Fase 1 (sistema de diseño, esqueleto y hero espectacular) 
   Mandos: las constantes de `index.ts` (fases) y `scene.ts` (`fov 24`, grosores 62/15 px, biseles 24/12, shaders).
 - Cursor: la patata se inclina hacia él; clic = giro (5 seguidos = más), brazos que se mecen. Al aparecer tras la carga entra girando + «ping».
 - Sin WebGL / reduced-motion / fallo: hero apilado de siempre con la patata 2D. Móvil: misma secuencia (lienzo a dpr ≤ 1,25).
-- Arreglo de paso: `main { overflow-x: clip }` (el nudo 3D de «Contacto» ensanchaba la página en móvil y «alejaba» la vista).
+- Arreglo de paso: `main { overflow-x: clip }` (el antiguo nudo 3D de «Contacto» ensanchaba la página en móvil y «alejaba» la vista).
 
 ## Herramientas evaluadas (a petición del autor): shaders.com, Spline, Framer/Motion
 

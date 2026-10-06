@@ -64,6 +64,11 @@ const axes = [
       letter-spacing: 0.06em;
       line-height: 1.5;
       color: var(--ink-muted);
+      transition: opacity var(--dur-base) var(--ease-out);
+    }
+    /* Se esconde cuando el pie de página está a la vista (si no, se solapaba con el «© 2026») */
+    :global(html.has-world) .viewport[data-hidden] {
+      opacity: 0;
     }
   }
   .gizmo svg {

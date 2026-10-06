@@ -68,3 +68,12 @@ if (gizmo) {
     if (zText) zText.textContent = `Z ${z.toFixed(2)}`;
   });
 }
+
+// El texto «User Perspective» se esconde mientras el pie de página está a la vista (se solapaba con el «© 2026»)
+const viewport = document.querySelector<HTMLElement>('[data-viewport]');
+const footer = document.querySelector('footer');
+if (viewport && footer) {
+  new IntersectionObserver(([entry]) => {
+    viewport.toggleAttribute('data-hidden', !!entry?.isIntersecting);
+  }).observe(footer);
+}
