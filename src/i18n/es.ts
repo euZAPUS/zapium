@@ -126,7 +126,7 @@ export const es = {
       hostBits: 'bits de host',
     },
     bits: {
-      tag: 'C · 42',
+      tag: 'C · BAJO NIVEL',
       title: 'Visor de bits y bases',
       desc: 'Escribe un número (decimal, 0x hex, 0b binario) o pulsa los bits. Para entender enteros de 32 bits, operadores y endianness.',
       label: 'Número',
@@ -249,7 +249,7 @@ export const es = {
           facts: [
             {
               k: 'Problema',
-              v: 'Practicar mecanografía en español (tildes, ñ, ¿ ¡), ciberseguridad y C al estilo 42, sin cuenta ni servidor.',
+              v: 'Practicar mecanografía en español (tildes, ñ, ¿ ¡), con listas de ciberseguridad y de C, sin cuenta ni servidor.',
             },
             { k: 'Mi rol', v: 'Autor del repositorio, desarrollado con Claude Code.' },
             { k: 'Stack', v: 'TypeScript 7 · Vite 8 · Vitest 5 · Electron 44, sin framework.' },
@@ -283,13 +283,6 @@ export const es = {
           demoTitle: 'ZAP Arcade · demo',
           demoNote:
             'Los 13 juegos con teclado, ratón o toque. Los récords no se guardan al cerrar.',
-        },
-        {
-          id: 'libft',
-          tag: 'CAMPUS 42 · C',
-          title: 'Libft',
-          body: 'Mi primera librería en C, del curso de 42: reescribí desde cero funciones de la libc, utilidades para strings, memoria y ficheros, y listas enlazadas (bonus).',
-          cta: 'Ver el repositorio',
         },
         {
           id: 'zapium',
@@ -364,7 +357,7 @@ export const es = {
         {
           tag: 'Estudios',
           title: 'Campus 42',
-          body: 'Aprendí a usar la shell de Linux a fondo (casi la sabía ya), Git y GitHub, claves [TODO ¿SSH?], programación en C y a trabajar en equipo, con respeto.',
+          body: 'Soy estudiante en Campus 42, donde acabo de empezar. Voy aprendiendo C, la shell de Linux y a trabajar en equipo.',
           note: '',
         },
         {

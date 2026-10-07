@@ -99,11 +99,11 @@ Fase 0 completada. **Fase 1 (sistema de diseño, esqueleto y hero espectacular) 
     **Tráilers** (`public/trailers/NOMBRE.{webm,mp4,jpg}`, con sonido, ~2 MB, los genera `pnpm videos` desde `_originals/trailers/`): botón «Ver el
     tráiler» → el mismo diálogo con `<video controls>` (WebM + MP4: algunos Chromium sin códecs no reproducen H.264); solo se descargan al pulsar.
     Las demos son **código compilado con todos los derechos reservados** (no MIT; ver `LICENSE-CONTENT.md`); avisos de terceros en `THIRD_PARTY_NOTICES.md`.
-  - `AboutTrack`: «Sobre mí» como **scroll horizontal** fijado (tarjetas: dropshipping, trading simulado, 42, ASIR, fotos).
+  - `AboutTrack`: «Sobre mí» como **scroll horizontal** fijado (tarjetas: dropshipping, trading simulado, estudiante en 42 (una frase), ASIR, fotos).
   - `AiSection`, `StackSection`, `ContactSection` (correo montado por JS, no en claro en el HTML; botón de copiar).
   - Móvil y reduced-motion: todo apilado, sin fijados.
   - `LabTeaser` + páginas **`/lab/` y `/en/lab/`** (`LabPage`): tres mini-apps sin backend, con la lógica pura en `src/apps/lib/`
-    **con tests** (`pnpm test`): `SubnetApp` (subredes IPv4/CIDR, ASIR), `BitsApp` (enteros de 32 bits, bases y operadores, C/42),
+    **con tests** (`pnpm test`): `SubnetApp` (subredes IPv4/CIDR, ASIR), `BitsApp` (enteros de 32 bits, bases y operadores, C),
     `RiskApp` (tamaño de posición por riesgo, trading **simulado**, con aviso de que no es asesoramiento). Se describen como
     «hechas con Claude Code para practicar». Añadir apps nuevas: lógica en `lib/` + test + componente `XApp.astro` + tarjeta en `LabPage`.
   - **Visor 3D de «Contacto»** (`ContactSection.astro` + `scripts/potato/contact.ts`; sustituye al nudo toroidal, que el autor no entendía: «la figura
@@ -236,7 +236,7 @@ El hook `.githooks/pre-commit` (activado por `pnpm install` vía `prepare`) ejec
 ## Honestidad del contenido
 
 - **Solo enlazar repos PÚBLICOS**: `zapper-aio` y `zapper-datos` son **privados** (404 para los visitantes; ya nos pasó con el botón «Ver el repositorio»).
-  Públicos: `zapium`, `zapper-aio-releases` (descargas), `Campus42`, `zapped`, `retro-zapp` (= **ZAP Arcade**, vive en `demos/arcade/`). Comprobar la visibilidad antes de enlazar un repo nuevo.
+  Públicos: `zapium`, `zapper-aio-releases` (descargas), `zapped`, `retro-zapp` (= **ZAP Arcade**, vive en `demos/arcade/`). Comprobar la visibilidad antes de enlazar un repo nuevo.
 - **Datos verificados con los repos (2026-10-07, ver `docs/content-notes.md`):** Zapper AIO **no usa SQLite** (Tauri 2.12 + Rust, React 19, TypeScript 7, Tailwind 4, Vite 8; persistencia `localStorage` + `zapper-data.json`),
   v0.11.0, 363 pruebas, Windows y Linux (no macOS), 20 temas. Zapped v1.0.2 (38 tests, instaladores Win/macOS/Linux, código visible pero **no open source**). ZAP Arcade: 13 juegos y
   **51 modos** (no 50), 45 logros, v1.0.2. **«Mi rol»**: en git, la mayoría de commits van firmados por «Claude» y todos con `Co-Authored-By`; la web dice «Autor del proyecto/repositorio,
@@ -246,6 +246,9 @@ El hook `.githooks/pre-commit` (activado por `pnpm install` vía `prepare`) ejec
   son **proyectos/experimentos personales y de aprendizaje**, no experiencia laboral: se cuentan así,
   sin cifras ni logros que el autor no haya dado.
 - Estudios: Campus 42 y DigiTech (1º de ASIR). Solo texto, sin logos.
+- **Campus 42 (decisión del autor, 2026-10-07): NO se presentan proyectos de 42 (Libft, etc.) ni se enlaza `Campus42`.** Publicarlos sería una **filtración** (los enunciados/soluciones
+  de 42 no se comparten) y además son lo más básico: el autor acaba de empezar. De 42 solo consta «estudiante en Campus 42, acabo de empezar» y poco más. Tampoco etiquetar
+  herramientas propias como «42» (el visor de bits es «C · bajo nivel»).
 - La sección «Cómo trabajo con IA» es concreta y honesta (qué delego, qué reviso, qué aprendí) y
   menciona que la web está hecha con Claude Code.
 

@@ -36,7 +36,7 @@ Datos extraídos del README/docs públicos del repo (no inventados):
 
 ## Estudios
 
-- **42:** dominar la shell de Linux (ya la conocía casi del todo), usar GitHub, «claves» (❓ ¿SSH/GPG?), programar en **C**,
+- **42:** (2026-10-07) el autor acaba de empezar; **no mostrar proyectos de 42 (Libft…) ni enlazar el repo `Campus42`** (filtración + muy básico). En la web solo «estudiante en Campus 42, acabo de empezar». Objetivos del curso: shell de Linux, GitHub, programar en **C**,
   trabajar en equipo, respeto.
 - **ASIR (1.º, DigiTech):** redes/IP, HTML, «cosas» más. ❓ Asignaturas concretas para listarlas bien.
 

@@ -128,7 +128,7 @@ export const en: Dict = {
       hostBits: 'host bits',
     },
     bits: {
-      tag: 'C · 42',
+      tag: 'C · LOW LEVEL',
       title: 'Bit and base viewer',
       desc: 'Type a number (decimal, 0x hex, 0b binary) or click the bits. To understand 32-bit integers, operators and endianness.',
       label: 'Number',
@@ -251,7 +251,7 @@ export const en: Dict = {
           facts: [
             {
               k: 'Problem',
-              v: 'Practise typing in Spanish (accents, ñ, ¿ ¡), cybersecurity and 42-style C, with no account or server.',
+              v: 'Practise typing in Spanish (accents, ñ, ¿ ¡), with cybersecurity and C word lists, with no account or server.',
             },
             { k: 'My role', v: 'Repository author, built with Claude Code.' },
             { k: 'Stack', v: 'TypeScript 7 · Vite 8 · Vitest 5 · Electron 44, no framework.' },
@@ -284,13 +284,6 @@ export const en: Dict = {
           demoTitle: 'ZAP Arcade · demo',
           demoNote:
             'All 13 games with keyboard, mouse or touch. Records are not saved when you close it.',
-        },
-        {
-          id: 'libft',
-          tag: 'CAMPUS 42 · C',
-          title: 'Libft',
-          body: 'My first C library from the 42 course: I rewrote libc functions from scratch, plus helpers for strings, memory and files, and linked lists (bonus).',
-          cta: 'View the repository',
         },
         {
           id: 'zapium',
@@ -365,7 +358,7 @@ export const en: Dict = {
         {
           tag: 'Studies',
           title: 'Campus 42',
-          body: 'I learned to use the Linux shell in depth (I almost knew it already), Git and GitHub, keys [TODO SSH?], C programming and teamwork, with respect.',
+          body: 'I am a student at Campus 42, where I have just started. I am learning C, the Linux shell and teamwork.',
           note: '',
         },
         {
