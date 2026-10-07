@@ -2,7 +2,6 @@
 /**
  * Capturas REALES de las apps para usarlas como «pantallas» del carrusel de proyectos
  * (ProjectScreens / scripts/screens). Genera public/works/NAME.webp (1280×800, sin metadatos).
- *   huerto  → public/demos/huerto/ (demo de Zapper AIO) con el huerto de ejemplo relleno
  *   subnet / bits / risk → las mini-apps del laboratorio (/lab/)
  * Cuando el autor aporte vídeos (pnpm videos), el vídeo sustituye a la captura (misma pantalla).
  * Uso: pnpm build && pnpm preview &  →  node scripts/capture-works.mjs [baseUrl]
@@ -29,45 +28,6 @@ const save = (buf, name) =>
     .webp({ quality: 82 })
     .toFile(`${OUT}/${name}.webp`)
     .then((i) => console.log(`${name}.webp  ${(i.size / 1024).toFixed(0)} KB`));
-
-// ── Zapper Huerto: temporizador + huerto de ejemplo, compuestos en un 16:10 ──
-{
-  const ctx = await browser.newContext({
-    viewport: { width: 1280, height: 800 },
-    deviceScaleFactor: 1.5,
-  });
-  const page = await ctx.newPage();
-  await page.goto(`${base}/demos/huerto/huerto.html?lang=es`, { waitUntil: 'networkidle' });
-  await page.waitForTimeout(1500);
-  await page.getByText('Rellenar con un huerto de ejemplo').click();
-  await page.waitForTimeout(1500);
-  const timer = await page.screenshot({
-    clip: { x: 320, y: 360, width: 640, height: 620 },
-    fullPage: true,
-  });
-  const garden = await page.screenshot({
-    clip: { x: 300, y: 2040, width: 680, height: 500 },
-    fullPage: true,
-  });
-  // El fondo del collage es el MISMO que el de la página de la demo (se lee de un píxel), para que no se vea la unión
-  const px = await sharp(await page.screenshot({ clip: { x: 8, y: 8, width: 4, height: 4 } }))
-    .raw()
-    .toBuffer();
-  const bg = { r: px[0] ?? 14, g: px[1] ?? 15, b: px[2] ?? 22 };
-  const t = await sharp(timer).resize({ height: 760 }).toBuffer();
-  const g = await sharp(garden).resize({ width: 640 }).toBuffer();
-  const gm = await sharp(g).metadata();
-  const tm = await sharp(t).metadata();
-  const canvas = await sharp({ create: { width: 1600, height: 1000, channels: 3, background: bg } })
-    .composite([
-      { input: t, left: 90, top: 120 },
-      { input: g, left: 90 + (tm.width ?? 0) + 70, top: Math.round(500 - (gm.height ?? 0) / 2) },
-    ])
-    .png()
-    .toBuffer();
-  await save(canvas, 'huerto');
-  await ctx.close();
-}
 
 // ── Mini-apps del laboratorio ──
 const apps = [

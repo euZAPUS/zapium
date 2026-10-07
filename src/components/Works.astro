@@ -15,7 +15,6 @@ import { labPath, useT } from '~/i18n';
 import Icon, { type IconName } from './Icon.astro';
 import Guide from './Guide.astro';
 import ProofVideo from './ProofVideo.astro';
-import DemoDialog from './DemoDialog.astro';
 import DemoButton from './DemoButton.astro';
 
 interface Props {
@@ -52,7 +51,7 @@ interface Work {
   img?: string;
   placeholder: string;
   /** Demo jugable en el navegador (HTML único) */
-  demo?: { src: string; title: string; note: string };
+  demo?: { src: string; title: string; note: string; label?: string };
   /** Tráiler con sonido */
   trailer?: { src: string; poster: string; title: string };
   links: Link[];
@@ -84,11 +83,11 @@ const labWork = (id: 'subnet' | 'bits' | 'risk'): Work => {
     links: [{ label: it.cta, href: `${lab}#${id}`, icon: 'arrow', primary: true }],
   };
 };
-const demoOf = (id: string) => {
+const demoOf = (id: string, label?: string) => {
   const src = demoFile(id);
   const it = byId[id]!;
   return isPublic(src.slice(1))
-    ? { src, title: it.demoTitle ?? it.title, note: it.demoNote ?? '' }
+    ? { src, title: it.demoTitle ?? it.title, note: it.demoNote ?? '', label }
     : undefined;
 };
 const trailerOf = (name: string, title: string) =>
@@ -102,7 +101,6 @@ const trailerOf = (name: string, title: string) =>
 const gh = PERSON.github;
 const zapped = byId.zapped!;
 const arcade = byId.arcade!;
-const huerto = byId.huerto!;
 const works: Work[] = [
   {
     id: 'zapper',
@@ -112,21 +110,13 @@ const works: Work[] = [
     facts: s.facts,
     ...media('zapper', 'zapper-aio'),
     placeholder: s.videoTodo,
+    // El huerto (temporizador + plantas 3D) es parte de Zapper AIO: va como demo de esta misma tarjeta, no como proyecto aparte
+    demo: demoOf('huerto', s.demoGarden),
     trailer: trailerOf('zapper-aio', s.title),
     links: [
       { label: s.download, href: releases, icon: 'download', primary: true },
       { label: s.repo, href: repo, icon: 'branch' },
     ],
-  },
-  {
-    id: 'huerto',
-    tag: huerto.tag,
-    title: huerto.title,
-    body: huerto.body,
-    ...media('huerto', 'zapper-huerto'),
-    placeholder: `[TODO] ${huerto.title}`,
-    demo: demoOf('huerto'),
-    links: [{ label: s.download, href: releases, icon: 'download', primary: !demoOf('huerto') }],
   },
   {
     id: 'zapped',
@@ -253,7 +243,7 @@ const nn = (n: number) => String(n).padStart(2, '0');
                   src={w.demo.src}
                   title={w.demo.title}
                   note={w.demo.note}
-                  label={s.demo}
+                  label={w.demo.label ?? s.demo}
                   primary
                 />
               )}
@@ -309,8 +299,6 @@ const nn = (n: number) => String(n).padStart(2, '0');
     </div>
   </div>
 </section>
-
-<DemoDialog lang={locale} close={s.demoClose} loading={s.demoLoading} error={s.demoError} />
 
 <section class="more container" aria-labelledby="more-title">
   <h3 id="more-title" class="more__title">

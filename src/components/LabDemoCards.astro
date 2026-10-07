@@ -1,0 +1,116 @@
+---
+/**
+ * «Demos jugables»: mis apps completas funcionando dentro de la web (Zapper Huerto, Zapped, ZAP Arcade). Cada tarjeta abre
+ * el diálogo compartido (DemoDialog.astro, que debe estar en la página) con la demo. Solo se pintan las demos cuyo archivo existe.
+ */
+import { existsSync } from 'node:fs';
+import { join } from 'node:path';
+import type { Locale } from '~/config/site';
+import { useT } from '~/i18n';
+import DemoButton from './DemoButton.astro';
+
+interface Props {
+  locale: Locale;
+  /** Subtítulo y texto introductorio de la lista */
+  heading?: boolean;
+}
+const { locale, heading = true } = Astro.props;
+const t = useT(locale);
+const s = t.story.projects;
+const l = t.lab;
+const demos = ['huerto', 'zapped', 'arcade']
+  .map((id) => s.items.find((i) => i.id === id))
+  .filter((it): it is NonNullable<typeof it> => !!it)
+  .filter((it) => existsSync(join(process.cwd(), 'public', 'demos', it.id, `${it.id}.html`)));
+---
+
+{demos.length > 0 && (
+  <section class="demos" id="demos" aria-labelledby="demos-title">
+    {heading && (
+      <header class="demos__head">
+        <h3 id="demos-title" class="demos__title">
+          {l.demosTitle}
+        </h3>
+        <p class="demos__intro">{l.demosIntro}</p>
+      </header>
+    )}
+    <ul class="demos__grid">
+      {demos.map((it, i) => (
+        <li class="card demos__card">
+          <span class="demos__n" aria-hidden="true">
+            {String(i + 1).padStart(2, '0')} / {String(demos.length).padStart(2, '0')}
+          </span>
+          <p class="tag">{it.tag}</p>
+          <h4>{it.title}</h4>
+          <p class="demos__desc">{it.body}</p>
+          <DemoButton
+            kind="page"
+            src={`/demos/${it.id}/${it.id}.html`}
+            title={'demoTitle' in it ? (it.demoTitle ?? it.title) : it.title}
+            note={'demoNote' in it ? (it.demoNote ?? '') : ''}
+            label={s.demo}
+            primary
+          />
+        </li>
+      ))}
+    </ul>
+  </section>
+)}
+
+<style>
+  .demos {
+    display: grid;
+    gap: var(--space-5);
+  }
+  .demos__head {
+    display: grid;
+    gap: var(--space-2);
+    max-width: 44rem;
+  }
+  .demos__title {
+    font-size: var(--text-xl);
+  }
+  .demos__intro {
+    color: var(--ink-muted);
+  }
+  .demos__grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--space-5);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .demos__card {
+    position: relative;
+    display: grid;
+    gap: var(--space-3);
+    align-content: start;
+    justify-items: start;
+  }
+  .demos__card h4 {
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: var(--text-xl);
+    font-weight: 400;
+    letter-spacing: -0.03em;
+    line-height: var(--leading-snug);
+  }
+  .demos__desc {
+    color: var(--ink-muted);
+    font-size: var(--text-s);
+  }
+  .demos__n {
+    position: absolute;
+    top: var(--space-4);
+    right: var(--space-4);
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    color: var(--ink-muted);
+  }
+  @media (max-width: 52rem) {
+    .demos__grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

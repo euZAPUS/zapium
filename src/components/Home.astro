@@ -1,5 +1,6 @@
 ---
 import type { Locale } from '~/config/site';
+import { useT } from '~/i18n';
 import Base from '~/layouts/Base.astro';
 import Header from './Header.astro';
 import Hero from './Hero.astro';
@@ -14,11 +15,13 @@ import AiSection from './AiSection.astro';
 import StackSection from './StackSection.astro';
 import LabTeaser from './LabTeaser.astro';
 import ContactSection from './ContactSection.astro';
+import DemoDialog from './DemoDialog.astro';
 
 interface Props {
   locale: Locale;
 }
 const { locale } = Astro.props;
+const t = useT(locale);
 ---
 
 <Base locale={locale} intro>
@@ -36,5 +39,11 @@ const { locale } = Astro.props;
     <LabTeaser locale={locale} />
     <ContactSection locale={locale} />
   </main>
+  <DemoDialog
+    lang={locale}
+    close={t.story.projects.demoClose}
+    loading={t.story.projects.demoLoading}
+    error={t.story.projects.demoError}
+  />
   <Footer locale={locale} />
 </Base>

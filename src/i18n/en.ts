@@ -78,6 +78,9 @@ export const en: Dict = {
   },
   lab: {
     eyebrow: 'LAB',
+    demosTitle: 'Playable demos',
+    demosIntro:
+      'My full apps, running right here in the browser with sample data. Nothing is saved.',
     title: 'Mini-apps I made',
     intro:
       'Small tools that run in your browser, with no accounts and no server. I made them with Claude Code to practice networking, low-level basics and risk management.',
@@ -216,6 +219,7 @@ export const en: Dict = {
       repo: 'View on GitHub',
       download: 'Download',
       demo: 'Try the demo',
+      demoGarden: 'Try the garden',
       trailer: 'Watch the trailer',
       demoLoading: 'Loading the demo…',
       demoError: 'The demo could not be loaded. Try reloading the page.',

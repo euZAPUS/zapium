@@ -2,6 +2,7 @@
 import type { Locale } from '~/config/site';
 import { labPath, useT } from '~/i18n';
 import Icon from './Icon.astro';
+import LabDemoCards from './LabDemoCards.astro';
 
 interface Props {
   locale: Locale;
@@ -39,6 +40,7 @@ const apps = [
       </li>
     ))}
   </ul>
+  <LabDemoCards locale={locale} />
 </section>
 
 <style>

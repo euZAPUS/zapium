@@ -9,6 +9,8 @@ import Icon from './Icon.astro';
 import SubnetApp from './SubnetApp.astro';
 import BitsApp from './BitsApp.astro';
 import RiskApp from './RiskApp.astro';
+import LabDemoCards from './LabDemoCards.astro';
+import DemoDialog from './DemoDialog.astro';
 
 interface Props {
   locale: Locale;
@@ -40,14 +42,24 @@ const paths = { es: '/lab/', en: '/en/lab/' } as const;
         <a class="chipbtn" href="#risk">
           {t.lab.risk.title}
         </a>
+        <a class="chipbtn" href="#demos">
+          {t.lab.demosTitle}
+        </a>
       </nav>
     </header>
     <div class="container lab__apps">
       <SubnetApp locale={locale} />
       <BitsApp locale={locale} />
       <RiskApp locale={locale} />
+      <LabDemoCards locale={locale} />
     </div>
   </main>
+  <DemoDialog
+    lang={locale}
+    close={t.story.projects.demoClose}
+    loading={t.story.projects.demoLoading}
+    error={t.story.projects.demoError}
+  />
   <Footer locale={locale} />
 </Base>
 

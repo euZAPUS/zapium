@@ -76,6 +76,9 @@ export const es = {
   },
   lab: {
     eyebrow: 'LABORATORIO',
+    demosTitle: 'Demos jugables',
+    demosIntro:
+      'Mis apps completas, funcionando aquí mismo en el navegador con datos de ejemplo. Nada se guarda.',
     title: 'Mini-apps que he hecho',
     intro:
       'Herramientas pequeñas que funcionan en tu navegador, sin cuentas ni servidor. Las he hecho con Claude Code para practicar redes, bajo nivel y gestión del riesgo.',
@@ -214,6 +217,7 @@ export const es = {
       repo: 'Ver en GitHub',
       download: 'Descargar',
       demo: 'Probar la demo',
+      demoGarden: 'Probar el huerto',
       trailer: 'Ver el tráiler',
       demoLoading: 'Cargando la demo…',
       demoError: 'No se ha podido cargar la demo. Prueba a recargar la página.',

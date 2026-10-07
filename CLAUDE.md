@@ -70,7 +70,7 @@ Fase 0 completada. **Fase 1 (sistema de diseño, esqueleto y hero espectacular) 
   ligada al scroll, «tock» sutil en pulsaciones, campanilla al acabar la carga, «boing» de la patata. Aviso en la carga + botón en la
   cabecera; elección en `localStorage: zapium-sound`. Arranca apagado hasta que el visitante lo activa.
 - **Escenas de contenido** (textos reales en `src/i18n/*.ts → story`, con `[TODO]` donde falta información):
-  - `Works` (+ `scripts/works/{index,scene}.ts`): **7 pantallas flotantes** de proyectos (Zapper AIO, Zapper Huerto, Zapped, ZAP Arcade y las 3 mini-apps del laboratorio), casi como la sección Works de alche.studio (el autor
+  - `Works` (+ `scripts/works/{index,scene}.ts`): **6 pantallas flotantes** de proyectos (Zapper AIO, Zapped, ZAP Arcade y las 3 mini-apps del laboratorio; **el huerto NO es una pantalla aparte**: es parte de Zapper AIO y su demo es un botón de la tarjeta de Zapper AIO, decisión del autor 2026-10-07), casi como la sección Works de alche.studio (el autor
     pidió «que estén flotando y de fondo el grid, no pegados al grid»; análisis en `docs/reference-alche.md`). Escena WebGL propia (OGL) con
     **dos capas separadas**: (1) **fondo** = pared cilíndrica de baldosas vista desde dentro, un único shader a pantalla completa (rayo →
     cilindro → baldosas con huecos, bloques 2×2 «quad-tree», cruces `+`, fundido lateral) cuyas baldosas toman el **color del proyecto activo**
@@ -85,7 +85,7 @@ Fase 0 completada. **Fase 1 (sistema de diseño, esqueleto y hero espectacular) 
     texto va debajo. Sin WebGL o con reduced-motion: lista apilada (captura + texto + datos). Debajo, **«Más proyectos»** (índice en filas).
     Añadir un proyecto: entrada en `story.projects.items` (es/en) + objeto en `works` de `Works.astro` (+ captura o vídeo). Los enlaces SOLO a
     repos públicos. Mandos en `scene.ts`: `PANEL_W`, `SPACING`, `FOV`, `uBow`, `uRot`, `uDepth`, `uFloat` y el GLSL del fondo/paneles.
-  - **Demos jugables y tráilers** (`DemoDialog.astro` = UN `<dialog>` compartido en Works + `DemoButton.astro` + `scripts/demo.ts`). Tres demos,
+  - **Demos jugables y tráilers** (`DemoDialog.astro` = UN `<dialog>` compartido, pintado en `Home.astro` y `LabPage.astro` + `DemoButton.astro` + `scripts/demo.ts`; las tres demos salen también en **«Demos jugables» del laboratorio**, `LabDemoCards.astro`, tanto en la home como en `/lab/`). Tres demos,
     cada una **un solo HTML con todo inline** en `public/demos/NOMBRE/NOMBRE.html`: `huerto` (Zapper Huerto: temporizador + huerto con datos de
     ejemplo, ~890 KB), `zapped` (test de mecanografía, 511 KB) y `arcade` (ZAP Arcade: los 13 juegos, 415 KB). Las genera la sesión de cada app
     (Zapper: `npm run build:huerto -w @zapper/desktop` → `huerto-single.html`; las otras dos traen su capa «demo»). Contrato: sin red, sin guardar
@@ -113,7 +113,7 @@ Fase 0 completada. **Fase 1 (sistema de diseño, esqueleto y hero espectacular) 
     y las imágenes de la patata 2D del propio recuadro (que es también la reserva sin WebGL / reduced-motion). Se carga al acercarse a la pantalla.
 - El texto fijo «User Perspective» (`Gizmo.astro`) se esconde cuando el pie de página está a la vista (se solapaba con el «© 2026»).
 - **Vídeos de las pantallas** (mudos, en bucle): originales en `_originals/videos/NOMBRE.mp4`, `pnpm videos` (WebM + MP4 + póster, ≤ 1280 px, avisa si > 3 MB).
-  Nombres que espera `Works.astro`: `zapper-aio`, `zapper-huerto`, `zapped`, `zap-arcade`. Tráilers con sonido en `_originals/trailers/` (`zapper-aio`, `zapped`, `zap-arcade`). Sin vídeo se ve la captura
+  Nombres que espera `Works.astro`: `zapper-aio` (= el promo profesional, el mismo que el tráiler; el autor quiere los 3 con «showcase profesional»), `zapped`, `zap-arcade`. Tráilers con sonido en `_originals/trailers/` (`zapper-aio`, `zapped`, `zap-arcade`). Sin vídeo se ve la captura
   `public/works/ID.webp` y, sin eso, un marcador `[TODO]`.
 - **REGLA DEL AUTOR (no negociable): tras CADA cambio visible, republicar el Artifact y poner el ENLACE en la PRIMERA línea del mensaje**
   (https://claude.ai/artifact/V5u75LSfXy4ksy5Qh5kBBb). El autor lo prueba desde el móvil entre otras tareas y pierde tiempo si tiene que pedirlo
