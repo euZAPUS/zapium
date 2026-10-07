@@ -244,7 +244,7 @@ export const es = {
           id: 'zapped',
           tag: 'WEB + ESCRITORIO · TYPESCRIPT',
           title: 'Zapped',
-          body: 'Test de mecanografía inspirado en Monkeytype, para web y escritorio: modos de tiempo, palabras, código y texto propio, métricas, perfil con estadísticas y 8 temas. Proyecto personal de aprendizaje.',
+          body: 'Test de mecanografía inspirado en Monkeytype, para web y escritorio. Proyecto personal: las cifras del vídeo son de ejemplo.',
           cta: 'Ver el repositorio',
           facts: [
             {

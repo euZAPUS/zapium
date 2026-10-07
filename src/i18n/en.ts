@@ -246,7 +246,7 @@ export const en: Dict = {
           id: 'zapped',
           tag: 'WEB + DESKTOP · TYPESCRIPT',
           title: 'Zapped',
-          body: 'A Monkeytype-inspired typing test for web and desktop: time, words, code and custom-text modes, metrics, a stats profile and 8 themes. A personal learning project.',
+          body: 'A Monkeytype-inspired typing test for web and desktop. A personal project: the figures in the video are sample data.',
           cta: 'View the repository',
           facts: [
             {

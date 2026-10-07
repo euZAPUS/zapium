@@ -73,7 +73,7 @@ una versión nueva; la sesión de Zapper se ofreció a hacerlo; (2) el Horario v
 
 **Zapped** (público `euZAPUS/zapped`): v1.0.2, test de mecanografía inspirado en Monkeytype (web estática + Electron), modos tiempo/palabras/código/texto propio, 8 temas, **no hay selector de
 distribución de teclado**, interfaz solo en español (la demo trae un traductor EN del DOM; la búsqueda de la barra de comandos sigue en español), 38 tests, TypeScript 7 + Vite 8 + Vitest 5 +
-Electron 44. Licencia «todos los derechos reservados» (código visible). La demo online del README da 404 (GitHub Pages sin activar): **activarla** o no enlazarla. Falta el vídeo (`zapped.mp4`).
+Electron 44. Licencia «todos los derechos reservados» (código visible). La demo online del README da 404 (GitHub Pages sin activar): **activarla** o no enlazarla. Vídeo promo ya integrado (carrusel + tráiler). ⚠️ El vídeo muestra **cifras de ejemplo** (148 ppm, perfil «Ada Lovelace»): la tarjeta lo avisa («las cifras del vídeo son de ejemplo»).
 
 **ZAP Arcade** (repo público **`euZAPUS/retro-zapp`**, carpeta `demos/arcade/`): 13 juegos, **51 modos**, 45 logros, perfil con récords/XP, HTML+CSS+JS plano + Canvas 2D + Web Audio (0 librerías),
 Electron 44 para escritorio, v1.0.2. En `main` **no hay `LICENSE`** (la rama sin fusionar sí) y no hay tests ni CI de calidad. No hay versión jugable online (404 en Pages). Los récords y capturas del

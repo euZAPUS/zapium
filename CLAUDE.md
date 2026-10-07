@@ -113,7 +113,7 @@ Fase 0 completada. **Fase 1 (sistema de diseño, esqueleto y hero espectacular) 
     y las imágenes de la patata 2D del propio recuadro (que es también la reserva sin WebGL / reduced-motion). Se carga al acercarse a la pantalla.
 - El texto fijo «User Perspective» (`Gizmo.astro`) se esconde cuando el pie de página está a la vista (se solapaba con el «© 2026»).
 - **Vídeos de las pantallas** (mudos, en bucle): originales en `_originals/videos/NOMBRE.mp4`, `pnpm videos` (WebM + MP4 + póster, ≤ 1280 px, avisa si > 3 MB).
-  Nombres que espera `Works.astro`: `zapper-aio`, `zapper-huerto`, `zapped` (**falta: ahora se ve la captura**), `zap-arcade`. Sin vídeo se ve la captura
+  Nombres que espera `Works.astro`: `zapper-aio`, `zapper-huerto`, `zapped`, `zap-arcade`. Tráilers con sonido en `_originals/trailers/` (`zapper-aio`, `zapped`, `zap-arcade`). Sin vídeo se ve la captura
   `public/works/ID.webp` y, sin eso, un marcador `[TODO]`.
 - **REGLA DEL AUTOR (no negociable): tras CADA cambio visible, republicar el Artifact y poner el ENLACE en la PRIMERA línea del mensaje**
   (https://claude.ai/artifact/V5u75LSfXy4ksy5Qh5kBBb). El autor lo prueba desde el móvil entre otras tareas y pierde tiempo si tiene que pedirlo
