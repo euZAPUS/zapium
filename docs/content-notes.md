@@ -18,7 +18,7 @@ Datos extraídos del README/docs públicos del repo (no inventados):
 - App personal «todo en uno» de escritorio (Windows y Linux): **hoy**, notas, tareas, calendario, horario, asignaturas,
   foco con huerto de plantas 3D, hábitos y recordatorios. Local-first, privada, sin suscripciones.
 - Sincronización cifrada entre equipos con un repositorio privado de GitHub del propio usuario.
-- Stack: Tauri, React + TypeScript, SQLite, Tailwind, Vite; lógica separada en `packages/core` con tests.
+- Stack: Tauri 2 (Rust), React + TypeScript, Tailwind, Vite; lógica separada en `packages/core` con tests. **Sin SQLite** (verificado 2026-10-07: la persistencia es `localStorage` + `zapper-data.json`; el README antiguo lo decía mal).
 - 20 temas, huerto en 3D de plantas hechas de cubitos (vóxeles) que crecen según el tiempo de foco, paleta de comandos `Ctrl+K`.
 - Descargas: <https://github.com/euZAPUS/zapper-aio-releases/releases/latest> · licencia: todos los derechos reservados (código visible).
 - ❓ Estado real de la app (versión publicada, qué falta), rol exacto en el desarrollo y qué parte hizo la IA / cuál revisó él
@@ -62,3 +62,19 @@ Datos extraídos del README/docs públicos del repo (no inventados):
 - **Vídeos de fondo desenfocados** de lo que ha hecho (p. ej. usando Zapper AIO) con el «real» delante. **Pendiente: que el autor aporte los vídeos.**
 - **La carga se controla con scroll.** «Vista de Blender» sí (gizmo/HUD); patata 3D modelada **descartada**.
 - Quiere recibir **una tarjeta clicable** tras cada entrega para probar la web (Artifact).
+
+## Ronda 4 (2026-10-07): material de las sesiones de cada app (verificado con sus repos)
+
+**Zapper AIO** (repo privado; enlazar solo `zapper-aio-releases`): v0.11.0 (6 oct), 363 pruebas del núcleo (+8 de Rust), CI que ejecuta las pruebas, **sin lint**, Windows
+(instalador NSIS, portátil) y Linux (AppImage, .deb), **sin macOS**, 20 temas (todos oscuros), paleta Ctrl+K, sincronización AES-256-GCM + PBKDF2-SHA256 (600 000 iteraciones),
+actualizador propio con SHA-256. «3D» = plantas de cubitos en isométrica con **Canvas 2D** (no WebGL). Licencia propietaria. 58 commits en 3 días: 47 con autor «Claude», 11 «euZAPUS», todos con
+`Co-Authored-By`. ⚠️ **Pendiente del autor:** (1) la app incluye en `presets/asir1.ts` el **nombre real del tutor de la clase** (tercero) y va dentro de los binarios públicos: quitarlo y publicar
+una versión nueva; la sesión de Zapper se ofreció a hacerlo; (2) el Horario viene bloqueado a la plantilla de ASIR1 en las builds publicadas (no decir que cada persona monta el suyo).
+
+**Zapped** (público `euZAPUS/zapped`): v1.0.2, test de mecanografía inspirado en Monkeytype (web estática + Electron), modos tiempo/palabras/código/texto propio, 8 temas, **no hay selector de
+distribución de teclado**, interfaz solo en español (la demo trae un traductor EN del DOM; la búsqueda de la barra de comandos sigue en español), 38 tests, TypeScript 7 + Vite 8 + Vitest 5 +
+Electron 44. Licencia «todos los derechos reservados» (código visible). La demo online del README da 404 (GitHub Pages sin activar): **activarla** o no enlazarla. Falta el vídeo (`zapped.mp4`).
+
+**ZAP Arcade** (repo público **`euZAPUS/retro-zapp`**, carpeta `demos/arcade/`): 13 juegos, **51 modos**, 45 logros, perfil con récords/XP, HTML+CSS+JS plano + Canvas 2D + Web Audio (0 librerías),
+Electron 44 para escritorio, v1.0.2. En `main` **no hay `LICENSE`** (la rama sin fusionar sí) y no hay tests ni CI de calidad. No hay versión jugable online (404 en Pages). Los récords y capturas del
+material salen de bots: no presentarlos como marcas personales.

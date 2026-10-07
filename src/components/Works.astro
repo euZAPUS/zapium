@@ -16,21 +16,24 @@ import Icon, { type IconName } from './Icon.astro';
 import Guide from './Guide.astro';
 import ProofVideo from './ProofVideo.astro';
 import DemoDialog from './DemoDialog.astro';
+import DemoButton from './DemoButton.astro';
 
 interface Props {
   locale: Locale;
 }
 const { locale } = Astro.props;
 const s = useT(locale).story.projects;
-const byId = Object.fromEntries(s.items.map((i) => [i.id, i]));
+const byId: Record<string, Item> = Object.fromEntries(s.items.map((i) => [i.id, i as Item]));
 const isPublic = (p: string) => existsSync(join(process.cwd(), 'public', p));
 
 // OJO: `zapper-aio` es PRIVADO (404 para los visitantes). Solo se enlaza lo público.
 const repo = `${PERSON.github}/zapper-aio-releases`;
 const releases = `${PERSON.github}/zapper-aio-releases/releases/latest`;
 const lab = labPath(locale);
-const demoSrc = '/demos/huerto/huerto.html'; // archivo ÚNICO (todo inline): ver scripts/demo.ts
-const hasDemo = isPublic(demoSrc);
+// Demos: UN archivo HTML por proyecto (todo inline, sin red): ver scripts/demo.ts. Solo se ofrecen si el archivo existe.
+const demoFile = (id: string) => `/demos/${id}/${id}.html`;
+// Tráilers (vídeo con sonido, solo se descargan al pulsar): public/trailers/NOMBRE.mp4 (+ .jpg), los genera `pnpm videos`
+const trailerBase = (name: string) => `/trailers/${name}`; // + .webm / .mp4 / .jpg
 
 interface Link {
   label: string;
@@ -48,8 +51,21 @@ interface Work {
   video?: string;
   img?: string;
   placeholder: string;
-  demo?: boolean;
+  /** Demo jugable en el navegador (HTML único) */
+  demo?: { src: string; title: string; note: string };
+  /** Tráiler con sonido */
+  trailer?: { src: string; poster: string; title: string };
   links: Link[];
+}
+interface Item {
+  id: string;
+  tag: string;
+  title: string;
+  body: string;
+  cta: string;
+  facts?: readonly { k: string; v: string }[];
+  demoTitle?: string;
+  demoNote?: string;
 }
 
 const media = (id: string, video?: string) => ({
@@ -68,6 +84,24 @@ const labWork = (id: 'subnet' | 'bits' | 'risk'): Work => {
     links: [{ label: it.cta, href: `${lab}#${id}`, icon: 'arrow', primary: true }],
   };
 };
+const demoOf = (id: string) => {
+  const src = demoFile(id);
+  const it = byId[id]!;
+  return isPublic(src.slice(1))
+    ? { src, title: it.demoTitle ?? it.title, note: it.demoNote ?? '' }
+    : undefined;
+};
+const trailerOf = (name: string, title: string) =>
+  isPublic(`${trailerBase(name)}.mp4`.slice(1))
+    ? {
+        src: trailerBase(name),
+        poster: `${trailerBase(name)}.jpg`,
+        title: `${title} · ${s.trailer}`,
+      }
+    : undefined;
+const gh = PERSON.github;
+const zapped = byId.zapped!;
+const arcade = byId.arcade!;
 const huerto = byId.huerto!;
 const works: Work[] = [
   {
@@ -78,6 +112,7 @@ const works: Work[] = [
     facts: s.facts,
     ...media('zapper', 'zapper-aio'),
     placeholder: s.videoTodo,
+    trailer: trailerOf('zapper-aio', s.title),
     links: [
       { label: s.download, href: releases, icon: 'download', primary: true },
       { label: s.repo, href: repo, icon: 'branch' },
@@ -90,8 +125,39 @@ const works: Work[] = [
     body: huerto.body,
     ...media('huerto', 'zapper-huerto'),
     placeholder: `[TODO] ${huerto.title}`,
-    demo: hasDemo,
-    links: [{ label: s.download, href: releases, icon: 'download', primary: !hasDemo }],
+    demo: demoOf('huerto'),
+    links: [{ label: s.download, href: releases, icon: 'download', primary: !demoOf('huerto') }],
+  },
+  {
+    id: 'zapped',
+    tag: zapped.tag,
+    title: zapped.title,
+    body: zapped.body,
+    facts: zapped.facts,
+    ...media('zapped', 'zapped'),
+    placeholder: `[TODO] ${zapped.title}`,
+    demo: demoOf('zapped'),
+    trailer: trailerOf('zapped', zapped.title),
+    links: [
+      { label: s.download, href: `${gh}/zapped/releases/latest`, icon: 'download' },
+      { label: zapped.cta, href: `${gh}/zapped`, icon: 'branch' },
+    ],
+  },
+  {
+    id: 'arcade',
+    tag: arcade.tag,
+    title: arcade.title,
+    body: arcade.body,
+    facts: arcade.facts,
+    ...media('arcade', 'zap-arcade'),
+    placeholder: `[TODO] ${arcade.title}`,
+    demo: demoOf('arcade'),
+    trailer: trailerOf('zap-arcade', arcade.title),
+    links: [
+      { label: s.download, href: `${gh}/retro-zapp/releases/latest`, icon: 'download' },
+      // El repo público del arcade se llama «retro-zapp» (el arcade vive en demos/arcade)
+      { label: arcade.cta, href: `${gh}/retro-zapp`, icon: 'branch' },
+    ],
   },
   labWork('subnet'),
   labWork('bits'),
@@ -183,15 +249,23 @@ const nn = (n: number) => String(n).padStart(2, '0');
             )}
             <div class="work__links">
               {w.demo && (
-                <DemoDialog
-                  src={demoSrc}
-                  lang={locale}
+                <DemoButton
+                  kind="page"
+                  src={w.demo.src}
+                  title={w.demo.title}
+                  note={w.demo.note}
                   label={s.demo}
-                  title={s.demoTitle}
-                  note={s.demoNote}
-                  close={s.demoClose}
-                  loading={s.demoLoading}
-                  error={s.demoError}
+                  primary
+                />
+              )}
+              {w.trailer && (
+                <DemoButton
+                  kind="video"
+                  src={w.trailer.src}
+                  poster={w.trailer.poster}
+                  title={w.trailer.title}
+                  label={s.trailer}
+                  icon="play"
                 />
               )}
               {w.links.map((l) => (
@@ -236,6 +310,8 @@ const nn = (n: number) => String(n).padStart(2, '0');
     </div>
   </div>
 </section>
+
+<DemoDialog lang={locale} close={s.demoClose} loading={s.demoLoading} error={s.demoError} />
 
 <section class="more container" aria-labelledby="more-title">
   <h3 id="more-title" class="more__title">

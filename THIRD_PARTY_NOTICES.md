@@ -1,6 +1,6 @@
 # Avisos de terceros / Third-party notices
 
-Última verificación: 2026-10-05. Las licencias se leen del propio paquete o repositorio, no de memoria.
+Última verificación: 2026-10-07. Las licencias se leen del propio paquete o repositorio, no de memoria.
 Este archivo se actualiza cada vez que se añade o quita una dependencia que llega al navegador
 (ver CLAUDE.md).
 
@@ -13,21 +13,57 @@ Este archivo se actualiza cada vez que se añade o quita una dependencia que lle
 | [GSAP](https://gsap.com) (+ ScrollTrigger, Flip)               | 3.15.0             | GreenSock «Standard "no charge" license» (propietaria, **no es de código abierto**) | Prevista (fases 3-4)                     | Ver nota GSAP abajo.                                     |
 | [Lenis](https://github.com/darkroomengineering/lenis)          | 1.3.26             | MIT © darkroom.engineering                                                          | Prevista (fase 3)                        | Texto leído de `LICENSE` del paquete.                    |
 
-### Demo compilada «Zapper Huerto» (`public/demos/huerto/`)
+### Demos compiladas (`public/demos/*/*.html`)
 
-Código de mi propia app (todos los derechos reservados, ver `LICENSE-CONTENT.md`), compilado en un bundle que incluye
-dependencias de terceros bajo licencia MIT. El bundle minificado no conserva sus avisos, así que se dejan aquí:
+Cada demo es el **código de mi propia app** (todos los derechos reservados, ver `LICENSE-CONTENT.md`) compilado en UN archivo HTML
+con todo inline. Un bundle minificado no conserva los avisos de sus dependencias, así que se dejan aquí. Datos leídos de los
+`package.json`/`LICENSE` instalados y del lockfile de cada proyecto, **verificados el 2026-10-07** por la sesión que construyó cada app.
 
-| Librería                                               | Versión (leída del bundle)                                                 | Licencia                               |
-| ------------------------------------------------------ | -------------------------------------------------------------------------- | -------------------------------------- |
-| [React](https://github.com/facebook/react) / react-dom | 19.x (el bundle usa el símbolo `react.transitional.element`, de React 19)  | MIT © Meta Platforms, Inc. y afiliados |
-| [Tailwind CSS](https://tailwindcss.com)                | 4.3.3 (cabecera `/*! tailwindcss v4.3.3 \| MIT License */` en `style.css`) | MIT © Tailwind Labs, Inc.              |
+#### Zapper Huerto (`public/demos/huerto/huerto.html`, ~888 KB, SHA-256 `407c116b…7dd0`)
 
-El bundle de la demo (`huerto.js`) incluye también `motion` (animaciones; el bundle contiene `data-motion-pop-id`): MIT © Matt Perry.
-Comprobado el 2026-10-06 buscando firmas en el bundle; **pendiente** confirmar la lista exacta de dependencias y versiones con el
-`package.json` del repositorio privado de Zapper AIO.
+| Componente (dependencia)                                         | Versión | Licencia | Copyright                                      |
+| ---------------------------------------------------------------- | ------- | -------- | ---------------------------------------------- |
+| react, react-dom, scheduler (dependencia de react-dom: 0.28.0)   | 19.3.0  | MIT      | Copyright (c) Meta Platforms, Inc. y afiliados |
+| zustand                                                          | 5.0.15  | MIT      | Copyright (c) 2019 Paul Henschel               |
+| motion, motion-dom, motion-utils                                 | 14.0.0  | MIT      | Copyright (c) 2024 Motion B.V.                 |
+| framer-motion (dependencia de motion)                            | 14.0.0  | MIT      | Copyright (c) 2018 Framer B.V.                 |
+| tailwindcss (solo su CSS base y utilidades; no hay código en JS) | 4.3.3   | MIT      | Copyright (c) Tailwind Labs, Inc.              |
 
-Las licencias de las fuentes se leyeron de los archivos `LICENSE` de cada paquete (campo `license`: OFL-1.1).
+Sin fuentes propias (usa las del sistema), sin sonidos (síntesis Web Audio) y con iconos SVG propios. Una imagen de montaña dentro del
+CSS (Liquid Glass y Cristal): dibujo propio generado por script, sin licencia de terceros. `perfect-freehand` (MIT) es dependencia de
+la app de escritorio, pero **no** va en esta demo.
+
+#### Zapped (`public/demos/zapped/zapped.html`, ~511 KB)
+
+Sin dependencias de runtime en la web. Lo único de terceros son **fuentes** (latin 400/700; Space Grotesk 400/500/700), sin modificar, tal
+como las distribuye Fontsource (5.3.0), todas **SIL OFL 1.1**: JetBrains Mono (© 2020 The JetBrains Mono Project Authors), Fira Code
+(© 2014-2020 The Fira Code Project Authors), IBM Plex Mono (© 2017 IBM Corp.), Space Mono (© 2016 The Space Mono Project Authors), Space
+Grotesk (© 2020 The Space Grotesk Project Authors), Source Code Pro (© 2010, 2012, 2014 Adobe Systems Incorporated, con el nombre de fuente
+reservado «Source»), Roboto Mono (© 2015 The Roboto Mono Project Authors) e Inconsolata (© 2006 The Inconsolata Project Authors). El
+aviso completo y el texto íntegro de la OFL **van dentro de la demo** (botón «Third-party licenses»). Iconos SVG y sonidos propios.
+
+#### ZAP Arcade (`public/demos/arcade/arcade.html`, ~415 KB)
+
+Sin librerías ni motor (JS propio). Terceros: dos fuentes **SIL OFL 1.1** incrustadas (subconjunto latin, woff2, vía Fontsource 5.3.0):
+Silkscreen (© 2001 The Silkscreen Project Authors) y JetBrains Mono (© 2020 The JetBrains Mono Project Authors). Aviso y texto de la OFL en
+el propio HTML y en [`public/demos/arcade/THIRD_PARTY_LICENSES.txt`](public/demos/arcade/THIRD_PARTY_LICENSES.txt). Sprites (matrices de
+píxeles en código), sonidos (Web Audio) e iconos: obra propia.
+
+#### Texto de la licencia MIT (aplica a las dependencias MIT de la tabla de Zapper Huerto, con su copyright respectivo)
+
+> Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the
+> "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish,
+> distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject
+> to the following conditions:
+>
+> The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+>
+> THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+> MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE
+> FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+> WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+Las licencias de las fuentes de la propia web se leyeron de los archivos `LICENSE` de cada paquete (campo `license`: OFL-1.1).
 Las fuentes se sirven desde el propio dominio (self-hosted) y el texto de la OFL se conserva en `licenses/`.
 
 ### Nota sobre GSAP

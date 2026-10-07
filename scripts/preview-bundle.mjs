@@ -29,8 +29,8 @@ await cp('dist/_astro', join(OUT, 'assets'), { recursive: true });
 await cp('dist/favicon.png', join(OUT, 'favicon.png'));
 // Demos jugables (public/demos/*): se copian tal cual; el iframe las carga con ruta relativa.
 if (existsSync('dist/demos')) await cp('dist/demos', join(OUT, 'demos'), { recursive: true });
-// Capturas y vídeos de los proyectos (public/works, public/videos): también relativos
-for (const d of ['works', 'videos'])
+// Capturas, vídeos y tráilers de los proyectos (public/works, public/videos, public/trailers): también relativos
+for (const d of ['works', 'videos', 'trailers'])
   if (existsSync(`dist/${d}`)) await cp(`dist/${d}`, join(OUT, d), { recursive: true });
 
 // CSS: url(/_astro/x) → url(./x) (relativo al propio CSS).
@@ -56,6 +56,8 @@ function localize(html, up, isMain) {
     .replaceAll('"/_astro/', `"${up}assets/`)
     .replaceAll('"/favicon.png"', `"${up}favicon.png"`)
     .replaceAll('data-src="/demos/', `data-src="${up}demos/`)
+    .replaceAll('data-src="/trailers/', `data-src="${up}trailers/`)
+    .replaceAll('data-poster="/trailers/', `data-poster="${up}trailers/`)
     .replaceAll('data-img="/works/', `data-img="${up}works/`)
     .replaceAll('src="/works/', `src="${up}works/`)
     .replaceAll('data-video="/videos/', `data-video="${up}videos/`)

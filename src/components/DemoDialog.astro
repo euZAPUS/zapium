@@ -1,56 +1,36 @@
 ---
 /**
- * Demo jugable de un proyecto dentro de la web: botón + <dialog> modal con un <iframe>.
- * Reglas (CLAUDE.md → Presupuestos): el iframe se crea SOLO al hacer clic (scripts/demo.ts),
- * lleva `sandbox="allow-scripts …"` SIN `allow-same-origin` (origen opaco: no puede tocar
- * esta página ni su almacenamiento) y se destruye al cerrar para parar el temporizador y
- * el WebGL de la demo. La demo vive en public/demos/NOMBRE/ (estática, rutas relativas,
- * sin red, sin guardar nada). Si esa carpeta no existe, el componente no pinta nada.
+ * <dialog> modal compartido por las demos jugables y los tráilers de los proyectos (se pinta UNA vez, en Works).
+ * Los botones que lo abren son DemoButton.astro (`data-demo-open` + título, nota y ruta). Reglas (CLAUDE.md →
+ * Presupuestos): el iframe se crea SOLO al hacer clic (scripts/demo.ts), lleva `sandbox="allow-scripts …"` SIN
+ * `allow-same-origin` (origen opaco: no puede tocar esta página ni su almacenamiento) y se destruye al cerrar para
+ * parar el temporizador, los bucles y el audio de la demo. Las demos viven en public/demos/NOMBRE/ (un HTML único,
+ * todo inline, sin red, sin guardar nada). Los tráilers (vídeo con sonido) en public/trailers/.
  */
 import Icon from './Icon.astro';
 
 interface Props {
-  /** Ruta pública del index.html de la demo */
-  src: string;
-  /** Idioma que se le pasa a la demo (?lang=) */
+  /** Idioma que se le pasa a las demos (?lang=) */
   lang: string;
-  label: string;
-  title: string;
-  note: string;
   close: string;
   loading: string;
   error: string;
-  class?: string;
 }
-const { src, lang, label, title, note, close, loading, error, class: className } = Astro.props;
+const { lang, close, loading, error } = Astro.props;
 ---
-
-<button
-  type="button"
-  class:list={['btn', 'btn--primary', 'btn--small', className]}
-  data-demo-open
-  data-cursor="link"
->
-  <Icon name="arrow" />
-  {label}
-</button>
 
 <dialog
   class="demo"
   data-demo-dialog
-  data-src={src}
   data-lang={lang}
   data-loading={loading}
   data-error={error}
-  data-title={title}
   aria-labelledby="demo-title"
 >
   <header class="demo__bar">
     <div>
-      <p id="demo-title" class="demo__title">
-        {title}
-      </p>
-      <p class="demo__note">{note}</p>
+      <p id="demo-title" class="demo__title" data-demo-title></p>
+      <p class="demo__note" data-demo-note></p>
     </div>
     <button type="button" class="btn btn--small" data-demo-close>
       <Icon name="close" />
@@ -62,8 +42,8 @@ const { src, lang, label, title, note, close, loading, error, class: className }
 
 <style is:global>
   dialog.demo {
-    width: min(72rem, 96vw);
-    height: min(56rem, 92dvh);
+    width: min(74rem, 96vw);
+    height: min(60rem, 94dvh);
     max-width: none;
     max-height: none;
     margin: auto;
@@ -95,8 +75,9 @@ const { src, lang, label, title, note, close, loading, error, class: className }
   .demo__title {
     margin: 0;
     font-family: var(--font-display);
-    font-weight: 700;
+    font-weight: 500;
     font-size: var(--text-m);
+    letter-spacing: -0.02em;
     line-height: 1.1;
   }
   .demo__note {
@@ -122,6 +103,22 @@ const { src, lang, label, title, note, close, loading, error, class: className }
     font-size: var(--text-xs);
     letter-spacing: 0.08em;
     color: var(--ink-muted);
+  }
+  /* Tráiler: el diálogo se ajusta a un 16:9 en vez de ocupar toda la altura */
+  dialog.demo[data-kind='video'] {
+    width: min(64rem, 96vw);
+    height: auto;
+  }
+  dialog.demo[data-kind='video'] .demo__body {
+    aspect-ratio: 16 / 9;
+  }
+  .demo__body video {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    max-width: none;
+    background: #000;
   }
   .demo__body iframe {
     position: absolute;
@@ -153,6 +150,11 @@ const { src, lang, label, title, note, close, loading, error, class: className }
       border-radius: 0;
       border-width: 0;
       box-shadow: none;
+    }
+    dialog.demo[data-kind='video'] {
+      width: 100vw;
+      height: auto;
+      margin-block: auto;
     }
   }
 </style>

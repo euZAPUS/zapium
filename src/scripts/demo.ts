@@ -1,17 +1,21 @@
 /**
- * Demos jugables (DemoDialog.astro). Al pulsar el botón se descarga el HTML ÚNICO de la demo (todo
- * inline, sin más peticiones) y se inyecta en un <iframe srcdoc> con
- * `sandbox="allow-scripts allow-popups allow-popups-to-escape-sandbox"`, SIN `allow-same-origin`:
- * origen opaco, sin acceso a esta página. Por qué srcdoc y no `src`: así la demo no necesita pedir
- * ningún archivo (un iframe con sandbox no lleva cookies, y en sitios protegidos —como la vista previa
- * privada— sus peticiones fallan). El iframe no existe hasta el clic y se destruye al cerrar (se
- * para el temporizador y el WebGL de la demo).
- * Idioma: la demo lee `?lang=` de `location.search`, que en srcdoc está vacío; se le pasa el de la página.
+ * Demos jugables y tráilers (DemoDialog.astro + DemoButton.astro). Un único <dialog> compartido:
+ *  - `data-kind="page"`: al pulsar el botón se descarga el HTML ÚNICO de la demo (todo inline, sin más peticiones)
+ *    y se inyecta en un <iframe srcdoc> con `sandbox="allow-scripts allow-popups allow-popups-to-escape-sandbox"`,
+ *    SIN `allow-same-origin`: origen opaco, sin acceso a esta página. Por qué srcdoc y no `src`: así la demo no
+ *    necesita pedir ningún archivo (un iframe con sandbox no lleva cookies, y en sitios protegidos —como la vista
+ *    previa privada— sus peticiones fallan). El iframe no existe hasta el clic y se destruye al cerrar (se paran
+ *    el temporizador, los bucles y el audio de la demo).
+ *    Idioma: las demos leen `lang` de `new URLSearchParams(location.search)`, vacío en srcdoc: se sustituye por
+ *    el idioma de la página. Al cargar, el iframe recibe el foco (para escribir/jugar sin hacer clic antes).
+ *  - `data-kind="video"`: tráiler con sonido (public/trailers/NOMBRE.webm|mp4), con controles; se descarga al pulsar.
  */
 export {};
 
 const dialog = document.querySelector<HTMLDialogElement>('[data-demo-dialog]');
 const body = dialog?.querySelector<HTMLElement>('[data-demo-body]');
+const titleEl = dialog?.querySelector<HTMLElement>('[data-demo-title]');
+const noteEl = dialog?.querySelector<HTMLElement>('[data-demo-note]');
 
 if (dialog && body) {
   let opener: HTMLElement | null = null;
@@ -27,11 +31,41 @@ if (dialog && body) {
   const open = async (from: HTMLElement) => {
     opener = from;
     const mine = ++run;
-    body.replaceChildren(message(dialog.dataset.loading));
+    const d = from.dataset;
+    const kind = d.kind === 'video' ? 'video' : 'page';
+    dialog.dataset.kind = kind;
+    if (titleEl) titleEl.textContent = d.title ?? '';
+    if (noteEl) noteEl.textContent = d.note ?? '';
     document.documentElement.classList.add('is-demo');
+
+    if (kind === 'video') {
+      const video = document.createElement('video');
+      video.controls = true;
+      video.autoplay = true;
+      video.playsInline = true;
+      video.preload = 'auto';
+      if (d.poster) video.poster = d.poster;
+      // `src` es la ruta sin extensión: WebM (VP9 + Opus) y MP4 (H.264 + AAC) como alternativas
+      for (const [ext, type] of [
+        ['webm', 'video/webm'],
+        ['mp4', 'video/mp4'],
+      ] as const) {
+        const source = document.createElement('source');
+        source.src = `${d.src}.${ext}`;
+        source.type = type;
+        video.append(source);
+      }
+      video.setAttribute('aria-label', d.title ?? '');
+      body.replaceChildren(video);
+      dialog.showModal();
+      void video.play().catch(() => undefined); // si el navegador exige gesto, quedan los controles
+      return;
+    }
+
+    body.replaceChildren(message(dialog.dataset.loading));
     dialog.showModal();
     try {
-      const res = await fetch(dialog.dataset.src ?? '', { credentials: 'same-origin' });
+      const res = await fetch(d.src ?? '', { credentials: 'same-origin' });
       if (!res.ok) throw new Error(String(res.status));
       let html = await res.text();
       if (mine !== run) return; // se cerró (o se reabrió) mientras cargaba
@@ -41,9 +75,10 @@ if (dialog && body) {
         `new URLSearchParams(${JSON.stringify(`?lang=${lang}`)})`,
       );
       const frame = document.createElement('iframe');
-      frame.title = dialog.dataset.title ?? '';
+      frame.title = d.title ?? '';
       frame.setAttribute('sandbox', 'allow-scripts allow-popups allow-popups-to-escape-sandbox');
       frame.referrerPolicy = 'no-referrer';
+      frame.addEventListener('load', () => frame.focus(), { once: true });
       frame.srcdoc = html;
       body.replaceChildren(frame);
     } catch (err) {
@@ -54,7 +89,7 @@ if (dialog && body) {
 
   const clear = () => {
     run++;
-    body.replaceChildren();
+    body.replaceChildren(); // destruye el iframe / el vídeo (para el audio)
     document.documentElement.classList.remove('is-demo');
     opener?.focus();
   };

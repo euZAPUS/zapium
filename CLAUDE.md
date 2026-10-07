@@ -70,7 +70,7 @@ Fase 0 completada. **Fase 1 (sistema de diseño, esqueleto y hero espectacular) 
   ligada al scroll, «tock» sutil en pulsaciones, campanilla al acabar la carga, «boing» de la patata. Aviso en la carga + botón en la
   cabecera; elección en `localStorage: zapium-sound`. Arranca apagado hasta que el visitante lo activa.
 - **Escenas de contenido** (textos reales en `src/i18n/*.ts → story`, con `[TODO]` donde falta información):
-  - `Works` (+ `scripts/works/{index,scene}.ts`): **pantallas flotantes** de proyectos, casi como la sección Works de alche.studio (el autor
+  - `Works` (+ `scripts/works/{index,scene}.ts`): **7 pantallas flotantes** de proyectos (Zapper AIO, Zapper Huerto, Zapped, ZAP Arcade y las 3 mini-apps del laboratorio), casi como la sección Works de alche.studio (el autor
     pidió «que estén flotando y de fondo el grid, no pegados al grid»; análisis en `docs/reference-alche.md`). Escena WebGL propia (OGL) con
     **dos capas separadas**: (1) **fondo** = pared cilíndrica de baldosas vista desde dentro, un único shader a pantalla completa (rayo →
     cilindro → baldosas con huecos, bloques 2×2 «quad-tree», cruces `+`, fundido lateral) cuyas baldosas toman el **color del proyecto activo**
@@ -85,17 +85,20 @@ Fase 0 completada. **Fase 1 (sistema de diseño, esqueleto y hero espectacular) 
     texto va debajo. Sin WebGL o con reduced-motion: lista apilada (captura + texto + datos). Debajo, **«Más proyectos»** (índice en filas).
     Añadir un proyecto: entrada en `story.projects.items` (es/en) + objeto en `works` de `Works.astro` (+ captura o vídeo). Los enlaces SOLO a
     repos públicos. Mandos en `scene.ts`: `PANEL_W`, `SPACING`, `FOV`, `uBow`, `uRot`, `uDepth`, `uFloat` y el GLSL del fondo/paneles.
-  - `DemoDialog` (+ `scripts/demo.ts`): **demo jugable** de Zapper AIO («Zapper Huerto»: temporizador + huerto con datos de ejemplo, hecha por
-    el autor con el mismo código de la app). Vive en **`public/demos/huerto/huerto.html`** (UN solo archivo con todo inline, ~890 KB; la regenera
-    `npm run build:huerto -w @zapper/desktop` en el repo privado y sale como `huerto-single.html`). Sin red, sin guardar nada, ES/EN. El botón
-    «Probar la demo» **solo se pinta si ese archivo existe** (`existsSync` en `Works.astro`). Al pulsarlo se abre un `<dialog>` modal, se hace
-    `fetch` del HTML y se inyecta en un `<iframe srcdoc sandbox="allow-scripts allow-popups allow-popups-to-escape-sandbox">` (sin
-    `allow-same-origin`: origen opaco, `localStorage` falla dentro, por eso la demo guarda en memoria); al cerrar se destruye el iframe.
-    **Por qué srcdoc y no `src`**: un iframe con sandbox no lleva cookies y sus peticiones fallaban en la vista previa privada del Artifact
-    («la demo no va»); con srcdoc no pide nada. La demo lee `?lang=` de `location.search`, vacío en srcdoc: `demo.ts` reemplaza
-    `new URLSearchParams(location.search)` por uno con el idioma de la página (si una recompilación cambiara esa cadena, la demo usaría el idioma del navegador).
-    Dentro del diálogo se usa el cursor nativo. La demo es **código compilado con todos los derechos reservados** (no MIT; ver `LICENSE-CONTENT.md`).
-    Los avisos de React/Tailwind/motion están en `THIRD_PARTY_NOTICES.md` (pendiente confirmar la lista exacta con el `package.json` del repo privado).
+  - **Demos jugables y tráilers** (`DemoDialog.astro` = UN `<dialog>` compartido en Works + `DemoButton.astro` + `scripts/demo.ts`). Tres demos,
+    cada una **un solo HTML con todo inline** en `public/demos/NOMBRE/NOMBRE.html`: `huerto` (Zapper Huerto: temporizador + huerto con datos de
+    ejemplo, ~890 KB), `zapped` (test de mecanografía, 511 KB) y `arcade` (ZAP Arcade: los 13 juegos, 415 KB). Las genera la sesión de cada app
+    (Zapper: `npm run build:huerto -w @zapper/desktop` → `huerto-single.html`; las otras dos traen su capa «demo»). Contrato: sin red, sin guardar
+    nada (memoria; `localStorage` falla en el sandbox), ES/EN con la cadena exacta `new URLSearchParams(location.search)` (la web la sustituye por el
+    idioma de la página; **las tres leen la clave `lang`**), sin audio automático, sin depender de Esc/Tab, pausa al perder el foco (arcade).
+    El botón «Probar la demo» **solo se pinta si el archivo existe** (`isPublic` en `Works.astro`). Al pulsarlo: `fetch` del HTML →
+    `<iframe srcdoc sandbox="allow-scripts allow-popups allow-popups-to-escape-sandbox">` (sin `allow-same-origin`: origen opaco) que **recibe el
+    foco al cargar** (se puede escribir/jugar sin otro clic); al cerrar se destruye. **Por qué srcdoc y no `src`**: un iframe con sandbox no lleva
+    cookies y sus peticiones fallaban en la vista previa privada del Artifact («la demo no va»). Si una recompilación cambia esa cadena, la demo
+    usaría el idioma del navegador. Tamaño del diálogo: `min(74rem, 96vw) × min(60rem, 94dvh)` (el arcade pide ≥ 760 px de alto).
+    **Tráilers** (`public/trailers/NOMBRE.{webm,mp4,jpg}`, con sonido, ~2 MB, los genera `pnpm videos` desde `_originals/trailers/`): botón «Ver el
+    tráiler» → el mismo diálogo con `<video controls>` (WebM + MP4: algunos Chromium sin códecs no reproducen H.264); solo se descargan al pulsar.
+    Las demos son **código compilado con todos los derechos reservados** (no MIT; ver `LICENSE-CONTENT.md`); avisos de terceros en `THIRD_PARTY_NOTICES.md`.
   - `AboutTrack`: «Sobre mí» como **scroll horizontal** fijado (tarjetas: dropshipping, trading simulado, 42, ASIR, fotos).
   - `AiSection`, `StackSection`, `ContactSection` (correo montado por JS, no en claro en el HTML; botón de copiar).
   - Móvil y reduced-motion: todo apilado, sin fijados.
@@ -109,8 +112,9 @@ Fase 0 completada. **Fase 1 (sistema de diseño, esqueleto y hero espectacular) 
     `touch-action: pan-y`), se inclina hacia el cursor, doble clic = giro + «boing», y vuelve sola a mirar de frente. Reutiliza `createPotatoScene(…, { tunnel: false })`
     y las imágenes de la patata 2D del propio recuadro (que es también la reserva sin WebGL / reduced-motion). Se carga al acercarse a la pantalla.
 - El texto fijo «User Perspective» (`Gizmo.astro`) se esconde cuando el pie de página está a la vista (se solapaba con el «© 2026»).
-- **Vídeos**: dejar los originales en `_originals/videos/NOMBRE.mp4`, ejecutar `pnpm videos` (WebM + MP4 + póster, sin audio,
-  ≤ 1280 px, avisa si > 3 MB) y pasar `src="NOMBRE"` a `<ProofVideo>`. Sin `src` se ve un marcador `[TODO]`.
+- **Vídeos de las pantallas** (mudos, en bucle): originales en `_originals/videos/NOMBRE.mp4`, `pnpm videos` (WebM + MP4 + póster, ≤ 1280 px, avisa si > 3 MB).
+  Nombres que espera `Works.astro`: `zapper-aio`, `zapper-huerto`, `zapped` (**falta: ahora se ve la captura**), `zap-arcade`. Sin vídeo se ve la captura
+  `public/works/ID.webp` y, sin eso, un marcador `[TODO]`.
 - **REGLA DEL AUTOR (no negociable): tras CADA cambio visible, republicar el Artifact y poner el ENLACE en la PRIMERA línea del mensaje**
   (https://claude.ai/artifact/V5u75LSfXy4ksy5Qh5kBBb). El autor lo prueba desde el móvil entre otras tareas y pierde tiempo si tiene que pedirlo
   o buscarlo. Si se hacen varios cambios seguidos, republicar tras cada uno; no esperar al final de la sesión.
@@ -176,7 +180,8 @@ node scripts/make-potato-outlines.mjs  # siluetas de las capas -> src/scripts/po
 pnpm check:exif     # falla si alguna imagen trae EXIF/XMP/IPTC
 pnpm verify         # format:check + lint + check + check:exif + build
 pnpm test           # tests de la lógica del laboratorio (node --test, Node ≥ 22.18)
-pnpm videos         # _originals/videos -> public/videos (WebM+MP4+póster; recorta a 30 s, `-- --max N` para cambiarlo)
+pnpm videos         # _originals/videos -> public/videos (WebM+MP4+póster, mudos; recorta a 30 s, `-- --max N`) y _originals/trailers -> public/trailers (con sonido)
+node scripts/make-works-stills.mjs  # _originals/screens/NOMBRE.png -> public/works/NOMBRE.webp (imagen de reserva 1280×800 de cada pantalla)
 node scripts/capture-works.mjs  # capturas de la demo y del lab -> public/works (necesita `pnpm preview` en :4321)
 pnpm shots [url] [filtro]  # capturas Playwright a .screenshots/ (1440/768/375, claro/oscuro, paletas y héroes)
 ```
@@ -231,7 +236,11 @@ El hook `.githooks/pre-commit` (activado por `pnpm install` vía `prepare`) ejec
 ## Honestidad del contenido
 
 - **Solo enlazar repos PÚBLICOS**: `zapper-aio` y `zapper-datos` son **privados** (404 para los visitantes; ya nos pasó con el botón «Ver el repositorio»).
-  Públicos: `zapium`, `zapper-aio-releases` (descargas), `Campus42`, `zapped`. Comprobar la visibilidad antes de enlazar un repo nuevo.
+  Públicos: `zapium`, `zapper-aio-releases` (descargas), `Campus42`, `zapped`, `retro-zapp` (= **ZAP Arcade**, vive en `demos/arcade/`). Comprobar la visibilidad antes de enlazar un repo nuevo.
+- **Datos verificados con los repos (2026-10-07, ver `docs/content-notes.md`):** Zapper AIO **no usa SQLite** (Tauri 2.12 + Rust, React 19, TypeScript 7, Tailwind 4, Vite 8; persistencia `localStorage` + `zapper-data.json`),
+  v0.11.0, 363 pruebas, Windows y Linux (no macOS), 20 temas. Zapped v1.0.2 (38 tests, instaladores Win/macOS/Linux, código visible pero **no open source**). ZAP Arcade: 13 juegos y
+  **51 modos** (no 50), 45 logros, v1.0.2. **«Mi rol»**: en git, la mayoría de commits van firmados por «Claude» y todos con `Co-Authored-By`; la web dice «Autor del proyecto/repositorio,
+  desarrollado con Claude Code» (verificable) en lugar de «lo he creado yo». Nunca «open source» para estos tres.
 - **YouTube con IA: fuera** (decisión del autor, no rentaba). **Zapper AIO lo creó él** («Mi rol: Autor»).
 - **No inventar** datos, proyectos, experiencia ni resultados. Dropshipping y trading simulado
   son **proyectos/experimentos personales y de aprendizaje**, no experiencia laboral: se cuentan así,

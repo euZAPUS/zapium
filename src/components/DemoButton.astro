@@ -1,0 +1,46 @@
+---
+/**
+ * Botón que abre el diálogo compartido (DemoDialog.astro, scripts/demo.ts) con una demo jugable (`kind="page"`:
+ * HTML único que se carga en un iframe con sandbox) o un tráiler (`kind="video"`: vídeo con sonido y controles).
+ */
+import Icon, { type IconName } from './Icon.astro';
+
+interface Props {
+  kind?: 'page' | 'video';
+  /** Ruta pública del HTML de la demo, o del tráiler SIN extensión (NOMBRE.webm / NOMBRE.mp4) */
+  src: string;
+  /** Imagen de portada (solo tráilers) */
+  poster?: string;
+  /** Título y nota del diálogo */
+  title: string;
+  note?: string;
+  label: string;
+  icon?: IconName;
+  primary?: boolean;
+}
+const {
+  kind = 'page',
+  src,
+  poster,
+  title,
+  note = '',
+  label,
+  icon = 'arrow',
+  primary = false,
+} = Astro.props;
+---
+
+<button
+  type="button"
+  class:list={['btn', 'btn--small', { 'btn--primary': primary }]}
+  data-demo-open
+  data-kind={kind}
+  data-src={src}
+  data-poster={poster}
+  data-title={title}
+  data-note={note}
+  data-cursor="link"
+>
+  <Icon name={icon} />
+  {label}
+</button>

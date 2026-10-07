@@ -9,7 +9,7 @@ Todo lo que no es código fuente de este repositorio y de la web publicada:
 
 - Textos, traducciones y chistes.
 - Fotografías y cualquier imagen de personas.
-- Vídeos, capturas y demos de mis proyectos, incluidas las **demos compiladas** de `public/demos/` (p. ej. Zapper Huerto): se pueden
+- Vídeos, capturas y demos de mis proyectos, incluidas las **demos compiladas** de `public/demos/` (Zapper Huerto, Zapped y ZAP Arcade) y los **tráilers** de `public/trailers/`: se pueden
   ver y probar en la web, pero **no** están bajo la licencia MIT del código de este repositorio.
 - El avatar (la patata) y la **mascota** con todos sus accesorios y animaciones.
 - Los **iconos SVG a medida**, ilustraciones y el diseño visual (paletas, composición, motion).
