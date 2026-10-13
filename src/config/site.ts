@@ -15,9 +15,8 @@ export type Locale = (typeof SITE.locales)[number];
 export const PERSON = {
   name: 'Álvaro Sánchez',
   handle: 'euZAPUS',
-  // Correo de contacto provisional. Cambiará al del dominio propio.
-  // Se pinta ofuscado en el HTML (ver componente de contacto, fase 2).
-  email: 'sangonzalezalvaro@gmail.com',
+  // Correo de contacto (dominio propio sangon.eu). Se pinta ofuscado en el HTML (ContactSection).
+  email: 'alvaro@sangon.eu',
   github: 'https://github.com/euZAPUS',
   // [TODO] Aún no tiene LinkedIn: mientras sea null no se muestra ningún enlace.
   linkedin: null as string | null,

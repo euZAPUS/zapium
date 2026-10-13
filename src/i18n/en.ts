@@ -86,7 +86,7 @@ export const en: Dict = {
       'Small tools that run in your browser, with no accounts and no server. I made them with Claude Code to practice networking, low-level basics and risk management.',
     pageTitle: 'Lab · Álvaro Sánchez',
     pageDescription:
-      "Álvaro Sánchez's mini-apps: IP subnet calculator, bit viewer and a trading risk calculator.",
+      "Álvaro Sánchez's mini-apps: IP subnet calculator, bit viewer and a risk calculator.",
     back: 'Back to home',
     open: 'Open',
     copied: 'Copied',
@@ -318,20 +318,6 @@ export const en: Dict = {
           cta: 'Open',
         },
         {
-          id: 'dropshipping',
-          tag: 'EXPERIMENT',
-          title: 'Dropshipping store',
-          body: 'A Shopify store to sell a hair dryer for women. I tell the story in "About me".',
-          cta: 'Read more',
-        },
-        {
-          id: 'trading',
-          tag: 'SIMULATED',
-          title: 'Paper trading',
-          body: '+€2,000 on a simulated €100,000 account. It is simulated money, not real.',
-          cta: 'Read more',
-        },
-        {
           id: 'github',
           tag: 'GITHUB',
           title: 'More on GitHub',
@@ -347,18 +333,6 @@ export const en: Dict = {
         'Things I did and learned, told as they are. When it is learning or simulation, I say so.',
       bubble: 'A quick summary of what I have done. Keep scrolling.',
       cards: [
-        {
-          tag: 'Experiment',
-          title: 'Dropshipping',
-          body: 'I learned to build a Shopify store with the apps used in this niche. I tried to sell a hair dryer for women: I researched the product, made animations, cropped the image a thousand times and made different mockups.',
-          note: 'Result: [TODO] sales and spend, if you want to share them.',
-        },
-        {
-          tag: 'Simulated',
-          title: 'Trading',
-          body: '+€2,000 on a €100,000 paper trading account.',
-          note: 'It is simulated money (paper trading), not real. [TODO] period and strategy.',
-        },
         {
           tag: 'Studies',
           title: 'Campus 42',
@@ -400,7 +374,6 @@ export const en: Dict = {
         { k: 'ZAP Arcade', items: ['JavaScript', 'Canvas 2D', 'Web Audio', 'Electron'] },
         { k: 'This site', items: ['Astro', 'TypeScript', 'WebGL (OGL)', 'CSS'] },
         { k: 'Studies', items: ['C', 'Linux shell', 'Git and GitHub', 'Networks and IP', 'HTML'] },
-        { k: 'Experiments', items: ['Shopify'] },
       ],
     },
     contact: {

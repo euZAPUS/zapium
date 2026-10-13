@@ -156,11 +156,9 @@ const works: Work[] = [
 
 const moreHref: Record<string, string> = {
   zapium: `${PERSON.github}/zapium`,
-  dropshipping: '#about',
-  trading: '#about',
   github: PERSON.github,
 };
-const more = ['zapium', 'dropshipping', 'trading', 'github']
+const more = ['zapium', 'github']
   .map((id) => byId[id])
   .filter((x): x is NonNullable<typeof x> => !!x);
 const nn = (n: number) => String(n).padStart(2, '0');

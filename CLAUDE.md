@@ -99,7 +99,7 @@ Fase 0 completada. **Fase 1 (sistema de diseño, esqueleto y hero espectacular) 
     **Tráilers** (`public/trailers/NOMBRE.{webm,mp4,jpg}`, con sonido, ~2 MB, los genera `pnpm videos` desde `_originals/trailers/`): botón «Ver el
     tráiler» → el mismo diálogo con `<video controls>` (WebM + MP4: algunos Chromium sin códecs no reproducen H.264); solo se descargan al pulsar.
     Las demos son **código compilado con todos los derechos reservados** (no MIT; ver `LICENSE-CONTENT.md`); avisos de terceros en `THIRD_PARTY_NOTICES.md`.
-  - `AboutTrack`: «Sobre mí» como **scroll horizontal** fijado (tarjetas: dropshipping, trading simulado, estudiante en 42 (una frase), ASIR, fotos).
+  - `AboutTrack`: «Sobre mí» como **scroll horizontal** fijado (tarjetas: estudiante en 42 (una frase), ASIR, fotos; **dropshipping y trading fuera** por decisión del autor 2026-10-13: «portfolio verdaderamente profesional»).
   - `AiSection`, `StackSection`, `ContactSection` (correo montado por JS, no en claro en el HTML; botón de copiar).
   - Móvil y reduced-motion: todo apilado, sin fijados.
   - `LabTeaser` + páginas **`/lab/` y `/en/lab/`** (`LabPage`): tres mini-apps sin backend, con la lógica pura en `src/apps/lib/`
@@ -230,7 +230,7 @@ El hook `.githooks/pre-commit` (activado por `pnpm install` vía `prepare`) ejec
 - **EXIF/GPS fuera** de toda foto antes de commitear (`pnpm images`; el hook y CI lo comprueban).
 - Sin teléfono ni dirección. Sin secretos en el repo. Sin cookies ni trackers. **Analítica: ninguna**
   (si se propone alguna, preguntar antes).
-- Email de contacto provisional en `src/config/site.ts`; se pinta ofuscado. Contacto = `mailto:`, sin formulario que guarde datos.
+- Email de contacto: **alvaro@sangon.eu** (dominio propio, 2026-10-13) en `src/config/site.ts`; se pinta ofuscado. Contacto = `mailto:`, sin formulario que guarde datos.
 - Originales pesados en `_originals/` (gitignored). Solo se commitean medios optimizados.
 
 ## Honestidad del contenido

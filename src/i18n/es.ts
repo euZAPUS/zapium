@@ -84,7 +84,7 @@ export const es = {
       'Herramientas pequeñas que funcionan en tu navegador, sin cuentas ni servidor. Las he hecho con Claude Code para practicar redes, bajo nivel y gestión del riesgo.',
     pageTitle: 'Laboratorio · Álvaro Sánchez',
     pageDescription:
-      'Mini-apps de Álvaro Sánchez: calculadora de subredes IP, visor de bits y calculadora de riesgo para trading.',
+      'Mini-apps de Álvaro Sánchez: calculadora de subredes IP, visor de bits y calculadora de riesgo.',
     back: 'Volver al inicio',
     open: 'Abrir',
     copied: 'Copiado',
@@ -317,20 +317,6 @@ export const es = {
           cta: 'Abrir',
         },
         {
-          id: 'dropshipping',
-          tag: 'EXPERIMENTO',
-          title: 'Tienda de dropshipping',
-          body: 'Una tienda en Shopify para vender un secador de pelo de mujer. Lo cuento en «Sobre mí».',
-          cta: 'Leer más',
-        },
-        {
-          id: 'trading',
-          tag: 'SIMULADO',
-          title: 'Paper trading',
-          body: '+2.000 € en una cuenta simulada de 100.000 €. Es dinero simulado, no real.',
-          cta: 'Leer más',
-        },
-        {
           id: 'github',
           tag: 'GITHUB',
           title: 'Más en GitHub',
@@ -346,18 +332,6 @@ export const es = {
         'Cosas que he hecho y aprendido, contadas tal cual. Cuando es aprendizaje o simulación, lo digo.',
       bubble: 'Un resumen rápido de lo que he hecho. Sigue bajando.',
       cards: [
-        {
-          tag: 'Experimento',
-          title: 'Dropshipping',
-          body: 'Aprendí a montar una tienda en Shopify con las aplicaciones que se usan en este nicho. Intenté vender un secador de pelo para mujer: investigué el producto, creé animaciones, recorté la imagen mil veces e hice distintos modelos.',
-          note: 'Resultado: [TODO] ventas y gasto, si quieres contarlos.',
-        },
-        {
-          tag: 'Simulado',
-          title: 'Trading',
-          body: '+2.000 € en una cuenta de paper trading de 100.000 €.',
-          note: 'Es dinero simulado (paper trading), no real. [TODO] periodo y estrategia.',
-        },
         {
           tag: 'Estudios',
           title: 'Campus 42',
@@ -399,7 +373,6 @@ export const es = {
         { k: 'ZAP Arcade', items: ['JavaScript', 'Canvas 2D', 'Web Audio', 'Electron'] },
         { k: 'Esta web', items: ['Astro', 'TypeScript', 'WebGL (OGL)', 'CSS'] },
         { k: 'Estudios', items: ['C', 'Shell de Linux', 'Git y GitHub', 'Redes e IP', 'HTML'] },
-        { k: 'Experimentos', items: ['Shopify'] },
       ],
     },
     contact: {
