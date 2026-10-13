@@ -73,6 +73,10 @@ const s = useT(locale).story.about;
   .tcard {
     position: relative;
     flex: 0 0 min(25rem, 82vw);
+    width: min(
+      25rem,
+      82vw
+    ); /* sin esto, algunos navegadores miden el carril con cada texto en una sola línea */
     display: grid;
     align-content: start;
     gap: var(--space-3);
@@ -175,6 +179,7 @@ const s = useT(locale).story.about;
     }
     .tcard {
       flex-basis: auto;
+      width: auto;
     }
     .track__head {
       margin-bottom: var(--space-5);

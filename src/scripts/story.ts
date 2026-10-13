@@ -17,7 +17,15 @@ function measure() {
   for (const t of tracks) {
     const rail = t.querySelector<HTMLElement>('[data-track-rail]');
     if (!rail) continue;
-    t.style.setProperty('--travel', `${Math.max(0, rail.scrollWidth - innerWidth)}px`);
+    // Hasta el borde derecho de la última tarjeta (+ el margen del carril), no `scrollWidth`: según el navegador,
+    // el ancho «max-content» del carril sale mucho mayor que sus tarjetas y el carril se pasaba de largo.
+    const last = rail.lastElementChild as HTMLElement | null;
+    if (!last) continue;
+    const end =
+      last.offsetLeft +
+      last.offsetWidth +
+      parseFloat(getComputedStyle(rail).paddingInlineEnd || '0');
+    t.style.setProperty('--travel', `${Math.max(0, Math.round(end - innerWidth))}px`);
   }
 }
 
