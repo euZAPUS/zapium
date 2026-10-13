@@ -8,7 +8,6 @@ import World from './World.astro';
 import Icon from './Icon.astro';
 import SubnetApp from './SubnetApp.astro';
 import BitsApp from './BitsApp.astro';
-import RiskApp from './RiskApp.astro';
 import LabDemoCards from './LabDemoCards.astro';
 import DemoDialog from './DemoDialog.astro';
 
@@ -39,9 +38,6 @@ const paths = { es: '/lab/', en: '/en/lab/' } as const;
         <a class="chipbtn" href="#bits">
           {t.lab.bits.title}
         </a>
-        <a class="chipbtn" href="#risk">
-          {t.lab.risk.title}
-        </a>
         <a class="chipbtn" href="#demos">
           {t.lab.demosTitle}
         </a>
@@ -50,7 +46,6 @@ const paths = { es: '/lab/', en: '/en/lab/' } as const;
     <div class="container lab__apps">
       <SubnetApp locale={locale} />
       <BitsApp locale={locale} />
-      <RiskApp locale={locale} />
       <LabDemoCards locale={locale} />
     </div>
   </main>

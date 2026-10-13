@@ -2,7 +2,7 @@
 /**
  * Capturas REALES de las apps para usarlas como «pantallas» del carrusel de proyectos
  * (ProjectScreens / scripts/screens). Genera public/works/NAME.webp (1280×800, sin metadatos).
- *   subnet / bits / risk → las mini-apps del laboratorio (/lab/)
+ *   subnet / bits → las mini-apps del laboratorio (/lab/)
  * Cuando el autor aporte vídeos (pnpm videos), el vídeo sustituye a la captura (misma pantalla).
  * Uso: pnpm build && pnpm preview &  →  node scripts/capture-works.mjs [baseUrl]
  * Variables: CHROME_PATH (ejecutable de Chromium).
@@ -33,7 +33,6 @@ const save = (buf, name) =>
 const apps = [
   { id: 'subnet', example: '192.168.1.130/26' },
   { id: 'bits', example: null },
-  { id: 'risk', example: null },
 ];
 {
   // 1060×662 (16:10) a 1,21× → 1283×801; el contenedor mide ~980 px y el margen es mínimo

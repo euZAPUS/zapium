@@ -21,7 +21,6 @@ import {
   formats,
   xor,
 } from './bits.ts';
-import { positionSize } from './risk.ts';
 
 test('parseIPv4 válido e inválido', () => {
   assert.equal(parseIPv4('192.168.1.1'), 3232235777);
@@ -98,28 +97,4 @@ test('bits: operaciones', () => {
   assert.equal(swapBytes(0x12345678), 0x78563412);
   assert.equal(popcount(0xff), 8);
   assert.equal(xor(0b1100, 0b1010), 0b0110);
-});
-
-test('riesgo: largo, corto, comisión y avisos', () => {
-  const r = positionSize({ balance: 10000, riskPct: 1, entry: 100, stop: 95, target: 115 });
-  assert.ok(r.ok);
-  assert.equal(r.result.direction, 'long');
-  assert.equal(r.result.riskAmount, 100);
-  assert.equal(r.result.units, 20);
-  assert.equal(r.result.positionValue, 2000);
-  assert.equal(r.result.rr, 3);
-  const s = positionSize({ balance: 10000, riskPct: 2, entry: 50, stop: 55 });
-  assert.equal(s.result.direction, 'short');
-  assert.equal(s.result.units, 40);
-  const bad = positionSize({ balance: 1000, riskPct: 1, entry: 100, stop: 99.5, target: 90 });
-  assert.ok(bad.result.warnings.includes('targetWrongSide'));
-  assert.ok(bad.result.warnings.includes('exceedsBalance'));
-  const fee = positionSize({ balance: 10000, riskPct: 1, entry: 100, stop: 95, feePct: 0.1 });
-  assert.ok(Math.abs(fee.result.units * 5 + fee.result.fees - 100) < 1e-9);
-  assert.equal(
-    positionSize({ balance: 1000, riskPct: 1, entry: 100, stop: 100 }).error,
-    'stopEqualsEntry',
-  );
-  assert.equal(positionSize({ balance: -1, riskPct: 1, entry: 1, stop: 2 }).error, 'values');
-  assert.equal(positionSize({ balance: 1000, riskPct: 150, entry: 1, stop: 2 }).error, 'riskRange');
 });

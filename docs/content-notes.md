@@ -78,3 +78,22 @@ Electron 44. Licencia «todos los derechos reservados» (código visible). La de
 **ZAP Arcade** (repo público **`euZAPUS/retro-zapp`**, carpeta `demos/arcade/`): 13 juegos, **51 modos**, 45 logros, perfil con récords/XP, HTML+CSS+JS plano + Canvas 2D + Web Audio (0 librerías),
 Electron 44 para escritorio, v1.0.2. En `main` **no hay `LICENSE`** (la rama sin fusionar sí) y no hay tests ni CI de calidad. No hay versión jugable online (404 en Pages). Los récords y capturas del
 material salen de bots: no presentarlos como marcas personales.
+
+## Ronda 5 (2026-10-13): respuestas del autor para el portfolio profesional
+
+- Objetivo: terminar los estudios y trabajar en informática, **preferiblemente ciberseguridad** («es mi sueño»). Sin puesto: estudiante.
+- Modalidad: remoto lo mejor; híbrido o presencial si es cerca de donde vive. Disponible por completo al terminar los estudios.
+- Web: subpágina para dejar el dominio a la familia → recomendado `alvaro.sangon.eu`. Nombre: «Álvaro Sánchez» (un apellido).
+- ASIR 1.º en DigiTech, presencial, desde el 28-9-2026, fin abril/mayo 2028. Módulos: redes (PAR), sistemas operativos (ISO), bases de datos,
+  IPE, sostenibilidad, hardware, lenguajes de marcas y uno que no recordaba (por el plan nuevo de 1.º es **Inglés profesional**; confirmar).
+- 42 Málaga desde septiembre de 2026 (nivel: primeros proyectos en C; no se nombran). Antes: Bachillerato Tecnológico. Sin certificaciones aún.
+- Sin experiencia laboral. Con ordenador desde los 7 años: instala, configura y optimiza Windows/Linux/macOS; soporte a familiares.
+- Proyectos: la IA hizo todo el código; diseño, contenido y «cerebro creador» suyos. Los usa él; amigos las han probado. Aprendió: sincronizar
+  entre ordenadores solo con GitHub, animaciones, mejores prompts.
+- Habilidades: C (lo que más), HTML/Python/CSS básico, terminal de Linux muy bien, Windows+Linux en arranque dual, subnetting, Packet Tracer
+  (aprendiendo), VirtualBox, GitHub. Personales: trabajo en equipo (reparte y asume), comunicación/negociación, autonomía. Inglés B2–C1 sin título,
+  quiere el C1 en verano de 2027.
+- IA: delega el código; propone ideas, pide el paso a paso, revisa todo menos el código; aprendió a mejorar prompts y a predecir fallos.
+  Flujo: idea → beta → pruebas → GitHub público y sigue actualizando.
+- Aficiones: escalar, deporte, videojuegos, tecnología, aprender. Fotos posibles: skatepark, rocódromo, hotel, campus (pendiente que las pase).
+- Easter eggs de la patata: se quedan. LinkedIn: aún no. CV: tiene uno «chustilla», no publicado.

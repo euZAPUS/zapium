@@ -50,7 +50,7 @@ const s = useT(locale).story.ai;
   }
   .ai__grid {
     display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
     gap: var(--space-5);
   }
   .ai__grid .card {

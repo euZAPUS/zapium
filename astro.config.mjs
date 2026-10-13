@@ -2,10 +2,10 @@
 import { defineConfig } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
 
-// TODO: sustituir por el dominio definitivo cuando exista (Cloudflare Pages
-// da zapium.pages.dev mientras tanto). Una sola fuente de verdad: src/config/site.ts
-// importa esta misma URL desde la variable de entorno SITE_URL o este valor.
-const site = process.env.SITE_URL ?? 'https://zapium.pages.dev';
+// Dominio del autor (hosting cPanel en Namecheap): el portfolio vive en el subdominio alvaro.sangon.eu
+// para dejar sangon.eu libre a la familia. Se puede cambiar con la variable de entorno SITE_URL.
+// Se usa para canonical, hreflang, sitemap y robots.txt. Ojo: la web asume que se sirve en la RAÍZ de esa URL.
+const site = process.env.SITE_URL ?? 'https://alvaro.sangon.eu';
 
 export default defineConfig({
   site,

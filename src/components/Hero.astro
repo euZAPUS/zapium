@@ -55,18 +55,18 @@ let n = 0;
             {t.hero.ctaProjects}
             <Icon name="arrow" />
           </a>
-          <a
-            class="btn reveal"
-            style="--delay:1500ms"
-            href="/assets/cv.pdf"
-            aria-disabled="true"
-            title={t.ui.cvSoon}
-            data-cursor="link"
-            data-cv
-          >
-            <Icon name="download" />
-            {t.hero.ctaCv}
-          </a>
+          {PERSON.cv && (
+            <a
+              class="btn reveal"
+              style="--delay:1500ms"
+              href={PERSON.cv}
+              data-cursor="link"
+              download
+            >
+              <Icon name="download" />
+              {t.hero.ctaCv}
+            </a>
+          )}
           <a class="btn reveal" style="--delay:1600ms" href="#contact" data-cursor="link">
             <Icon name="mail" />
             {t.hero.ctaContact}

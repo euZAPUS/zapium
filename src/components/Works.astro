@@ -11,7 +11,7 @@
 import { existsSync } from 'node:fs';
 import { join } from 'node:path';
 import { PERSON, type Locale } from '~/config/site';
-import { labPath, useT } from '~/i18n';
+import { useT } from '~/i18n';
 import Icon, { type IconName } from './Icon.astro';
 import Guide from './Guide.astro';
 import ProofVideo from './ProofVideo.astro';
@@ -28,7 +28,6 @@ const isPublic = (p: string) => existsSync(join(process.cwd(), 'public', p));
 // OJO: `zapper-aio` es PRIVADO (404 para los visitantes). Solo se enlaza lo público.
 const repo = `${PERSON.github}/zapper-aio-releases`;
 const releases = `${PERSON.github}/zapper-aio-releases/releases/latest`;
-const lab = labPath(locale);
 // Demos: UN archivo HTML por proyecto (todo inline, sin red): ver scripts/demo.ts. Solo se ofrecen si el archivo existe.
 const demoFile = (id: string) => `/demos/${id}/${id}.html`;
 // Tráilers (vídeo con sonido, solo se descargan al pulsar): public/trailers/NOMBRE.mp4 (+ .jpg), los genera `pnpm videos`
@@ -71,18 +70,6 @@ const media = (id: string, video?: string) => ({
   video: video && isPublic(`videos/${video}.webm`) ? video : undefined,
   img: isPublic(`works/${id}.webp`) ? `/works/${id}.webp` : undefined,
 });
-const labWork = (id: 'subnet' | 'bits' | 'risk'): Work => {
-  const it = byId[id]!;
-  return {
-    id,
-    tag: it.tag,
-    title: it.title,
-    body: it.body,
-    ...media(id),
-    placeholder: `[TODO] ${it.title}`,
-    links: [{ label: it.cta, href: `${lab}#${id}`, icon: 'arrow', primary: true }],
-  };
-};
 const demoOf = (id: string, label?: string) => {
   const src = demoFile(id);
   const it = byId[id]!;
@@ -149,9 +136,6 @@ const works: Work[] = [
       { label: arcade.cta, href: `${gh}/retro-zapp`, icon: 'branch' },
     ],
   },
-  labWork('subnet'),
-  labWork('bits'),
-  labWork('risk'),
 ];
 
 const moreHref: Record<string, string> = {
@@ -296,6 +280,34 @@ const nn = (n: number) => String(n).padStart(2, '0');
       <i></i>
     </div>
   </div>
+</section>
+
+<!-- Casos: los datos de cada proyecto (problema, rol, stack, resultado, aprendizaje). En el carrusel WebGL no caben; aquí siempre se leen. -->
+<section class="cases container" aria-labelledby="cases-title">
+  <h3 id="cases-title" class="more__title">
+    {s.casesTitle}
+  </h3>
+  <ul class="cases__grid">
+    {works
+      .filter((w) => w.facts)
+      .map((w, i) => (
+        <li class="card cases__card">
+          <span class="cases__n" aria-hidden="true">
+            {nn(i + 1)}
+          </span>
+          <p class="tag">{w.tag}</p>
+          <h4 class="cases__title">{w.title}</h4>
+          <dl class="facts">
+            {w.facts!.map((f) => (
+              <>
+                <dt>{f.k}</dt>
+                <dd>{f.v}</dd>
+              </>
+            ))}
+          </dl>
+        </li>
+      ))}
+  </ul>
 </section>
 
 <section class="more container" aria-labelledby="more-title">
@@ -450,6 +462,38 @@ const nn = (n: number) => String(n).padStart(2, '0');
   }
 
   /* ───────── «Más proyectos»: índice en filas ───────── */
+  .cases {
+    padding-block: var(--space-8) 0;
+  }
+  .cases__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr));
+    gap: var(--space-5);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .cases__card {
+    position: relative;
+    display: grid;
+    gap: var(--space-3);
+    align-content: start;
+  }
+  .cases__title {
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: var(--text-xl);
+    font-weight: 400;
+    letter-spacing: -0.03em;
+  }
+  .cases__n {
+    position: absolute;
+    top: var(--space-4);
+    right: var(--space-4);
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    color: var(--ink-muted);
+  }
   .more {
     padding-block: var(--space-7) var(--space-8);
   }

@@ -70,7 +70,7 @@ Fase 0 completada. **Fase 1 (sistema de diseño, esqueleto y hero espectacular) 
   ligada al scroll, «tock» sutil en pulsaciones, campanilla al acabar la carga, «boing» de la patata. Aviso en la carga + botón en la
   cabecera; elección en `localStorage: zapium-sound`. Arranca apagado hasta que el visitante lo activa.
 - **Escenas de contenido** (textos reales en `src/i18n/*.ts → story`, con `[TODO]` donde falta información):
-  - `Works` (+ `scripts/works/{index,scene}.ts`): **6 pantallas flotantes** de proyectos (Zapper AIO, Zapped, ZAP Arcade y las 3 mini-apps del laboratorio; **el huerto NO es una pantalla aparte**: es parte de Zapper AIO y su demo es un botón de la tarjeta de Zapper AIO, decisión del autor 2026-10-07), casi como la sección Works de alche.studio (el autor
+  - `Works` (+ `scripts/works/{index,scene}.ts`): **3 pantallas flotantes** de proyectos (Zapper AIO, Zapped y ZAP Arcade; las mini-apps solo en el laboratorio; **el huerto NO es una pantalla aparte**: es parte de Zapper AIO y su demo es un botón de la tarjeta de Zapper AIO, decisión del autor 2026-10-07), casi como la sección Works de alche.studio (el autor
     pidió «que estén flotando y de fondo el grid, no pegados al grid»; análisis en `docs/reference-alche.md`). Escena WebGL propia (OGL) con
     **dos capas separadas**: (1) **fondo** = pared cilíndrica de baldosas vista desde dentro, un único shader a pantalla completa (rayo →
     cilindro → baldosas con huecos, bloques 2×2 «quad-tree», cruces `+`, fundido lateral) cuyas baldosas toman el **color del proyecto activo**
@@ -163,7 +163,10 @@ pnpm. Sin frameworks de UI pesados salvo justificación escrita aquí.
 
 - TypeScript fijado en **6.x**: `astro check` aún no soporta TS 7.
 - i18n: `es` por defecto en `/`, `en` en `/en/`. Traducir también chistes y frases hechas.
-- Despliegue previsto: Cloudflare Pages. Dominio propio más adelante.
+- **Despliegue (2026-10-13): hosting cPanel del autor en Namecheap, subdominio `alvaro.sangon.eu`** (sangon.eu queda libre para la familia;
+  correo `alvaro@sangon.eu`). `pnpm build` → zip del CONTENIDO de `dist/` (incluye `.htaccess` de `public/`: HTTPS, caché, tipos de vídeo) →
+  cPanel File Manager → carpeta raíz del subdominio → Upload + Extract (`index.html` directamente en esa carpeta). La web asume servirse en la
+  RAÍZ de la URL (rutas absolutas `/videos/…`): una subcarpeta tipo `sangon.eu/portfolio/` exigiría adaptar rutas. `SITE_URL` cambia el dominio.
 
 ## Comandos
 
@@ -251,6 +254,12 @@ El hook `.githooks/pre-commit` (activado por `pnpm install` vía `prepare`) ejec
   herramientas propias como «42» (el visor de bits es «C · bajo nivel»).
 - La sección «Cómo trabajo con IA» es concreta y honesta (qué delego, qué reviso, qué aprendí) y
   menciona que la web está hecha con Claude Code.
+- **Perfil profesional (respuestas del autor, 2026-10-13, ver `docs/content-notes.md`):** estudiante de ASIR (DigiTech Málaga, presencial,
+  inicio 28-9-2026, fin ~primavera 2028) y de 42 Málaga (desde sept. 2026); objetivo: **ciberseguridad**; sin experiencia laboral (no inventarla:
+  «usuario avanzado desde los 7 años / soporte a la familia» se presenta como experiencia práctica NO laboral); en sus apps la IA escribe el
+  código y él pone idea, diseño, contenido y pruebas (así se dice en «Mi rol»); habilidades con niveles honestos (C lo que más; Python/HTML/CSS
+  básico; Linux terminal con soltura; Packet Tracer aprendiendo); inglés B2–C1 sin certificar; sin CV publicado (los botones de CV solo se pintan
+  si `PERSON.cv` tiene ruta). Fuera: dropshipping, trading, calculadora de riesgo; las mini-apps (subredes, bits) solo en el laboratorio.
 
 ## NO hacer
 

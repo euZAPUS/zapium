@@ -2,7 +2,7 @@ export const es = {
   meta: {
     title: 'Álvaro Sánchez · zapium',
     description:
-      'Portfolio de Álvaro Sánchez (euZAPUS): estudiante de ASIR y de 42 que construye apps y webs con ayuda de IA.',
+      'Portfolio de Álvaro Sánchez: estudiante de ASIR y de 42 en Málaga, con la ciberseguridad como objetivo. Apps propias con demo jugable.',
   },
   nav: {
     label: 'Principal',
@@ -11,7 +11,7 @@ export const es = {
     projects: 'Proyectos',
     about: 'Sobre mí',
     ai: 'Cómo trabajo con IA',
-    stack: 'Stack',
+    stack: 'Habilidades',
     lab: 'Laboratorio',
     contact: 'Contacto',
     cv: 'CV',
@@ -30,7 +30,8 @@ export const es = {
   },
   hero: {
     eyebrow: 'Hola, soy',
-    tagline: 'Estudio ASIR y programación en 42. Construyo apps y webs con ayuda de IA.',
+    tagline:
+      'Estudiante de ASIR y de 42 en Málaga, con la ciberseguridad como objetivo. Diseño y publico apps con IA mientras aprendo sistemas y redes.',
     ctaProjects: 'Ver proyectos',
     ctaCv: 'Descargar CV',
     ctaContact: 'Contacto',
@@ -69,7 +70,7 @@ export const es = {
     projects: 'PROYECTOS',
     about: 'SOBRE MÍ',
     ai: 'IA',
-    stack: 'STACK',
+    stack: 'HABILIDADES',
     lab: 'LAB',
     contact: 'CONTACTO',
     label: 'Posición en la página',
@@ -79,16 +80,16 @@ export const es = {
     demosTitle: 'Demos jugables',
     demosIntro:
       'Mis apps completas, funcionando aquí mismo en el navegador con datos de ejemplo. Nada se guarda.',
-    title: 'Mini-apps que he hecho',
+    title: 'Mini-apps y demos',
     intro:
-      'Herramientas pequeñas que funcionan en tu navegador, sin cuentas ni servidor. Las he hecho con Claude Code para practicar redes, bajo nivel y gestión del riesgo.',
+      'Herramientas pequeñas que funcionan en tu navegador, sin cuentas ni servidor, hechas con Claude Code para practicar redes y C. Debajo, demos jugables de mis apps.',
     pageTitle: 'Laboratorio · Álvaro Sánchez',
     pageDescription:
-      'Mini-apps de Álvaro Sánchez: calculadora de subredes IP, visor de bits y calculadora de riesgo.',
+      'Mini-apps de Álvaro Sánchez (calculadora de subredes IP y visor de bits) y demos jugables de sus apps.',
     back: 'Volver al inicio',
     open: 'Abrir',
     copied: 'Copiado',
-    teaserIntro: 'Tres herramientas pequeñas que funcionan en tu navegador. Pruébalas.',
+    teaserIntro: 'Dos herramientas para practicar redes y C, y demos jugables de mis apps.',
     subnet: {
       tag: 'ASIR · REDES',
       title: 'Calculadora de subredes IP',
@@ -207,16 +208,24 @@ export const es = {
           k: 'Problema',
           v: 'Tener notas, tareas, horario y hábitos en un solo sitio, sin cuentas ni suscripciones.',
         },
-        { k: 'Mi rol', v: 'Autor del proyecto, desarrollado con Claude Code.' },
+        {
+          k: 'Mi rol',
+          v: 'Idea, diseño y contenido míos; el código lo escribe la IA (Claude Code) y yo pruebo cada versión.',
+        },
         { k: 'Stack', v: 'Tauri · Rust · React · TypeScript · Tailwind · Vite' },
         {
           k: 'Resultado',
           v: 'App para Windows y Linux con instalador (v0.11.0), 363 pruebas automáticas y sincronización cifrada entre equipos usando tu propio repositorio privado de GitHub.',
         },
+        {
+          k: 'Aprendí',
+          v: 'A sincronizar datos entre ordenadores usando solo GitHub, con cifrado.',
+        },
       ],
       repo: 'Ver en GitHub',
       download: 'Descargar',
       demo: 'Probar la demo',
+      casesTitle: 'En detalle',
       demoGarden: 'Probar el huerto',
       trailer: 'Ver el tráiler',
       demoLoading: 'Cargando la demo…',
@@ -255,11 +264,18 @@ export const es = {
               k: 'Problema',
               v: 'Practicar mecanografía en español (tildes, ñ, ¿ ¡), con listas de ciberseguridad y de C, sin cuenta ni servidor.',
             },
-            { k: 'Mi rol', v: 'Autor del repositorio, desarrollado con Claude Code.' },
+            {
+              k: 'Mi rol',
+              v: 'Idea, diseño y contenido míos; el código lo escribe la IA (Claude Code) y yo pruebo cada versión.',
+            },
             { k: 'Stack', v: 'TypeScript 7 · Vite 8 · Vitest 5 · Electron 44, sin framework.' },
             {
               k: 'Resultado',
               v: 'v1.0.2 publicada con instaladores para Windows, macOS y Linux; 38 tests pasando.',
+            },
+            {
+              k: 'Aprendí',
+              v: 'A cuidar las animaciones y el detalle visual, y a pedirle mejor las cosas a la IA.',
             },
           ],
           demoTitle: 'Zapped · demo',
@@ -277,11 +293,18 @@ export const es = {
               k: 'Problema',
               v: 'Reunir varios juegos en una sola app web, sin librerías ni build, con perfil y récords compartidos.',
             },
-            { k: 'Mi rol', v: 'Autor del repositorio, desarrollado con Claude Code.' },
+            {
+              k: 'Mi rol',
+              v: 'Idea, diseño y contenido míos; el código lo escribe la IA (Claude Code) y yo pruebo cada versión.',
+            },
             { k: 'Stack', v: 'HTML · CSS · JavaScript · Canvas 2D · Web Audio · Electron' },
             {
               k: 'Resultado',
               v: '13 juegos, 51 modos y 45 logros; instaladores para Windows, macOS y Linux en la v1.0.2.',
+            },
+            {
+              k: 'Aprendí',
+              v: 'A detectar en qué suele fallar la IA y a corregirlo con prompts más precisos.',
             },
           ],
           demoTitle: 'ZAP Arcade · demo',
@@ -327,58 +350,125 @@ export const es = {
     },
     about: {
       eyebrow: 'SOBRE MÍ',
-      title: 'Lo que he probado, estudiado y roto',
+      title: 'Base técnica, rumbo a la ciberseguridad',
       intro:
-        'Cosas que he hecho y aprendido, contadas tal cual. Cuando es aprendizaje o simulación, lo digo.',
-      bubble: 'Un resumen rápido de lo que he hecho. Sigue bajando.',
+        'Estudio en Málaga desde septiembre de 2026: sistemas y redes en DigiTech y programación en 42. Esto es lo que sé hacer hoy y hacia dónde voy.',
+      bubble: 'Un resumen rápido de quién soy. Sigue bajando.',
       cards: [
         {
-          tag: 'Estudios',
-          title: 'Campus 42',
-          body: 'Soy estudiante en Campus 42, donde acabo de empezar. Voy aprendiendo C, la shell de Linux y a trabajar en equipo.',
+          tag: 'Objetivo',
+          title: 'Ciberseguridad',
+          body: 'Es la meta. Por eso empiezo por la base que pide: sistemas, redes y programación en C.',
+          note: 'Remoto, o híbrido y presencial en la zona de Málaga.',
+        },
+        {
+          tag: 'Formación · 2026–2028',
+          title: 'ASIR · DigiTech, Málaga',
+          body: '1.º de Administración de Sistemas Informáticos en Red, presencial. Redes, sistemas operativos, bases de datos, hardware, lenguajes de marcas, inglés profesional, sostenibilidad e IPE.',
+          note: 'Antes: Bachillerato Tecnológico.',
+        },
+        {
+          tag: 'Formación · desde 2026',
+          title: '42 Málaga',
+          body: 'Estudiante en 42 desde septiembre de 2026: programación en C y aprendizaje entre iguales, sin profesores ni horarios.',
           note: '',
         },
         {
-          tag: 'Estudios',
-          title: 'ASIR · 1.º',
-          body: 'En DigiTech voy aprendiendo redes e IP, HTML y más. [TODO] asignaturas.',
-          note: '',
+          tag: 'Desde los 7 años',
+          title: 'Usuario avanzado',
+          body: 'He instalado, configurado y optimizado Windows, Linux y macOS por mi cuenta. Uso Windows y Linux en arranque dual y soy el soporte informático de mi familia.',
+          note: 'Experiencia práctica, no laboral.',
         },
         {
-          tag: 'Fotos',
-          title: 'Yo, fuera de la pantalla',
-          body: '[TODO] Aquí irá la galería de fotos.',
+          tag: 'Fuera del teclado',
+          title: 'Escalada y deporte',
+          body: 'Escalo, hago deporte y juego a videojuegos. Y me gusta aprender cosas nuevas, dentro y fuera de la informática.',
           note: '',
         },
       ],
     },
     ai: {
       eyebrow: 'CÓMO TRABAJO CON IA',
-      title: 'Con IA, pero sabiendo qué hago',
-      intro: 'Esta web está hecha con Claude Code. Te cuento qué delego y qué reviso yo.',
+      title: 'Con IA, sabiendo qué hago',
+      intro: 'Mis tres apps y esta web están hechas con Claude Code. Así reparto el trabajo:',
       cols: [
-        { k: 'Delego', v: '[TODO] Qué parte del trabajo le dejo a la IA.' },
-        { k: 'Reviso yo', v: '[TODO] Qué compruebo siempre antes de dar algo por bueno.' },
-        { k: 'Aprendí', v: '[TODO] Qué he aprendido trabajando así.' },
+        {
+          k: 'Yo pongo',
+          v: 'La idea, el diseño, el contenido y las decisiones. Antes de construir, pido a la IA el plan paso a paso.',
+        },
+        {
+          k: 'Delego',
+          v: 'El código. Lo escribe la IA; no lo reviso línea a línea, lo valido probándolo.',
+        },
+        {
+          k: 'Reviso',
+          v: 'Todo lo demás: que funcione, que se vea y se lea bien. Pruebo cada beta antes de publicarla en GitHub y sigo iterando.',
+        },
+        {
+          k: 'Aprendí',
+          v: 'A escribir mejores prompts y a anticipar en qué suele fallar la IA o qué va a proponer.',
+        },
       ],
       bubble: 'Spoiler: esta web la hemos hecho juntos, la IA y yo.',
     },
     stack: {
-      eyebrow: 'STACK',
-      title: 'Con qué trabajo',
-      intro: 'Lo que he usado en mis proyectos y estudios.',
+      eyebrow: 'HABILIDADES',
+      title: 'Qué sé hacer',
+      intro:
+        'Con niveles honestos: lo que manejo con soltura, lo básico y lo que estoy aprendiendo.',
       groups: [
-        { k: 'Zapper AIO', items: ['Tauri', 'Rust', 'React', 'TypeScript', 'Tailwind', 'Vite'] },
-        { k: 'Zapped', items: ['TypeScript', 'Vite', 'Vitest', 'Electron'] },
-        { k: 'ZAP Arcade', items: ['JavaScript', 'Canvas 2D', 'Web Audio', 'Electron'] },
-        { k: 'Esta web', items: ['Astro', 'TypeScript', 'WebGL (OGL)', 'CSS'] },
-        { k: 'Estudios', items: ['C', 'Shell de Linux', 'Git y GitHub', 'Redes e IP', 'HTML'] },
+        {
+          k: 'Con soltura',
+          items: [
+            'Terminal de Linux',
+            'Instalar y configurar Linux y Windows',
+            'Arranque dual',
+            'VirtualBox',
+            'Git y GitHub',
+            'Subnetting IPv4',
+          ],
+        },
+        {
+          k: 'Programación',
+          note: 'C es lo que más domino ahora; Python, HTML y CSS, a nivel básico.',
+          items: ['C', 'Python', 'HTML', 'CSS'],
+        },
+        {
+          k: 'Aprendiendo',
+          items: [
+            'Cisco Packet Tracer',
+            'Redes',
+            'Bases de datos',
+            'Sistemas operativos',
+            'Ciberseguridad',
+          ],
+        },
+        {
+          k: 'Trabajo con IA',
+          items: ['Claude Code', 'Prompts', 'Plan paso a paso', 'Pruebas de cada versión'],
+        },
+        {
+          k: 'Habilidades personales',
+          note: 'Reparto tareas y me hago cargo de lo mío; si surge un problema, propongo una solución y lo arreglo. Defiendo mi opinión y negocio hasta llegar a un acuerdo. Si el grupo no tira, saco el trabajo adelante yo.',
+          items: [
+            'Trabajo en equipo',
+            'Comunicación y negociación',
+            'Autonomía',
+            'Resolución de problemas',
+          ],
+        },
+        {
+          k: 'Idiomas',
+          note: 'Inglés sin certificar todavía: quiero sacarme el C1 en verano de 2027.',
+          items: ['Español · nativo', 'Inglés · B2–C1'],
+        },
       ],
     },
     contact: {
       eyebrow: 'CONTACTO',
       title: 'Hablemos',
-      intro: 'El correo es lo más rápido.',
+      intro:
+        'Estudio en Málaga. Para prácticas, proyectos o hablar de ciberseguridad, escríbeme: el correo es lo más rápido. Remoto, o híbrido y presencial en la zona.',
       write: 'Escribirme',
       copy: 'Copiar correo',
       copied: '¡Copiado!',

@@ -1,5 +1,5 @@
 ---
-import type { Locale } from '~/config/site';
+import { PERSON, type Locale } from '~/config/site';
 import { homePath, labPath, otherLocale, useT } from '~/i18n';
 import Icon from './Icon.astro';
 import logo from '~/assets/avatar/logo.png';
@@ -79,17 +79,12 @@ const links = [
     </nav>
 
     <div class="header__cta">
-      <a
-        class="btn btn--small"
-        href="/assets/cv.pdf"
-        data-cursor="link"
-        aria-disabled="true"
-        title={t.ui.cvSoon}
-        data-cv
-      >
-        <Icon name="download" />
-        {t.nav.cv}
-      </a>
+      {PERSON.cv && (
+        <a class="btn btn--small" href={PERSON.cv} data-cursor="link" download>
+          <Icon name="download" />
+          {t.nav.cv}
+        </a>
+      )}
       <a class="btn btn--small btn--primary" href={`${prefix}#contact`} data-cursor="link">
         <Icon name="mail" />
         <span class="header__contact">{t.nav.contact}</span>

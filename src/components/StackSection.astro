@@ -21,6 +21,7 @@ const s = useT(locale).story.stack;
     {s.groups.map((g) => (
       <section class="card stack__group">
         <h3>{g.k}</h3>
+        {'note' in g && g.note && <p class="stack__note">{g.note}</p>}
         <ul class="chips">
           {g.items.map((it) => (
             <li class="chip">{it}</li>
@@ -61,6 +62,10 @@ const s = useT(locale).story.stack;
   }
   .stack__group h3 {
     font-size: var(--text-l);
+  }
+  .stack__note {
+    color: var(--ink-muted);
+    font-size: var(--text-s);
   }
   .chips {
     display: flex;

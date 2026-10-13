@@ -5,7 +5,7 @@
  */
 export const SITE = {
   name: 'zapium',
-  url: import.meta.env.SITE ?? 'https://zapium.pages.dev',
+  url: import.meta.env.SITE ?? 'https://alvaro.sangon.eu',
   locales: ['es', 'en'] as const,
   defaultLocale: 'es' as const,
 } as const;
@@ -18,6 +18,10 @@ export const PERSON = {
   // Correo de contacto (dominio propio sangon.eu). Se pinta ofuscado en el HTML (ContactSection).
   email: 'alvaro@sangon.eu',
   github: 'https://github.com/euZAPUS',
+  // CV en PDF (ruta pública). Mientras sea null no se pinta ningún botón de CV.
+  cv: null as string | null,
+  // Ciudad (solo la ciudad: nunca dirección).
+  city: 'Málaga',
   // [TODO] Aún no tiene LinkedIn: mientras sea null no se muestra ningún enlace.
   linkedin: null as string | null,
   // Sin teléfono ni dirección personal. Nunca.
